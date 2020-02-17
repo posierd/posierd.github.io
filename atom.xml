@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://posierd.github.io</id>
-    <title>Gridea</title>
-    <updated>2020-02-17T06:33:17.399Z</updated>
+    <title>posierd_Gridea</title>
+    <updated>2020-02-17T06:39:28.426Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://posierd.github.io"/>
     <link rel="self" href="https://posierd.github.io/atom.xml"/>
     <subtitle>温故而知新</subtitle>
     <logo>https://posierd.github.io/images/avatar.png</logo>
     <icon>https://posierd.github.io/favicon.ico</icon>
-    <rights>All rights reserved 2020, Gridea</rights>
+    <rights>All rights reserved 2020, posierd_Gridea</rights>
     <entry>
         <title type="html"><![CDATA[Hello Gridea]]></title>
         <id>https://posierd.github.io/post/hello-gridea/</id>
