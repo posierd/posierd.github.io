@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://posierd.github.io</id>
     <title>posierd_Gridea</title>
-    <updated>2020-02-17T07:35:15.217Z</updated>
+    <updated>2020-02-21T08:01:06.935Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://posierd.github.io"/>
     <link rel="self" href="https://posierd.github.io/atom.xml"/>
@@ -10,6 +10,64 @@
     <logo>https://posierd.github.io/images/avatar.png</logo>
     <icon>https://posierd.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, posierd_Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[通过cmd 的 pip命令 下载的第三方库 如何在 pychaym 中导]]></title>
+        <id>https://posierd.github.io/post/tong-guo-cmd-de-pip-ming-ling-xia-zai-de-di-san-fang-ku-ru-he-zai-pychaym-zhong-dao/</id>
+        <link href="https://posierd.github.io/post/tong-guo-cmd-de-pip-ming-ling-xia-zai-de-di-san-fang-ku-ru-he-zai-pychaym-zhong-dao/">
+        </link>
+        <updated>2020-02-21T07:54:36.000Z</updated>
+        <content type="html"><![CDATA[<p><strong>前面通过cmd 下载某库的命令为：</strong><br>
+pip install   库名        关于这里就不多说了</p>
+<h2 id="面开始放图片吧">面开始放图片吧：😁😁<br>
+<img src="https://posierd.github.io/post-images/1582271745565.png" alt="" loading="lazy"></h2>
+<h2 id=""><img src="https://posierd.github.io/post-images/1582271755048.png" alt="" loading="lazy"></h2>
+<p><img src="https://posierd.github.io/post-images/1582271765906.png" alt="" loading="lazy"><br>
+----导入的时候，记得联网<br>
+-----END</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[使用BeautifulSoup爬取电影排行榜，并保存 xlsx 工作表至自定义目录下]]></title>
+        <id>https://posierd.github.io/post/shi-yong-beautifulsoup-pa-qu-dian-ying-pai-xing-bang-bing-bao-cun-xlsx-gong-zuo-biao-zhi-zi-ding-yi-mu-lu-xia/</id>
+        <link href="https://posierd.github.io/post/shi-yong-beautifulsoup-pa-qu-dian-ying-pai-xing-bang-bing-bao-cun-xlsx-gong-zuo-biao-zhi-zi-ding-yi-mu-lu-xia/">
+        </link>
+        <updated>2020-02-21T07:48:06.000Z</updated>
+        <content type="html"><![CDATA[<p><strong>注释在代码，懒得再写</strong>😋😋</p>
+<p>目标地址: https://movie.douban.com/top250</p>
+<h2 id="nice愉快的放置图片">Nice,愉快的放置图片:😁😁<br>
+<img src="https://posierd.github.io/post-images/1582271451622.png" alt="" loading="lazy"></h2>
+<h2 id=""><img src="https://posierd.github.io/post-images/1582271462010.png" alt="" loading="lazy"></h2>
+<h2 id="-2"><img src="https://posierd.github.io/post-images/1582271471437.png" alt="" loading="lazy"></h2>
+<h2 id="-3"><img src="https://posierd.github.io/post-images/1582271480805.png" alt="" loading="lazy"></h2>
+<h2 id="-4"><img src="https://posierd.github.io/post-images/1582271496630.png" alt="" loading="lazy"></h2>
+<h2 id="-运行代码后部分结果截图"><img src="https://posierd.github.io/post-images/1582271510491.png" alt="" loading="lazy"><br>
+----运行代码后，部分结果截图：😗😗😗<br>
+<img src="https://posierd.github.io/post-images/1582271556784.png" alt="" loading="lazy"></h2>
+<p><img src="https://posierd.github.io/post-images/1582271568388.png" alt="" loading="lazy"><br>
+-----END</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[使用BeautifulSoup爬取 下厨房，并包存 txt 到本地自定义目录下]]></title>
+        <id>https://posierd.github.io/post/shi-yong-beautifulsoup-pa-qu-xia-chu-fang-bing-bao-cun-txt-dao-ben-di-zi-ding-yi-mu-lu-xia/</id>
+        <link href="https://posierd.github.io/post/shi-yong-beautifulsoup-pa-qu-xia-chu-fang-bing-bao-cun-txt-dao-ben-di-zi-ding-yi-mu-lu-xia/">
+        </link>
+        <updated>2020-02-21T07:39:55.000Z</updated>
+        <content type="html"><![CDATA[<p>目标地址：http://www.xiachufang.com/</p>
+<p>注释在代码中，懒得重写  😂😂</p>
+<h2 id="下面开始愉快的放图片吧">下面开始愉快的放图片吧：😁😁<br>
+<img src="https://posierd.github.io/post-images/1582271068781.png" alt="" loading="lazy"></h2>
+<h2 id=""><img src="https://posierd.github.io/post-images/1582271080066.png" alt="" loading="lazy"></h2>
+<h2 id="-2"><img src="https://posierd.github.io/post-images/1582271089643.png" alt="" loading="lazy"></h2>
+<h2 id="-3"><img src="https://posierd.github.io/post-images/1582271101398.png" alt="" loading="lazy"></h2>
+<h2 id="-4"><img src="https://posierd.github.io/post-images/1582271118944.png" alt="" loading="lazy"></h2>
+<h2 id="-运行代码后部分截图"><img src="https://posierd.github.io/post-images/1582271131112.png" alt="" loading="lazy"><br>
+----运行代码后部分截图：😗😗<br>
+<img src="https://posierd.github.io/post-images/1582271147756.png" alt="" loading="lazy"></h2>
+<p><img src="https://posierd.github.io/post-images/1582271163827.png" alt="" loading="lazy"><br>
+----END</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Hello Gridea]]></title>
         <id>https://posierd.github.io/post/hello-gridea/</id>
