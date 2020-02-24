@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://posierd.github.io</id>
     <title>posierd_Gridea</title>
-    <updated>2020-02-21T08:02:23.359Z</updated>
+    <updated>2020-02-24T07:22:40.687Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://posierd.github.io"/>
     <link rel="self" href="https://posierd.github.io/atom.xml"/>
@@ -10,6 +10,36 @@
     <logo>https://posierd.github.io/images/avatar.png</logo>
     <icon>https://posierd.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, posierd_Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[关于selenium 控制打开 chrome 浏览器]]></title>
+        <id>https://posierd.github.io/post/guan-yu-selenium-kong-zhi-da-kai-chrome-liu-lan-qi/</id>
+        <link href="https://posierd.github.io/post/guan-yu-selenium-kong-zhi-da-kai-chrome-liu-lan-qi/">
+        </link>
+        <updated>2020-02-24T07:16:09.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="这个其实挺简单的">这个其实挺简单的 😀😀</h2>
+<h2 id="下面我来说下具体步骤">下面我来说下具体步骤：😄😄😄</h2>
+<pre><code>1.下载chrome版本   ----这个不用多说了
+2.下载与   chrome  相对应的 chromedriver 版本号
+3.具体版本号及其对应版本如下：
+</code></pre>
+<p><img src="https://posierd.github.io/post-images/1582528634342.png" alt="" loading="lazy"><br>
+我的chrome 版本是 71 的，这里我就下载 2.43 版本的 chromedriver，解压添加至 python 目录下</p>
+<hr>
+<pre><code>也可以 将chromedriver.exe 放在chrome浏览器安装目录下（同时设置用户环境变量path:C:\Program Files (x86)\Google\Chrome\Application
+
+
+这里建议使用前者，因为这个更快。这两个方法都是可以的，选其中一个就好了
+</code></pre>
+<hr>
+<pre><code>下面放代码截图：
+</code></pre>
+<h2 id=""><img src="https://posierd.github.io/post-images/1582528762380.png" alt="" loading="lazy"></h2>
+<pre><code>注释就这么些：下面看运行结果截图：
+</code></pre>
+<p><img src="https://posierd.github.io/post-images/1582528807591.png" alt="" loading="lazy"><br>
+-——————————END</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[通过cmd 的 pip命令 下载的第三方库 如何在 pychaym 中导]]></title>
         <id>https://posierd.github.io/post/tong-guo-cmd-de-pip-ming-ling-xia-zai-de-di-san-fang-ku-ru-he-zai-pychaym-zhong-dao/</id>
