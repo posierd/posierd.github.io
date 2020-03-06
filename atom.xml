@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://posierd.github.io</id>
     <title>posierd_Gridea</title>
-    <updated>2020-02-24T07:25:38.689Z</updated>
+    <updated>2020-03-06T08:13:22.648Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://posierd.github.io"/>
     <link rel="self" href="https://posierd.github.io/atom.xml"/>
@@ -10,6 +10,36 @@
     <logo>https://posierd.github.io/images/avatar.png</logo>
     <icon>https://posierd.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, posierd_Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[爬取博客评论]]></title>
+        <id>https://posierd.github.io/post/pa-qu-bo-ke-ping-lun/</id>
+        <link href="https://posierd.github.io/post/pa-qu-bo-ke-ping-lun/">
+        </link>
+        <updated>2020-03-06T05:54:19.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="目标地址"><a href="http://www.santostang.com/">目标地址</a></h2>
+<h2 id="代码截图">代码截图：😀😀</h2>
+<h2 id=""><img src="https://posierd.github.io/post-images/1583474645224.png" alt="" loading="lazy"></h2>
+<p><img src="https://posierd.github.io/post-images/1583474654241.png" alt="" loading="lazy"><br>
+运行代码部分结果截图：<br>
+<img src="https://posierd.github.io/post-images/1583474687834.png" alt="" loading="lazy"><br>
+——————  END</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[博客标题爬取]]></title>
+        <id>https://posierd.github.io/post/bo-ke-biao-ti-pa-qu/</id>
+        <link href="https://posierd.github.io/post/bo-ke-biao-ti-pa-qu/">
+        </link>
+        <updated>2020-03-06T05:42:58.000Z</updated>
+        <content type="html"><![CDATA[<p>😃😃<br>
+目标地址：http://www.santostang.com/<br>
+代码截图：<br>
+<img src="https://posierd.github.io/post-images/1583473691861.png" alt="" loading="lazy"><br>
+运行代码结果截图：<br>
+<img src="https://posierd.github.io/post-images/1583473717661.png" alt="" loading="lazy"><br>
+——————END</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[关于selenium 控制打开 chrome 浏览器]]></title>
         <id>https://posierd.github.io/post/guan-yu-selenium-kong-zhi-da-kai-chrome-liu-lan-qi/</id>
