@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>Hello Gridea | posierd_Gridea</title>
+<title>小说爬取——使用main（） | posierd_Gridea</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -24,15 +24,14 @@
 
 
 
-    <meta name="description" content="👏  欢迎使用 Gridea ！
-✍️  Gridea 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...
-
-Github
-Gridea 主页
-示例网站
-特性👇
-📝  你可以使用最酷的 Markdo..." />
-    <meta name="keywords" content="Gridea" />
+    <meta name="description" content="目标地址
+😃😃😃
+#  目标地址： https://wx.tianyabooks.com/book/hywx5/
+import re
+import requests
+def get_url(url):
+   r = requests...." />
+    <meta name="keywords" content="Python-Get" />
   </head>
   <body>
     <div id="app" class="main">
@@ -103,45 +102,90 @@ Gridea 主页
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">Hello Gridea</h2>
-            <div class="post-date">2018-12-12</div>
-            
-              <div class="feature-container" style="background-image: url('https://posierd.github.io/post-images/hello-gridea.png')">
-              </div>
+            <h2 class="post-title">小说爬取——使用main（）</h2>
+            <div class="post-date">2020-03-07</div>
             
             <div class="post-content" v-pre>
-              <p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-<!-- more -->
-<p><a href="https://github.com/getgridea/gridea">Github</a><br>
-<a href="https://gridea.dev/">Gridea 主页</a><br>
-<a href="http://fehey.com/">示例网站</a></p>
-<h2 id="特性">特性👇</h2>
-<p>📝  你可以使用最酷的 <strong>Markdown</strong> 语法，进行快速创作</p>
-<p>🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片</p>
-<p>🏷️  你可以对文章进行标签分组</p>
-<p>📋  你可以自定义菜单，甚至可以创建外部链接菜单</p>
-<p>💻  你可以在 <strong>Windows</strong>，<strong>MacOS</strong> 或 <strong>Linux</strong> 设备上使用此客户端</p>
-<p>🌎  你可以使用 <strong>𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌</strong> 或 <strong>Coding Pages</strong> 向世界展示，未来将支持更多平台</p>
-<p>💬  你可以进行简单的配置，接入 <a href="https://github.com/gitalk/gitalk">Gitalk</a> 或 <a href="https://github.com/SukkaW/DisqusJS">DisqusJS</a> 评论系统</p>
-<p>🇬🇧  你可以使用<strong>中文简体</strong>或<strong>英语</strong></p>
-<p>🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力</p>
-<p>🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步</p>
-<p>🌱 当然 <strong>Gridea</strong> 还很年轻，有很多不足，但请相信，它会不停向前 🏃</p>
-<p>未来，它一定会成为你离不开的伙伴</p>
-<p>尽情发挥你的才华吧！</p>
-<p>😘 Enjoy~</p>
+              <p><a href="https://wx.tianyabooks.com/book/hywx5/">目标地址</a></p>
+<p>😃😃😃</p>
+<pre><code class="language-python">#  目标地址： https://wx.tianyabooks.com/book/hywx5/
+import re
+import requests
+def get_url(url):
+   r = requests.get(url)
+   r.encoding = r.apparent_encoding
+   return r.text
+def get_messages(html):
+   all_message = re.findall(r'&lt;dd&gt;&lt;a href=&quot;(.*?)&quot;&gt;(.*?)&lt;/a&gt;&lt;/dd&gt;',html)
+   return all_message
+
+
+
+
+def get_content(url):
+   r = get_url(url)
+   con = re.findall(r'&lt;td width=&quot;760&quot; align=&quot;left&quot;&gt;(.*?)&lt;td width=&quot;20&quot;&gt;&lt;/td&gt;',r, re.S)[0]
+   con = con.replace('&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;', '')
+   con = con.replace('&lt;br /&gt;', '')
+   con = con.replace('&lt;/p&gt;', '')
+   con = con.replace('&lt;/td&gt;', '')
+   con = con.replace('&lt;p&gt;','')
+   return con
+
+
+
+def main():
+   url = 'https://wx.tianyabooks.com/book/hywx5/'
+   html = get_url(url)  #  获取主页面的章节信息（这是一个函数）
+   # print(html)
+   # exit()
+   content = get_messages(html)  # 获取所有章节的短 url  和 章节名字
+   # print(content)
+   # exit()
+   title = re.findall(r'&lt;h1&gt;《(.*?)》&lt;/h1&gt;',html)[0].strip()
+#    print(title)  找出小说的名字
+
+
+
+
+
+   with open(r'C:\Users\DELL\Desktop\python_wd\文本信息\{}.txt'.format(title),'a+',encoding='utf_8')as f:
+       for mulu in content:
+           f.write(&quot;\n\t\t&quot;)
+           f.write(mulu[1])  #  写入章节目录
+           f.write(&quot;\n&quot;)
+           contents = get_content(url+mulu[0])  # 在建立一个函数 用于小说内容的获取与清洗
+           f.write(&quot;\n\t&quot;)
+           f.write(contents)    #  写入章节内容
+           f.write(&quot;\n&quot;)
+
+if __name__ == '__main__':
+   main()
+
+</code></pre>
+<p>运行代码数据部分截图：<br>
+<img src="https://posierd.github.io/post-images/1583556274245.png" alt="" loading="lazy"></p>
+<p>——————END</p>
 
             </div>
             
               <div class="tag-container">
                 
-                  <a href="https://posierd.github.io/tag/fmyXokbB_/" class="tag">
-                    Gridea
+                  <a href="https://posierd.github.io/tag/oYN426Mph/" class="tag">
+                    Python-Get
                   </a>
                 
               </div>
             
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://posierd.github.io/post/xiao-shuo-pa-qu/">
+                  <h3 class="post-title">
+                    小说爬取
+                  </h3>
+                </a>
+              </div>
             
 
             

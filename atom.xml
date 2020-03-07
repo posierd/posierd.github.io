@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://posierd.github.io</id>
     <title>posierd_Gridea</title>
-    <updated>2020-03-07T04:37:48.577Z</updated>
+    <updated>2020-03-07T05:53:14.932Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://posierd.github.io"/>
     <link rel="self" href="https://posierd.github.io/atom.xml"/>
@@ -11,378 +11,230 @@
     <icon>https://posierd.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, posierd_Gridea</rights>
     <entry>
-        <title type="html"><![CDATA[小说爬取]]></title>
-        <id>https://posierd.github.io/post/xiao-shuo-pa-qu/</id>
-        <link href="https://posierd.github.io/post/xiao-shuo-pa-qu/">
+        <title type="html"><![CDATA[selenium 模拟浏览器 爬取网易云音乐评论]]></title>
+        <id>https://posierd.github.io/post/selenium-mo-ni-liu-lan-qi-pa-qu-wang-yi-yun-yin-le-ping-lun/</id>
+        <link href="https://posierd.github.io/post/selenium-mo-ni-liu-lan-qi-pa-qu-wang-yi-yun-yin-le-ping-lun/">
         </link>
-        <updated>2020-03-07T04:28:19.000Z</updated>
-        <content type="html"><![CDATA[<p><a href="http://www.39shubao.com/files/article/html/116/116246/">目标地址</a></p>
+        <updated>2020-03-07T05:22:58.000Z</updated>
+        <content type="html"><![CDATA[<p>本来相用破解 js来做 但网上找了很多案例 ，还是搞不懂，最后还是用这种达到了我需要的效果</p>
 <p>😃😃😃</p>
-<pre><code class="language-python"># 获取小说页面html
-# 找出小说名并以他创建文件
-# 找出每章 url 的变化（拼接）  
-# 由获取的url（完整）再次发送请求
-# 此时获取的 html 中包含有 章节的名字  和 内容
-# 进行 数据清洗 工作（去除不需要的符号）
-#  将章节目录  内容  分别写入，已经创建好的txt中
-import requests
-import re
-link = 'http://www.39shubao.com/files/article/html/116/116246/'
-headers= {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'
-}
-r = requests.get(link,headers=headers)
-r.encoding = 'utf-8'
-#print(r.status_code)
+<pre><code class="language-python">from selenium import webdriver
+import time
+
+class Yunspider(object):
+    # 初始化的东西 可以在后续的函数中使用
+    '''初始化方法'''
+    def __init__(self,url):
+        '''初始化网址'''
+        self.url = url
+        # 打开浏览器
+        self.driver = webdriver.Chrome()
+    # 打开目标网址 提取数据 翻页
+    def getContent(self):
+        # 打开目标网址
+        self.driver.get(self.url)
+        # js语句 ，控制下滑的那个进度条
+        js = 'window.scrollBy(0,8000)'
+        #  先进入 IFrame
+        self.driver.switch_to.frame(0) #  0 表示第一个框
+        #  执行这条 js 语句
+        self.driver.execute_script(js)
+
+        # 提取数据   翻页
+
+        for page in range(0,6):
+            selectors = self.driver.find_elements_by_xpath('//div[@class=&quot;cmmts j-flag&quot;]/div')
+            for selector in selectors:
+                text = selector.find_element_by_xpath('.//div[@class=&quot;cnt f-brk&quot;]').text
+                print(text)
+                self.save(text)
+                #Yunspider.save(text)  也可以调用
+
+
+            # find_element_by_partial_link_text  模糊匹配
+            newpage = self.driver.find_element_by_partial_link_text('下一页')
+            newpage.click()
+            time.sleep(2)
+    @staticmethod    #  静态写法
+    def save(item):
+        with open(r'C:\Users\DELL\Desktop\python_wd\文本信息\网易云评论.txt','a',encoding='utf-8')as f:
+            f.write(&quot;\n&quot;)
+            f.write(item)
+            f.write(&quot;\n &quot;)
 
 
 
-html = r.text
-# 找出小说名称
-title = re.findall(r'&lt;h1&gt;(.*?)&lt;/h1&gt;',html)
-#print(title)
-# 并以他命名一个txt文本
-path = open('%s.txt'%title,'w',encoding='utf-8')
-#  找出部分的 url 通过遍历列表 来 拼接成完整的 url 地址
-urls = re.findall(r'&lt;li&gt;&lt;a href=&quot;(.*?)&quot;&gt;',html,re.S)
-#print(urls)
-#print(len(urls))
 
+if __name__ == '__main__':
+    url = 'https://music.163.com/#/song?id=491274636'
+    Yunspider = Yunspider(url)
+    Yunspider.getContent()
 
-for url in urls:
-    new_url = 'http://www.39shubao.com' + url
-    # 拼接出完整的url，并再次发送请求
-    #print(new_url)
-    title_down = requests.get(new_url,headers=headers)
-   # print(title_down.status_code)
-    title_down.encoding= title_down.apparent_encoding   # 万能编码格式
-    title_html = title_down.text
-
-
-    # 找出每章节的题目
-    title_html_title = re.findall(r'&lt;h1&gt;(.*?)&lt;/h1&gt;',title_html,re.S)
-    print(title_html_title)
-    #  列表转化为字符串
-    liiie = &quot;&quot;.join(title_html_title)
-    # 找出每章节内容
-    title_unmber = re.findall(r' &lt;div id=&quot;book_text&quot;&gt;(.*?)&lt;div id=&quot;gt1&quot;&gt;&lt;/div&gt;',title_html,re.S)
-    #print(title_unmber)
-
-
-
-    # 数据清洗
-    unmber = &quot;&quot;.join(title_unmber)
-    unmber = unmber.replace('&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;一秒记住【39小说网 &lt;a href=&quot;http://www.39shubao.com&quot; target=&quot;_blank&quot;&gt;','')
-    unmber = unmber.replace('www.39shubao.com&lt;/a&gt;】，精彩小说无弹窗免费阅读！&lt;br /&gt;\n        一秒记住【39小说网 www.39txt.com】，','')
-    unmber = unmber.replace('精彩小说无弹窗免费阅读！&lt;br/&gt;&lt;br/&gt;','')
-    unmber = unmber.replace('&lt;br/&gt;&lt;br/&gt;','')
-    unmber = unmber.replace('&lt;/div&gt;','')
-    unmber = unmber.replace('    ','')
-    #print(unmber)
-    with open(r&quot;C:\Users\DELL\Desktop\python_wd\文本信息\['我的老千江湖'].txt&quot;,&quot;a+&quot;)as f:
-        f.write(liiie)
-        f.write(unmber)
-        f.write('\n')
-        f.close()
-    exit()
 </code></pre>
-<p>运行代码数据部分截图:<br>
-(有点瑕疵，不影响，整理一下就好了)<br>
-<img src="https://posierd.github.io/post-images/1583555764775.png" alt="" loading="lazy"></p>
+<p>运行代码数据部分结果：<br>
+<img src="https://posierd.github.io/post-images/1583558646684.png" alt="" loading="lazy"></p>
+<p>————————END</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[selenium  模拟浏览器点击翻页]]></title>
+        <id>https://posierd.github.io/post/selenium-mo-ni-liu-lan-qi-dian-ji-fan-ye/</id>
+        <link href="https://posierd.github.io/post/selenium-mo-ni-liu-lan-qi-dian-ji-fan-ye/">
+        </link>
+        <updated>2020-03-07T05:18:22.000Z</updated>
+        <content type="html"><![CDATA[<pre><code class="language-python">from selenium import webdriver
+import time
+driver = webdriver.Chrome()
+driver.get('https://www.baidu.com/s?ie=UTF-8&amp;wd=python')
+for page in range(1,3):
+    time.sleep(10)
+    nwepage = driver.find_element_by_partial_link_text('下一页')
+    nwepage.click()
+    time.sleep(10)
+#driver.quit()
+</code></pre>
+<p>运行代码没有报错：<br>
+那段js不会，观察内容变化也可以知道！ ，他翻页了<br>
+———————— END😊😃😃</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[selenium 模拟鼠标点击收搜结果]]></title>
+        <id>https://posierd.github.io/post/selenium-mo-ni-shu-biao-dian-ji-shou-sou-jie-guo/</id>
+        <link href="https://posierd.github.io/post/selenium-mo-ni-shu-biao-dian-ji-shou-sou-jie-guo/">
+        </link>
+        <updated>2020-03-07T05:12:47.000Z</updated>
+        <content type="html"><![CDATA[<pre><code class="language-python">from selenium import webdriver
+import time
+dr = webdriver.Chrome()  #  初始化 Chrome 浏览器实例
+dr.get('http://www.baidu.com')  # 打开百度首页
+dr.find_element_by_id('kw').send_keys('美女')  # 定位输入框并在输入框中输入关键字
+dr.find_element_by_id('su').click()
+# 定位 点击 搜索  按钮  ，并模拟点击
+# 模糊查找
+na = dr.find_element_by_partial_link_text('_海量精选高清图片_百度图片')
+na.click()  # 模拟点击
+time.sleep(10)  # 理解为暂停 10 秒
+dr.quit()  # 关闭浏览器
+# dr.refresh() 网页刷新
+
+</code></pre>
+<p>运行结果：</p>
+<p>不会上动图，但运行代码是没有错误的！！！，是我期望的。。</p>
 <p>————————————END</p>
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[好看视频爬取]]></title>
-        <id>https://posierd.github.io/post/hao-kan-shi-pin-pa-qu/</id>
-        <link href="https://posierd.github.io/post/hao-kan-shi-pin-pa-qu/">
+        <title type="html"><![CDATA[爬取荣耀英雄图片]]></title>
+        <id>https://posierd.github.io/post/pa-qu-rong-yao-ying-xiong-tu-pian/</id>
+        <link href="https://posierd.github.io/post/pa-qu-rong-yao-ying-xiong-tu-pian/">
         </link>
-        <updated>2020-03-07T04:12:29.000Z</updated>
-        <content type="html"><![CDATA[<p>😄😄😄<br>
-<a href="https://haokan.baidu.com/tab/xiaopin">目标地址</a></p>
-<pre><code class="language-python">#  目标地址 ：https://haokan.baidu.com/tab/xiaopin
-#  ajax 异步加载
-
-import requests
+        <updated>2020-03-07T05:05:16.000Z</updated>
+        <content type="html"><![CDATA[<p>目标地址就不放了</p>
+<p>😄😄😄</p>
+<pre><code class="language-python">import requests
 import json
-for page in range(1,4):
-    print(&quot;正在下载第{}页数据&quot;.format(page))
-    link = 'https://haokan.baidu.com/videoui/api/videorec?tab=xiaopin&amp;act=pcFeed&amp;pd=pc&amp;num=20&amp;shuaxin_id=1583037298162'
+import time
+start_time = time.time()
+link = 'https://pvp.qq.com/web201605/js/herolist.json'
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36'
+}
+r = requests.get(link,headers=headers)
+print(&quot;页面状态响应码: &quot;,r.status_code)
+html = r.text
+list = json.loads(html)
+for img in list:
+    bianhao = img['ename']
+    name = img['cname']
+    try:
+        pifu = img['skin_name'].split('|') # 切割 用来计算有多少皮肤
+    except Exception as b:
+        print(b)
+    for mess in range(1,len(pifu) + 1):
+       img_url = ' http://game.gtimg.cn/images/yxzj/img201606/skin/hero-info/' + str(bianhao) + '/'+str(bianhao)+'-bigskin-{}.jpg'.format(mess)
+       img_content = requests.get(img_url,headers=headers).content
+       with open(r'C:\Users\DELL\Desktop\python_wd\mig\荣耀图片\\'+name + '-' + pifu[mess - 1]+ '.jpg','wb')as f:
+           print(&quot;正在下载图片：&quot;, name + '-' + pifu[mess - 1])
+           f.write(img_content)
+end_time = time.time()
+all_time = start_time + end_time
+print(&quot;程序耗时（单位：秒）：&quot;,all_time)
+print(&quot;下载完成。。。&quot;)
+
+</code></pre>
+<p>运行代码数据部分结果：<br>
+<img src="https://posierd.github.io/post-images/1583557696227.png" alt="" loading="lazy"></p>
+<p>——————END</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[房源信息—郑州 存入 .xlsx文件中]]></title>
+        <id>https://posierd.github.io/post/fang-yuan-xin-xi-zheng-zhou-cun-ru-xlsx-wen-jian-zhong/</id>
+        <link href="https://posierd.github.io/post/fang-yuan-xin-xi-zheng-zhou-cun-ru-xlsx-wen-jian-zhong/">
+        </link>
+        <updated>2020-03-07T04:51:44.000Z</updated>
+        <content type="html"><![CDATA[<p><a href="https://zz.lianjia.com/ershoufang/">目标地址</a></p>
+<p>😄😄😃</p>
+<pre><code class="language-python">import requests
+from bs4 import BeautifulSoup
+import openpyxl
+
+# https://zz.lianjia.com/ershoufang/
+# https://zz.lianjia.com/ershoufang/pg2/
+# https://zz.lianjia.com/ershoufang/pg3/
+
+list = []
+for page in range(1,3):
+    print(&quot;正在爬取{}页数据&quot;.format(page))
+    link = 'https://zz.lianjia.com/ershoufang/pg+str(page)/'
     headers = {
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36',
-        'cookie': 'BAIDUID=F51A687AD80CBF9BD94362CD499EA3BD:FG=1; Hm_lvt_4aadd610dfd2f5972f1efee2653a2bc5=1583037157; COMMON_LID=56fc2a0eb70a820aeadad06839a876c1; reptileData=%7B%22data%22%3A%224cd27d27f185868320f5411f2d4cfe347bb177d1c23cd3dc209f9ad4f3dd44d9d11cfd5a4e94214c0ff87043a1f7b5f9b5590f4c40f5b4ef708bd48bcd7765338192cbcab016ef7455ff910a5a977cf524d114a75d893bee87f9234302046e6edee7acced0ec0fabe151e1a1dbd76e5930ab109f25b64a394a093d5473c31ff1%22%2C%22key_id%22%3A%2230%22%2C%22sign%22%3A%22fe7981ec%22%7D; PC_TAB_LOG=haokan_website_page; Hm_lpvt_4aadd610dfd2f5972f1efee2653a2bc5=1583042863'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36'
     }
     r = requests.get(link,headers=headers)
     print(&quot;页面状态响应码: &quot;,r.status_code)
-    link_html = r.text
-    # print(link_html) 此时的数据为 json 格式
-    #需要通过数据转换的方式来提取数据
-    # json 将 json字符串转化为 python 可以交互的数据类型
-    json_link = json.loads(link_html)  #  将 json 数据转化为 字典形式
-    # print(json_link)
 
-    # 数据提取  因为是字典类型 可以通过 键名来提取数据
-    datas = json_link['data']['response']['videos']
-    for data in datas:
-    #    print(data)
-        vidle_title = data['title']
-        vidle_link = data['play_url']
-    # 再次根据数据 字典的 特性 分别取出 视频标题 视频播放的url地址
-        #print(vidle_title,vidle_link)
-        print(&quot;正在下载  {}  视频   ，。。。。。。请稍等&quot;.format(vidle_title))
-        vidle = requests.get(vidle_link,headers=headers).content   # 视频数据已经拿到
-        #  数据包存
-        with open(r'C:\Users\DELL\Desktop\python_wd\shipin\好看\{}.mp4'.format(vidle_title),mode='wb')as f:
-            f.write(vidle)
-            print(&quot;视频下载完成。。。。。&quot;)
+
+    soup = BeautifulSoup(r.text,'html.parser')
+    #一个房子的总数据 最小
+    host_list = soup.find_all('div',class_='info clear')
+    for host in host_list:
+        name = host.find('a',class_='').get_text()
+        jinjia = host.find('div',class_='unitPrice').get_text()
+        zongjia = host.find('div',class_='totalPrice').get_text()
+        ip = host.find('div',class_='positionInfo').get_text()
+        guige = host.find('div',class_='houseInfo').get_text()
+        guige = guige.replace('|','')
+        miaoshu = host.find('div',class_='tag').get_text()
+        #print(miaoshu)
+        list.append([name,jinjia,zongjia,ip,guige,miaoshu])
+
+
+
+
+# 保存数据
+file = openpyxl.Workbook()   #  新建一个工作薄
+sheet = file.active     #  在建立工作薄后建立工作表
+sheet.title = '房源信息'   #  命名
+# 写入内容 格式
+sheet['A1'] = '名字'
+sheet['B1'] = '均价'
+sheet['C1'] = '总价'
+sheet['D1'] = '地址'
+sheet['E1'] = '规格'
+sheet['F1'] = '描述'
+
+for i in list:
+    print(i)
+    sheet.append(i)
+file.save(r&quot;C:\Users\DELL\Desktop\python_wd\文本信息\房源信息-郑州.xlsx&quot;)  #  保存自定义目录
+
+
 
 </code></pre>
-<p>运行代码数据部分截图：<br>
-<img src="https://posierd.github.io/post-images/1583554957477.png" alt="" loading="lazy"></p>
+<p>运行代码数据部分结果：<br>
+<img src="https://posierd.github.io/post-images/1583557146044.png" alt="" loading="lazy"></p>
 <p>————————END</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[喜马拉雅—音频爬取]]></title>
-        <id>https://posierd.github.io/post/xi-ma-la-ya-yin-pin-pa-qu/</id>
-        <link href="https://posierd.github.io/post/xi-ma-la-ya-yin-pin-pa-qu/">
-        </link>
-        <updated>2020-03-07T03:59:33.000Z</updated>
-        <content type="html"><![CDATA[<p>😃😃😃</p>
-<pre><code class="language-python">import requests
-import re
-def download_one_m4a(dan_id,name):
-    '''下载一页中的一个数据'''
-
-   #  将其改变为 形参 方便数据改变
-   # dan_id = '98791745'
-    #  第一集 url 中的 后缀
-    headers = {
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36'
-    }
-    new_link = ' https://www.ximalaya.com/revision/play/v1/audio?id={}&amp;ptype=1'.format(dan_id)
-    #  获取真实的 ip数据
-    new_r = requests.get(new_link,headers=headers)
-
-
-
-
-
-
-
-    # 把字符串变为字典
-    #print(new_r.json()['data']['src'])  #  这个字典中包含有真实的音频 ip 播放地址   src
-    #  data 为字典  src包含在其中  健名
-    #  将其赋值为变量方便使用
-    m4a_url = new_r.json()['data']['src']
-    #  传递第给下面的 link  中
-    #  因为下面的 link（音频地址） 的下载
-    #  原 link数据 link = 'https://fdfs.xmcdn.com/group47/M0A/34/EA/wKgKm1tHj6GwgeWBAFehkfjyvKI1m81.4a'
-
-
-    # 播放接口    https://www.ximalaya.com/revision/play/v1/audio?id=98791745&amp;ptype=1
-    # 又以第一集新打开一个窗口  https://www.ximalaya.com/youshengshu/16411402/98791745
-    # 又以第二集新开开一个窗口  https://www.ximalaya.com/youshengshu/16411402/98936430
-    #  发现后缀发生了变化  那么就以播放接口 改变 后缀 就可以访问相应的集数
-    #  将接口写入 新的  link（接口） 中  通过与 dan_id  组合发生变化达到访问
-
-
-    link = m4a_url
-    headers = {
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36'
-    }
-    r = requests.get(link,headers=headers)
-    print(&quot;页面状态响应码:&quot;,r.status_code)
-    print(name)
-    with open(r'C:\Users\DELL\Desktop\python_wd\shipin\音频\{}.m4a'.format(name),mode='wb')as f:
-        f.write(r.content)
-#download_one_m4a(98791745)
-
-
-def one_page(html_link):
-    '''获取html页面信息中的 后缀 及其名字 '''
-    #  在首页 html 获取 后缀 及其 名字
-    # html_link = 'https://www.ximalaya.com/youshengshu/16411402/'   首页
-    headers = {
-            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36'
-        }
-    r_html = requests.get(html_link,headers=headers)
-    html = r_html.text
-    #print(html)
-    # 使用正则表达式 提取数据
-    message = re.findall('&lt;div class=&quot;text _Vc&quot;&gt;&lt;a title=&quot;(.*?)&quot; href=&quot;/youshengshu/16411402/(.*?)&quot;&gt;',html,re.S)
-    # 找出来的数据类型 为 列表
-    for mess in message:
-    #   print(mess)
-        download_one_m4a(mess[1],mess[0])
-#       1 写前面 是为了 与 函数   down_one_m4a 中的  dan_id 的形参 对应
-
-
-#one_page('https://www.ximalaya.com/youshengshu/16411402/')
-
-def down_all():
-    '''做 翻页 函数'''
-    for i in range(1,36):
-        print(&quot;正在获取{}页的数据&quot;.format(i))
-       # print('https://www.ximalaya.com/youshengshu/16411402/p{}/'.format(i))
-        one_page('https://www.ximalaya.com/youshengshu/16411402/p{}/'.format(i))
-
-
-down_all()
-</code></pre>
-<p>代码运行数据部分截图：<br>
-<img src="https://posierd.github.io/post-images/1583553799082.png" alt="" loading="lazy"></p>
-<p>————————END</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[爬取博客评论]]></title>
-        <id>https://posierd.github.io/post/pa-qu-bo-ke-ping-lun/</id>
-        <link href="https://posierd.github.io/post/pa-qu-bo-ke-ping-lun/">
-        </link>
-        <updated>2020-03-06T05:54:19.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="目标地址"><a href="http://www.santostang.com/">目标地址</a></h2>
-<h2 id="代码截图">代码截图：😀😀</h2>
-<h2 id=""><img src="https://posierd.github.io/post-images/1583474645224.png" alt="" loading="lazy"></h2>
-<p><img src="https://posierd.github.io/post-images/1583474654241.png" alt="" loading="lazy"><br>
-运行代码部分结果截图：<br>
-<img src="https://posierd.github.io/post-images/1583474687834.png" alt="" loading="lazy"><br>
-——————  END</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[博客标题爬取]]></title>
-        <id>https://posierd.github.io/post/bo-ke-biao-ti-pa-qu/</id>
-        <link href="https://posierd.github.io/post/bo-ke-biao-ti-pa-qu/">
-        </link>
-        <updated>2020-03-06T05:42:58.000Z</updated>
-        <content type="html"><![CDATA[<p>😃😃<br>
-目标地址：http://www.santostang.com/<br>
-代码截图：<br>
-<img src="https://posierd.github.io/post-images/1583473691861.png" alt="" loading="lazy"><br>
-运行代码结果截图：<br>
-<img src="https://posierd.github.io/post-images/1583473717661.png" alt="" loading="lazy"><br>
-——————END</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[关于selenium 控制打开 chrome 浏览器]]></title>
-        <id>https://posierd.github.io/post/guan-yu-selenium-kong-zhi-da-kai-chrome-liu-lan-qi/</id>
-        <link href="https://posierd.github.io/post/guan-yu-selenium-kong-zhi-da-kai-chrome-liu-lan-qi/">
-        </link>
-        <updated>2020-02-24T07:16:09.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="这个其实挺简单的">这个其实挺简单的 😀😀</h2>
-<h2 id="下面我来说下具体步骤">下面我来说下具体步骤：😄😄😄</h2>
-<pre><code>1.下载chrome版本   ----这个不用多说了
-2.下载与   chrome  相对应的 chromedriver 版本号
-3.具体版本号及其对应版本如下：
-</code></pre>
-<p><img src="https://posierd.github.io/post-images/1582528634342.png" alt="" loading="lazy"><br>
-我的chrome 版本是 71 的，这里我就下载 2.43 版本的 chromedriver，解压添加至 python 目录下</p>
-<hr>
-<pre><code>也可以 将chromedriver.exe 放在chrome浏览器安装目录下（同时设置用户环境变量path:C:\Program Files (x86)\Google\Chrome\Application
-
-
-这里建议使用前者，因为这个更快。这两个方法都是可以的，选其中一个就好了
-</code></pre>
-<hr>
-<pre><code>下面放代码截图：
-</code></pre>
-<h2 id=""><img src="https://posierd.github.io/post-images/1582528762380.png" alt="" loading="lazy"></h2>
-<pre><code>注释就这么些：下面看运行结果截图：
-</code></pre>
-<p><img src="https://posierd.github.io/post-images/1582528807591.png" alt="" loading="lazy"><br>
--——————————END</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[通过cmd 的 pip命令 下载的第三方库 如何在 pychaym 中导]]></title>
-        <id>https://posierd.github.io/post/tong-guo-cmd-de-pip-ming-ling-xia-zai-de-di-san-fang-ku-ru-he-zai-pychaym-zhong-dao/</id>
-        <link href="https://posierd.github.io/post/tong-guo-cmd-de-pip-ming-ling-xia-zai-de-di-san-fang-ku-ru-he-zai-pychaym-zhong-dao/">
-        </link>
-        <updated>2020-02-21T07:54:36.000Z</updated>
-        <content type="html"><![CDATA[<p><strong>前面通过cmd 下载某库的命令为：</strong><br>
-pip install   库名        关于这里就不多说了</p>
-<h2 id="面开始放图片吧">面开始放图片吧：😁😁<br>
-<img src="https://posierd.github.io/post-images/1582271745565.png" alt="" loading="lazy"></h2>
-<h2 id=""><img src="https://posierd.github.io/post-images/1582271755048.png" alt="" loading="lazy"></h2>
-<p><img src="https://posierd.github.io/post-images/1582271765906.png" alt="" loading="lazy"><br>
-----导入的时候，记得联网<br>
------END</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[使用BeautifulSoup爬取电影排行榜，并保存 xlsx 工作表至自定义目录下]]></title>
-        <id>https://posierd.github.io/post/shi-yong-beautifulsoup-pa-qu-dian-ying-pai-xing-bang-bing-bao-cun-xlsx-gong-zuo-biao-zhi-zi-ding-yi-mu-lu-xia/</id>
-        <link href="https://posierd.github.io/post/shi-yong-beautifulsoup-pa-qu-dian-ying-pai-xing-bang-bing-bao-cun-xlsx-gong-zuo-biao-zhi-zi-ding-yi-mu-lu-xia/">
-        </link>
-        <updated>2020-02-21T07:48:06.000Z</updated>
-        <content type="html"><![CDATA[<p><strong>注释在代码，懒得再写</strong>😋😋</p>
-<p>目标地址: https://movie.douban.com/top250</p>
-<h2 id="nice愉快的放置图片">Nice,愉快的放置图片:😁😁<br>
-<img src="https://posierd.github.io/post-images/1582271451622.png" alt="" loading="lazy"></h2>
-<h2 id=""><img src="https://posierd.github.io/post-images/1582271462010.png" alt="" loading="lazy"></h2>
-<h2 id="-2"><img src="https://posierd.github.io/post-images/1582271471437.png" alt="" loading="lazy"></h2>
-<h2 id="-3"><img src="https://posierd.github.io/post-images/1582271480805.png" alt="" loading="lazy"></h2>
-<h2 id="-4"><img src="https://posierd.github.io/post-images/1582271496630.png" alt="" loading="lazy"></h2>
-<h2 id="-运行代码后部分结果截图"><img src="https://posierd.github.io/post-images/1582271510491.png" alt="" loading="lazy"><br>
-----运行代码后，部分结果截图：😗😗😗<br>
-<img src="https://posierd.github.io/post-images/1582271556784.png" alt="" loading="lazy"></h2>
-<p><img src="https://posierd.github.io/post-images/1582271568388.png" alt="" loading="lazy"><br>
------END</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[使用BeautifulSoup爬取 下厨房，并包存 txt 到本地自定义目录下]]></title>
-        <id>https://posierd.github.io/post/shi-yong-beautifulsoup-pa-qu-xia-chu-fang-bing-bao-cun-txt-dao-ben-di-zi-ding-yi-mu-lu-xia/</id>
-        <link href="https://posierd.github.io/post/shi-yong-beautifulsoup-pa-qu-xia-chu-fang-bing-bao-cun-txt-dao-ben-di-zi-ding-yi-mu-lu-xia/">
-        </link>
-        <updated>2020-02-21T07:39:55.000Z</updated>
-        <content type="html"><![CDATA[<p>目标地址：http://www.xiachufang.com/</p>
-<p>注释在代码中，懒得重写  😂😂</p>
-<h2 id="下面开始愉快的放图片吧">下面开始愉快的放图片吧：😁😁<br>
-<img src="https://posierd.github.io/post-images/1582271068781.png" alt="" loading="lazy"></h2>
-<h2 id=""><img src="https://posierd.github.io/post-images/1582271080066.png" alt="" loading="lazy"></h2>
-<h2 id="-2"><img src="https://posierd.github.io/post-images/1582271089643.png" alt="" loading="lazy"></h2>
-<h2 id="-3"><img src="https://posierd.github.io/post-images/1582271101398.png" alt="" loading="lazy"></h2>
-<h2 id="-4"><img src="https://posierd.github.io/post-images/1582271118944.png" alt="" loading="lazy"></h2>
-<h2 id="-运行代码后部分截图"><img src="https://posierd.github.io/post-images/1582271131112.png" alt="" loading="lazy"><br>
-----运行代码后部分截图：😗😗<br>
-<img src="https://posierd.github.io/post-images/1582271147756.png" alt="" loading="lazy"></h2>
-<p><img src="https://posierd.github.io/post-images/1582271163827.png" alt="" loading="lazy"><br>
-----END</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Hello Gridea]]></title>
-        <id>https://posierd.github.io/post/hello-gridea/</id>
-        <link href="https://posierd.github.io/post/hello-gridea/">
-        </link>
-        <updated>2018-12-11T16:00:00.000Z</updated>
-        <summary type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-<!-- more -->
-<p><a href="https://github.com/getgridea/gridea">Github</a><br>
-<a href="https://gridea.dev/">Gridea 主页</a><br>
-<a href="http://fehey.com/">示例网站</a></p>
-<h2 id="特性">特性👇</h2>
-<p>📝  你可以使用最酷的 <strong>Markdown</strong> 语法，进行快速创作</p>
-<p>🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片</p>
-<p>🏷️  你可以对文章进行标签分组</p>
-<p>📋  你可以自定义菜单，甚至可以创建外部链接菜单</p>
-<p>💻  你可以在 <strong>Windows</strong>，<strong>MacOS</strong> 或 <strong>Linux</strong> 设备上使用此客户端</p>
-<p>🌎  你可以使用 <strong>𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌</strong> 或 <strong>Coding Pages</strong> 向世界展示，未来将支持更多平台</p>
-<p>💬  你可以进行简单的配置，接入 <a href="https://github.com/gitalk/gitalk">Gitalk</a> 或 <a href="https://github.com/SukkaW/DisqusJS">DisqusJS</a> 评论系统</p>
-<p>🇬🇧  你可以使用<strong>中文简体</strong>或<strong>英语</strong></p>
-<p>🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力</p>
-<p>🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步</p>
-<p>🌱 当然 <strong>Gridea</strong> 还很年轻，有很多不足，但请相信，它会不停向前 🏃</p>
-<p>未来，它一定会成为你离不开的伙伴</p>
-<p>尽情发挥你的才华吧！</p>
-<p>😘 Enjoy~</p>
 ]]></content>
     </entry>
 </feed>

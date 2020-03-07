@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://posierd.github.io/favicon.ico?v=1583555863720">
+<link rel="shortcut icon" href="https://posierd.github.io/favicon.ico?v=1583560249687">
 <link rel="stylesheet" href="https://posierd.github.io/styles/main.css">
 
 
@@ -25,13 +25,14 @@
 
 
     <meta name="description" content="目标地址
-代码截图：😀😀
-
-
-运行代码部分结果截图：
-
-——————  END
-..." />
+😃😃😃
+# 通过抓包获取数据
+# 一般评论文件为  .json   文件
+# 还要找到真实的  url  地址
+# 多数在 Networt  --- XHR 中
+import requests
+import json
+lin..." />
     <meta name="keywords" content="Python-Get" />
   </head>
   <body>
@@ -41,7 +42,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://posierd.github.io">
-        <img src="https://posierd.github.io/images/avatar.png?v=1583555863720" class="site-logo">
+        <img src="https://posierd.github.io/images/avatar.png?v=1583560249687" class="site-logo">
         <h1 class="site-title">posierd_Gridea</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -108,10 +109,46 @@
             
             <div class="post-content" v-pre>
               <h2 id="目标地址"><a href="http://www.santostang.com/">目标地址</a></h2>
-<h2 id="代码截图">代码截图：😀😀</h2>
-<h2 id=""><img src="https://posierd.github.io/post-images/1583474645224.png" alt="" loading="lazy"></h2>
-<p><img src="https://posierd.github.io/post-images/1583474654241.png" alt="" loading="lazy"><br>
-运行代码部分结果截图：<br>
+<p>😃😃😃</p>
+<pre><code class="language-powershell"># 通过抓包获取数据
+# 一般评论文件为  .json   文件
+# 还要找到真实的  url  地址
+# 多数在 Networt  --- XHR 中
+import requests
+import json
+link = 'https://api-zero.livere.com/v1/comments/list?callback=jQuery112406489430445652984_1582356847465&amp;limit=10&amp;repSeq=4272904&amp;requestPath=%2Fv1%2Fcomments%2Flist&amp;consumerSeq=1020&amp;livereSeq=28583&amp;smartloginSeq=5154&amp;code=&amp;_=1582356847467'
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'
+}
+r = requests.get(link,headers=headers)
+print('页面状态响应码: ',r.status_code)  #  此时已经拿到了 真实的 url  地址 请求 并响应成功
+json_string = r.text   # 存储数据
+json_string = json_string[json_string.find('{'):-2]  #  仅仅提取字符串中符合json格式的部分
+json_data = json.loads(json_string)  # 转化为 .json 数据格式
+comment_list = json_data['results']['parents']# 键名  键名
+
+
+
+
+
+for eachone in comment_list:
+    message = eachone['content']
+    #  评论数据的 键名
+    names = eachone['name']  #  评论名字的键名
+    print(names)
+    with open(r'C:\Users\DELL\Desktop\python_wd\文本信息\博客评论.txt','a+')as f:
+        f.write(&quot;======华丽分割线======\n&quot;)
+        f.write(&quot;评论用户名：\n\t&quot;)
+       # f.write('\n')
+        f.write(names)
+        f.write(&quot;\n&quot;)
+        f.write(&quot;评论详情：\n\t&quot;)
+        f.write(message)
+        f.write('\n')
+        f.close()
+
+</code></pre>
+<p>运行代码部分结果截图：<br>
 <img src="https://posierd.github.io/post-images/1583474687834.png" alt="" loading="lazy"><br>
 ——————  END</p>
 
@@ -164,6 +201,11 @@ var app = new Vue({
 
 </script>
 
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
 
 
 

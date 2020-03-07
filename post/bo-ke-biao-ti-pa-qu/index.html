@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://posierd.github.io/favicon.ico?v=1583555863720">
+<link rel="shortcut icon" href="https://posierd.github.io/favicon.ico?v=1583560249687">
 <link rel="stylesheet" href="https://posierd.github.io/styles/main.css">
 
 
@@ -26,12 +26,10 @@
 
     <meta name="description" content="😃😃
 目标地址：http://www.santostang.com/
-代码截图：
-
-运行代码结果截图：
-
-——————END
-..." />
+import requests
+from bs4 import BeautifulSoup
+link = 'http://www.santostang.com/'
+h..." />
     <meta name="keywords" content="Python-Get" />
   </head>
   <body>
@@ -41,7 +39,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://posierd.github.io">
-        <img src="https://posierd.github.io/images/avatar.png?v=1583555863720" class="site-logo">
+        <img src="https://posierd.github.io/images/avatar.png?v=1583560249687" class="site-logo">
         <h1 class="site-title">posierd_Gridea</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -108,10 +106,30 @@
             
             <div class="post-content" v-pre>
               <p>😃😃<br>
-目标地址：http://www.santostang.com/<br>
-代码截图：<br>
-<img src="https://posierd.github.io/post-images/1583473691861.png" alt="" loading="lazy"><br>
-运行代码结果截图：<br>
+目标地址：http://www.santostang.com/</p>
+<pre><code class="language-python">import requests
+from bs4 import BeautifulSoup
+link = 'http://www.santostang.com/'
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'
+}
+r = requests.get(link,headers=headers)
+print(r.status_code)
+soup = BeautifulSoup(r.text,'html.parser')
+title_list = soup.find_all('article',class_='article-list-1 clearfix')
+#print(title_list)
+for i in title_list:
+    title = i.find('h1',class_='post-title').get_text()
+    print(title)
+    with open(r'C:\Users\DELL\Desktop\python_wd\文本信息\唐松博客标题.txt','a+')as f:
+        f.write('\n')
+        f.write(title)
+        f.write('\n')
+        f.close()
+
+
+</code></pre>
+<p>运行代码结果截图：<br>
 <img src="https://posierd.github.io/post-images/1583473717661.png" alt="" loading="lazy"><br>
 ——————END</p>
 
@@ -164,6 +182,11 @@ var app = new Vue({
 
 </script>
 
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
 
 
 
