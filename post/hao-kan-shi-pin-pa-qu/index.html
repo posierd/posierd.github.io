@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>关于selenium 控制打开 chrome 浏览器 | posierd_Gridea</title>
+<title>好看视频爬取 | posierd_Gridea</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -24,15 +24,15 @@
 
 
 
-    <meta name="description" content="这个其实挺简单的 😀😀
-下面我来说下具体步骤：😄😄😄
-1.下载chrome版本   ----这个不用多说了
-2.下载与   chrome  相对应的 chromedriver 版本号
-3.具体版本号及其对应版本如下：
+    <meta name="description" content="😄😄😄
+目标地址
+#  目标地址 ：https://haokan.baidu.com/tab/xiaopin
+#  ajax 异步加载
 
-
-我的ch..." />
-    <meta name="keywords" content="python-selenium" />
+import requests
+import json
+for page in range(1,..." />
+    <meta name="keywords" content="Python-Get" />
   </head>
   <body>
     <div id="app" class="main">
@@ -103,39 +103,59 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">关于selenium 控制打开 chrome 浏览器</h2>
-            <div class="post-date">2020-02-24</div>
+            <h2 class="post-title">好看视频爬取</h2>
+            <div class="post-date">2020-03-07</div>
             
             <div class="post-content" v-pre>
-              <h2 id="这个其实挺简单的">这个其实挺简单的 😀😀</h2>
-<h2 id="下面我来说下具体步骤">下面我来说下具体步骤：😄😄😄</h2>
-<pre><code>1.下载chrome版本   ----这个不用多说了
-2.下载与   chrome  相对应的 chromedriver 版本号
-3.具体版本号及其对应版本如下：
-</code></pre>
-<p><img src="https://posierd.github.io/post-images/1582528634342.png" alt="" loading="lazy"><br>
-我的chrome 版本是 71 的，这里我就下载 2.43 版本的 chromedriver，解压添加至 python 目录下</p>
-<hr>
-<pre><code>也可以 将chromedriver.exe 放在chrome浏览器安装目录下（同时设置用户环境变量path:C:\Program Files (x86)\Google\Chrome\Application
+              <p>😄😄😄<br>
+<a href="https://haokan.baidu.com/tab/xiaopin">目标地址</a></p>
+<pre><code class="language-python">#  目标地址 ：https://haokan.baidu.com/tab/xiaopin
+#  ajax 异步加载
 
+import requests
+import json
+for page in range(1,4):
+    print(&quot;正在下载第{}页数据&quot;.format(page))
+    link = 'https://haokan.baidu.com/videoui/api/videorec?tab=xiaopin&amp;act=pcFeed&amp;pd=pc&amp;num=20&amp;shuaxin_id=1583037298162'
+    headers = {
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36',
+        'cookie': 'BAIDUID=F51A687AD80CBF9BD94362CD499EA3BD:FG=1; Hm_lvt_4aadd610dfd2f5972f1efee2653a2bc5=1583037157; COMMON_LID=56fc2a0eb70a820aeadad06839a876c1; reptileData=%7B%22data%22%3A%224cd27d27f185868320f5411f2d4cfe347bb177d1c23cd3dc209f9ad4f3dd44d9d11cfd5a4e94214c0ff87043a1f7b5f9b5590f4c40f5b4ef708bd48bcd7765338192cbcab016ef7455ff910a5a977cf524d114a75d893bee87f9234302046e6edee7acced0ec0fabe151e1a1dbd76e5930ab109f25b64a394a093d5473c31ff1%22%2C%22key_id%22%3A%2230%22%2C%22sign%22%3A%22fe7981ec%22%7D; PC_TAB_LOG=haokan_website_page; Hm_lpvt_4aadd610dfd2f5972f1efee2653a2bc5=1583042863'
+    }
+    r = requests.get(link,headers=headers)
+    print(&quot;页面状态响应码: &quot;,r.status_code)
+    link_html = r.text
+    # print(link_html) 此时的数据为 json 格式
+    #需要通过数据转换的方式来提取数据
+    # json 将 json字符串转化为 python 可以交互的数据类型
+    json_link = json.loads(link_html)  #  将 json 数据转化为 字典形式
+    # print(json_link)
 
-这里建议使用前者，因为这个更快。这两个方法都是可以的，选其中一个就好了
+    # 数据提取  因为是字典类型 可以通过 键名来提取数据
+    datas = json_link['data']['response']['videos']
+    for data in datas:
+    #    print(data)
+        vidle_title = data['title']
+        vidle_link = data['play_url']
+    # 再次根据数据 字典的 特性 分别取出 视频标题 视频播放的url地址
+        #print(vidle_title,vidle_link)
+        print(&quot;正在下载  {}  视频   ，。。。。。。请稍等&quot;.format(vidle_title))
+        vidle = requests.get(vidle_link,headers=headers).content   # 视频数据已经拿到
+        #  数据包存
+        with open(r'C:\Users\DELL\Desktop\python_wd\shipin\好看\{}.mp4'.format(vidle_title),mode='wb')as f:
+            f.write(vidle)
+            print(&quot;视频下载完成。。。。。&quot;)
+
 </code></pre>
-<hr>
-<pre><code>下面放代码截图：
-</code></pre>
-<h2 id=""><img src="https://posierd.github.io/post-images/1582528762380.png" alt="" loading="lazy"></h2>
-<pre><code>注释就这么些：下面看运行结果截图：
-</code></pre>
-<p><img src="https://posierd.github.io/post-images/1582528807591.png" alt="" loading="lazy"><br>
--——————————END</p>
+<p>运行代码数据部分截图：<br>
+<img src="https://posierd.github.io/post-images/1583554957477.png" alt="" loading="lazy"></p>
+<p>————————END</p>
 
             </div>
             
               <div class="tag-container">
                 
-                  <a href="https://posierd.github.io/tag/2m42ER2dt/" class="tag">
-                    python-selenium
+                  <a href="https://posierd.github.io/tag/oYN426Mph/" class="tag">
+                    Python-Get
                   </a>
                 
               </div>
@@ -143,9 +163,9 @@
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://posierd.github.io/post/tong-guo-cmd-de-pip-ming-ling-xia-zai-de-di-san-fang-ku-ru-he-zai-pychaym-zhong-dao/">
+                <a href="https://posierd.github.io/post/xi-ma-la-ya-yin-pin-pa-qu/">
                   <h3 class="post-title">
-                    通过cmd 的 pip命令 下载的第三方库 如何在 pychaym 中导
+                    喜马拉雅—音频爬取
                   </h3>
                 </a>
               </div>
