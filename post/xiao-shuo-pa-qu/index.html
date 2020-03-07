@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>使用BeautifulSoup爬取电影排行榜，并保存 xlsx 工作表至自定义目录下 | posierd_Gridea</title>
+<title>小说爬取 | posierd_Gridea</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -24,20 +24,14 @@
 
 
 
-    <meta name="description" content="注释在代码，懒得再写😋😋
-目标地址: https://movie.douban.com/top250
-Nice,愉快的放置图片:😁😁
-
-
-
-
-
-
-----运行代码后，部分结果截图：😗😗😗
-
-
------END
-..." />
+    <meta name="description" content="目标地址
+😃😃😃
+# 获取小说页面html
+# 找出小说名并以他创建文件
+# 找出每章 url 的变化（拼接）  
+# 由获取的url（完整）再次发送请求
+# 此时获取的 html 中包含有 章节的名字  和 内容
+# 进行 数据清洗..." />
     <meta name="keywords" content="Python-Get" />
   </head>
   <body>
@@ -109,23 +103,84 @@ Nice,愉快的放置图片:😁😁
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">使用BeautifulSoup爬取电影排行榜，并保存 xlsx 工作表至自定义目录下</h2>
-            <div class="post-date">2020-02-21</div>
+            <h2 class="post-title">小说爬取</h2>
+            <div class="post-date">2020-03-07</div>
             
             <div class="post-content" v-pre>
-              <p><strong>注释在代码，懒得再写</strong>😋😋</p>
-<p>目标地址: https://movie.douban.com/top250</p>
-<h2 id="nice愉快的放置图片">Nice,愉快的放置图片:😁😁<br>
-<img src="https://posierd.github.io/post-images/1582271451622.png" alt="" loading="lazy"></h2>
-<h2 id=""><img src="https://posierd.github.io/post-images/1582271462010.png" alt="" loading="lazy"></h2>
-<h2 id="-2"><img src="https://posierd.github.io/post-images/1582271471437.png" alt="" loading="lazy"></h2>
-<h2 id="-3"><img src="https://posierd.github.io/post-images/1582271480805.png" alt="" loading="lazy"></h2>
-<h2 id="-4"><img src="https://posierd.github.io/post-images/1582271496630.png" alt="" loading="lazy"></h2>
-<h2 id="-运行代码后部分结果截图"><img src="https://posierd.github.io/post-images/1582271510491.png" alt="" loading="lazy"><br>
-----运行代码后，部分结果截图：😗😗😗<br>
-<img src="https://posierd.github.io/post-images/1582271556784.png" alt="" loading="lazy"></h2>
-<p><img src="https://posierd.github.io/post-images/1582271568388.png" alt="" loading="lazy"><br>
------END</p>
+              <p><a href="http://www.39shubao.com/files/article/html/116/116246/">目标地址</a></p>
+<p>😃😃😃</p>
+<pre><code class="language-python"># 获取小说页面html
+# 找出小说名并以他创建文件
+# 找出每章 url 的变化（拼接）  
+# 由获取的url（完整）再次发送请求
+# 此时获取的 html 中包含有 章节的名字  和 内容
+# 进行 数据清洗 工作（去除不需要的符号）
+#  将章节目录  内容  分别写入，已经创建好的txt中
+import requests
+import re
+link = 'http://www.39shubao.com/files/article/html/116/116246/'
+headers= {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'
+}
+r = requests.get(link,headers=headers)
+r.encoding = 'utf-8'
+#print(r.status_code)
+
+
+
+html = r.text
+# 找出小说名称
+title = re.findall(r'&lt;h1&gt;(.*?)&lt;/h1&gt;',html)
+#print(title)
+# 并以他命名一个txt文本
+path = open('%s.txt'%title,'w',encoding='utf-8')
+#  找出部分的 url 通过遍历列表 来 拼接成完整的 url 地址
+urls = re.findall(r'&lt;li&gt;&lt;a href=&quot;(.*?)&quot;&gt;',html,re.S)
+#print(urls)
+#print(len(urls))
+
+
+for url in urls:
+    new_url = 'http://www.39shubao.com' + url
+    # 拼接出完整的url，并再次发送请求
+    #print(new_url)
+    title_down = requests.get(new_url,headers=headers)
+   # print(title_down.status_code)
+    title_down.encoding= title_down.apparent_encoding   # 万能编码格式
+    title_html = title_down.text
+
+
+    # 找出每章节的题目
+    title_html_title = re.findall(r'&lt;h1&gt;(.*?)&lt;/h1&gt;',title_html,re.S)
+    print(title_html_title)
+    #  列表转化为字符串
+    liiie = &quot;&quot;.join(title_html_title)
+    # 找出每章节内容
+    title_unmber = re.findall(r' &lt;div id=&quot;book_text&quot;&gt;(.*?)&lt;div id=&quot;gt1&quot;&gt;&lt;/div&gt;',title_html,re.S)
+    #print(title_unmber)
+
+
+
+    # 数据清洗
+    unmber = &quot;&quot;.join(title_unmber)
+    unmber = unmber.replace('&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;一秒记住【39小说网 &lt;a href=&quot;http://www.39shubao.com&quot; target=&quot;_blank&quot;&gt;','')
+    unmber = unmber.replace('www.39shubao.com&lt;/a&gt;】，精彩小说无弹窗免费阅读！&lt;br /&gt;\n        一秒记住【39小说网 www.39txt.com】，','')
+    unmber = unmber.replace('精彩小说无弹窗免费阅读！&lt;br/&gt;&lt;br/&gt;','')
+    unmber = unmber.replace('&lt;br/&gt;&lt;br/&gt;','')
+    unmber = unmber.replace('&lt;/div&gt;','')
+    unmber = unmber.replace('    ','')
+    #print(unmber)
+    with open(r&quot;C:\Users\DELL\Desktop\python_wd\文本信息\['我的老千江湖'].txt&quot;,&quot;a+&quot;)as f:
+        f.write(liiie)
+        f.write(unmber)
+        f.write('\n')
+        f.close()
+    exit()
+</code></pre>
+<p>运行代码数据部分截图:<br>
+(有点瑕疵，不影响，整理一下就好了)<br>
+<img src="https://posierd.github.io/post-images/1583555764775.png" alt="" loading="lazy"></p>
+<p>————————————END</p>
 
             </div>
             
@@ -140,9 +195,9 @@ Nice,愉快的放置图片:😁😁
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://posierd.github.io/post/shi-yong-beautifulsoup-pa-qu-xia-chu-fang-bing-bao-cun-txt-dao-ben-di-zi-ding-yi-mu-lu-xia/">
+                <a href="https://posierd.github.io/post/hao-kan-shi-pin-pa-qu/">
                   <h3 class="post-title">
-                    使用BeautifulSoup爬取 下厨房，并包存 txt 到本地自定义目录下
+                    好看视频爬取
                   </h3>
                 </a>
               </div>
