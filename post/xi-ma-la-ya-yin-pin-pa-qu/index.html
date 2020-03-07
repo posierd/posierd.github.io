@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>喜马拉雅—音频爬取 | posierd_Gridea</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://posierd.github.io/favicon.ico?v=1583553860550">
+<link rel="stylesheet" href="https://posierd.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="😃😃😃
+import requests
+import re
+def download_one_m4a(dan_id,name):
+    '''下载一页中的一个数据'''
+
+   #  将其改变为 形参 方便数据改变
+   # dan..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://posierd.github.io">
+        <img src="https://posierd.github.io/images/avatar.png?v=1583553860550" class="site-logo">
+        <h1 class="site-title">posierd_Gridea</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://posierd.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">喜马拉雅—音频爬取</h2>
+            <div class="post-date">2020-03-07</div>
+            
+            <div class="post-content" v-pre>
+              <p>😃😃😃</p>
+<pre><code class="language-python">import requests
+import re
+def download_one_m4a(dan_id,name):
+    '''下载一页中的一个数据'''
+
+   #  将其改变为 形参 方便数据改变
+   # dan_id = '98791745'
+    #  第一集 url 中的 后缀
+    headers = {
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36'
+    }
+    new_link = ' https://www.ximalaya.com/revision/play/v1/audio?id={}&amp;ptype=1'.format(dan_id)
+    #  获取真实的 ip数据
+    new_r = requests.get(new_link,headers=headers)
+
+
+
+
+
+
+
+    # 把字符串变为字典
+    #print(new_r.json()['data']['src'])  #  这个字典中包含有真实的音频 ip 播放地址   src
+    #  data 为字典  src包含在其中  健名
+    #  将其赋值为变量方便使用
+    m4a_url = new_r.json()['data']['src']
+    #  传递第给下面的 link  中
+    #  因为下面的 link（音频地址） 的下载
+    #  原 link数据 link = 'https://fdfs.xmcdn.com/group47/M0A/34/EA/wKgKm1tHj6GwgeWBAFehkfjyvKI1m81.4a'
+
+
+    # 播放接口    https://www.ximalaya.com/revision/play/v1/audio?id=98791745&amp;ptype=1
+    # 又以第一集新打开一个窗口  https://www.ximalaya.com/youshengshu/16411402/98791745
+    # 又以第二集新开开一个窗口  https://www.ximalaya.com/youshengshu/16411402/98936430
+    #  发现后缀发生了变化  那么就以播放接口 改变 后缀 就可以访问相应的集数
+    #  将接口写入 新的  link（接口） 中  通过与 dan_id  组合发生变化达到访问
+
+
+    link = m4a_url
+    headers = {
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36'
+    }
+    r = requests.get(link,headers=headers)
+    print(&quot;页面状态响应码:&quot;,r.status_code)
+    print(name)
+    with open(r'C:\Users\DELL\Desktop\python_wd\shipin\音频\{}.m4a'.format(name),mode='wb')as f:
+        f.write(r.content)
+#download_one_m4a(98791745)
+
+
+def one_page(html_link):
+    '''获取html页面信息中的 后缀 及其名字 '''
+    #  在首页 html 获取 后缀 及其 名字
+    # html_link = 'https://www.ximalaya.com/youshengshu/16411402/'   首页
+    headers = {
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36'
+        }
+    r_html = requests.get(html_link,headers=headers)
+    html = r_html.text
+    #print(html)
+    # 使用正则表达式 提取数据
+    message = re.findall('&lt;div class=&quot;text _Vc&quot;&gt;&lt;a title=&quot;(.*?)&quot; href=&quot;/youshengshu/16411402/(.*?)&quot;&gt;',html,re.S)
+    # 找出来的数据类型 为 列表
+    for mess in message:
+    #   print(mess)
+        download_one_m4a(mess[1],mess[0])
+#       1 写前面 是为了 与 函数   down_one_m4a 中的  dan_id 的形参 对应
+
+
+#one_page('https://www.ximalaya.com/youshengshu/16411402/')
+
+def down_all():
+    '''做 翻页 函数'''
+    for i in range(1,36):
+        print(&quot;正在获取{}页的数据&quot;.format(i))
+       # print('https://www.ximalaya.com/youshengshu/16411402/p{}/'.format(i))
+        one_page('https://www.ximalaya.com/youshengshu/16411402/p{}/'.format(i))
+
+
+down_all()
+</code></pre>
+<p>代码运行数据部分截图：<br>
+<img src="https://posierd.github.io/post-images/1583553799082.png" alt="" loading="lazy"></p>
+<p>————————END</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://posierd.github.io/post/pa-qu-bo-ke-ping-lun/">
+                  <h3 class="post-title">
+                    爬取博客评论
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '19e42b5385f75be24f9c',
+        clientSecret: 'bdb52c22f6310d9789a397ab02c80bc37b618bad',
+        repo: 'posierd.guthub.io',
+        owner: 'bverbh',
+        admin: ['bverbh'],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>
