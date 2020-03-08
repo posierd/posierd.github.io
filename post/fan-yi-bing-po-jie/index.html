@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>python—POST | posierd</title>
+<title>翻译Bing破解 | posierd</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -12,13 +12,27 @@
 <link rel="stylesheet" href="https://posierd.github.io/styles/main.css">
 
 
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
 
 <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
 
 
-    <meta name="description" content="温故而知新">
+    <meta name="description" content="目标地址
+😃😃😃
+import requests
+import json
+#  这是一个 微软的 翻译
+#  通过  newwork 找到的 url 不用改变
+def  fanyi():
+    link = 'https://cn...." />
+    <meta name="keywords" content="python—POST" />
   </head>
   <body>
     <div id="app" class="main">
@@ -88,43 +102,72 @@
 
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
-          <h2 class="current-tag">标签: python—POST</h2>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://posierd.github.io/post/fan-yi-bing-po-jie/">
-                  <h2 class="post-title">翻译Bing破解</h2>
-                </a>
-                <div class="post-date">
-                  2020-03-08
-                </div>
-                <div class="post-abstract">
-                  
-                </div>
-              </div>
-              
-            </article>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://posierd.github.io/post/you-dao-fan-yi-po-jie/">
-                  <h2 class="post-title">有道翻译破解</h2>
-                </a>
-                <div class="post-date">
-                  2020-03-08
-                </div>
-                <div class="post-abstract">
-                  
-                </div>
-              </div>
-              
-            </article>
-          
+          <div class="post-detail">
+            <h2 class="post-title">翻译Bing破解</h2>
+            <div class="post-date">2020-03-08</div>
+            
+            <div class="post-content" v-pre>
+              <p><a href="https://cn.bing.com/translator/">目标地址</a></p>
+<p>😃😃😃</p>
+<pre><code class="language-python">import requests
+import json
+#  这是一个 微软的 翻译
+#  通过  newwork 找到的 url 不用改变
+def  fanyi():
+    link = 'https://cn.bing.com/ttranslatev3?isVertical=1&amp;&amp;IG=1AEDDB7B1F384527B91AE6D95104A381&amp;IID=translator.5028.3'
+    content = input(&quot;请输入需要翻译的内容: &quot;)
+    headers = {
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'
+    }
+    data = {
+        'fromLang': 'auto-detect',
+        'text': content,
+        'to': 'en',
+    }
+    resp = requests.post(link,data=data,headers=headers).json()
+    print(resp[0]['translations'][0]['text'])
+'''
+发现这个只能翻译中文
+'''
+fanyi()
+fanyi()
+fanyi()
 
-          <div class="pagination-container">
-  
-  
-</div>
+</code></pre>
+<p>运行代码结果截图：<br>
+<img src="https://posierd.github.io/post-images/1583655751121.png" alt="" loading="lazy"></p>
+<p>————————END</p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://posierd.github.io/tag/IeS7BM4IJ/" class="tag">
+                    python—POST
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://posierd.github.io/post/you-dao-fan-yi-po-jie/">
+                  <h3 class="post-title">
+                    有道翻译破解
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
 
         </div>
       </div>
@@ -150,6 +193,29 @@ var app = new Vue({
     hljs.initHighlightingOnLoad()
   </script>
 
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '19e42b5385f75be24f9c',
+        clientSecret: 'bdb52c22f6310d9789a397ab02c80bc37b618bad',
+        repo: 'posierd.guthub.io',
+        owner: 'bverbh',
+        admin: ['bverbh'],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
 
 
 
