@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>好看视频爬取 | posierd</title>
+<title>有道翻译破解 | posierd</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -24,15 +24,15 @@
 
 
 
-    <meta name="description" content="😄😄😄
-目标地址
-#  目标地址 ：https://haokan.baidu.com/tab/xiaopin
-#  ajax 异步加载
-
+    <meta name="description" content="目标地址
+😃😃😃
 import requests
 import json
-for page in range(1,..." />
-    <meta name="keywords" content="Python-Get" />
+
+def youdaofanyi():
+    '''在网址中输入一个内容
+       这样我们就可以在 nowwork 的 all 中 找 headers ..." />
+    <meta name="keywords" content="python—POST" />
   </head>
   <body>
     <div id="app" class="main">
@@ -103,59 +103,71 @@ for page in range(1,..." />
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">好看视频爬取</h2>
-            <div class="post-date">2020-03-07</div>
+            <h2 class="post-title">有道翻译破解</h2>
+            <div class="post-date">2020-03-08</div>
             
             <div class="post-content" v-pre>
-              <p>😄😄😄<br>
-<a href="https://haokan.baidu.com/tab/xiaopin">目标地址</a></p>
-<pre><code class="language-python">#  目标地址 ：https://haokan.baidu.com/tab/xiaopin
-#  ajax 异步加载
-
-import requests
+              <p><a href="http://fanyi.youdao.com/">目标地址</a></p>
+<p>😃😃😃</p>
+<pre><code class="language-python">import requests
 import json
-for page in range(1,4):
-    print(&quot;正在下载第{}页数据&quot;.format(page))
-    link = 'https://haokan.baidu.com/videoui/api/videorec?tab=xiaopin&amp;act=pcFeed&amp;pd=pc&amp;num=20&amp;shuaxin_id=1583037298162'
-    headers = {
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36',
-        'cookie': 'BAIDUID=F51A687AD80CBF9BD94362CD499EA3BD:FG=1; Hm_lvt_4aadd610dfd2f5972f1efee2653a2bc5=1583037157; COMMON_LID=56fc2a0eb70a820aeadad06839a876c1; reptileData=%7B%22data%22%3A%224cd27d27f185868320f5411f2d4cfe347bb177d1c23cd3dc209f9ad4f3dd44d9d11cfd5a4e94214c0ff87043a1f7b5f9b5590f4c40f5b4ef708bd48bcd7765338192cbcab016ef7455ff910a5a977cf524d114a75d893bee87f9234302046e6edee7acced0ec0fabe151e1a1dbd76e5930ab109f25b64a394a093d5473c31ff1%22%2C%22key_id%22%3A%2230%22%2C%22sign%22%3A%22fe7981ec%22%7D; PC_TAB_LOG=haokan_website_page; Hm_lpvt_4aadd610dfd2f5972f1efee2653a2bc5=1583042863'
-    }
-    r = requests.get(link,headers=headers)
-    print(&quot;页面状态响应码: &quot;,r.status_code)
-    link_html = r.text
-    # print(link_html) 此时的数据为 json 格式
-    #需要通过数据转换的方式来提取数据
-    # json 将 json字符串转化为 python 可以交互的数据类型
-    json_link = json.loads(link_html)  #  将 json 数据转化为 字典形式
-    # print(json_link)
 
-    # 数据提取  因为是字典类型 可以通过 键名来提取数据
-    datas = json_link['data']['response']['videos']
-    for data in datas:
-    #    print(data)
-        vidle_title = data['title']
-        vidle_link = data['play_url']
-    # 再次根据数据 字典的 特性 分别取出 视频标题 视频播放的url地址
-        #print(vidle_title,vidle_link)
-        print(&quot;正在下载  {}  视频   ，。。。。。。请稍等&quot;.format(vidle_title))
-        vidle = requests.get(vidle_link,headers=headers).content   # 视频数据已经拿到
-        #  数据包存
-        with open(r'C:\Users\DELL\Desktop\python_wd\shipin\好看\{}.mp4'.format(vidle_title),mode='wb')as f:
-            f.write(vidle)
-            print(&quot;视频下载完成。。。。。&quot;)
+def youdaofanyi():
+    '''在网址中输入一个内容
+       这样我们就可以在 nowwork 的 all 中 找 headers 中的  form data 中的数据是否有添加的内容
+       观察网址得到   http://fanyi.youdao.com/translate_o?smartresult=dict&amp;smartresult=rule
+       将其修改为 数据   页就是 去掉  _o   的网址  才是需要真正去请求的网址
+       其 请求方式  为   post  比 get 请求要多一个 参数   data
+       也是就  Form Data 中的所有数据
+    '''
+    link = 'http://fanyi.youdao.com/translate?smartresult=dict&amp;smartresult=rule'
+    content = input(&quot;请输入需要翻译的内容: &quot;)
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'
+    }     #  这个  headers 就不展示了
+    data = {
+        'i':content,     #  此  'key'  的值 是我们需要输入的翻译得 内容
+        'form': 'AUTO',   # 其余 参数 不变
+        'to': 'AUTO',
+        'smartresult': 'dict',
+        'client': 'fanyideskweb',
+        'salt': '15836484748597',
+        'sign': '09008534dac6d90e41e5d2ae3d6a11f7',
+        'ts': '1583648474859',
+        'bv': 'a9c3483a52d7863608142cc3f302a0ba',
+        'doctype': 'json',
+        'version': '2.1',
+        'keyfrom': 'fanyi.web',
+        'action': 'FY_BY_REALTlME',
+    }
+    resp = requests.post(link,data=data,headers=headers).json()  # 转化为 json 格式
+    print(resp['translateResult'][0][0]['tgt'])  #  通过结果中 键名  得到一组数据
+    '''
+ 此时得到的数据 以 输入的  apple 为例
+ 将得到  [[{'src': 'apple', 'tgt': '苹果'}]] 这样的数据
+ 两个中括号 一个花括号 可以当做 一个人  二维数组
+ 其中二维数组中第一个数据都是两个 零  改写为  print(resp['translateResult'][0][0])
+ 再次得到数据 {'src': 'apple', 'tgt': '苹果'}  其中 tgt 是我们需要的  在通过 键名 的方式 来提却
+ 将其修改 为 print(resp['translateResult'][0][0]['tgt'])
+  此时得到的数据 就是我们需要的
+      '''
+#  多次调用函数 清晰看到效果## 标题
+youdaofanyi()
+youdaofanyi()
+youdaofanyi()
+
 
 </code></pre>
-<p>运行代码数据部分截图：<br>
-<img src="https://posierd.github.io/post-images/1583554957477.png" alt="" loading="lazy"></p>
-<p>————————END</p>
+<h2 id="代码运行结果">代码运行结果：</h2>
+<figure data-type="image" tabindex="1"><img src="https://posierd.github.io/post-images/1583655104810.png" alt="" loading="lazy"></figure>
+<p>——————END</p>
 
             </div>
             
               <div class="tag-container">
                 
-                  <a href="https://posierd.github.io/tag/oYN426Mph/" class="tag">
-                    Python-Get
+                  <a href="https://posierd.github.io/tag/IeS7BM4IJ/" class="tag">
+                    python—POST
                   </a>
                 
               </div>
@@ -163,9 +175,9 @@ for page in range(1,4):
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://posierd.github.io/post/xi-ma-la-ya-yin-pin-pa-qu/">
+                <a href="https://posierd.github.io/post/selenium-mo-ni-liu-lan-qi-pa-qu-wang-yi-yun-yin-le-ping-lun/">
                   <h3 class="post-title">
-                    喜马拉雅—音频爬取
+                    selenium 模拟浏览器 爬取网易云音乐评论
                   </h3>
                 </a>
               </div>
