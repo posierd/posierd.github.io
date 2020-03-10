@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>通过cmd 的 pip命令 下载的第三方库 如何在 pychaym 中导 | posierd</title>
+<title>必应壁纸爬取  def | posierd</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -24,16 +24,14 @@
 
 
 
-    <meta name="description" content="前面通过cmd 下载某库的命令为：
-pip install   库名        关于这里就不多说了
-面开始放图片吧：😁😁
+    <meta name="description" content="目标地址
+😃😃😃
+import requests
+from lxml import etree
 
-
-
-----导入的时候，记得联网
------END
-..." />
-    <meta name="keywords" content="Pycharm" />
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; ..." />
+    <meta name="keywords" content="Python-Get" />
   </head>
   <body>
     <div id="app" class="main">
@@ -104,25 +102,61 @@ pip install   库名        关于这里就不多说了
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">通过cmd 的 pip命令 下载的第三方库 如何在 pychaym 中导</h2>
-            <div class="post-date">2020-02-21</div>
+            <h2 class="post-title">必应壁纸爬取  def</h2>
+            <div class="post-date">2020-03-10</div>
             
             <div class="post-content" v-pre>
-              <p><strong>前面通过cmd 下载某库的命令为：</strong><br>
-pip install   库名        关于这里就不多说了</p>
-<h2 id="面开始放图片吧">面开始放图片吧：😁😁<br>
-<img src="https://posierd.github.io/post-images/1582271745565.png" alt="" loading="lazy"></h2>
-<h2 id=""><img src="https://posierd.github.io/post-images/1582271755048.png" alt="" loading="lazy"></h2>
-<p><img src="https://posierd.github.io/post-images/1582271765906.png" alt="" loading="lazy"><br>
-----导入的时候，记得联网<br>
------END</p>
+              <p><a href="https://bing.ioliu.cn/?p=1">目标地址</a></p>
+<p>😃😃😃</p>
+<pre><code class="language-python">import requests
+from lxml import etree
+
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'
+}
+number = 1  # 全局变量
+
+#  下载网页
+def get_html(link):
+    print(&quot;第{}页数据获取&quot;.format(page))
+    html = requests.get(link,headers=headers).text
+    return html
+
+# 获取图片的 link 地址
+def get_img_src(html):
+    img_etree = etree_html = etree.HTML(html)  #  转换数据
+    img_links = img_etree.xpath('//img/@data-progressive')  # 获取图片的 link 数据 使用 xpaht 语法
+    return img_links
+
+#  保存图片到本地
+def save_img(img_links):
+    global number
+    for img_link in img_links:
+        a = requests.get(img_link,headers=headers).content
+        print(&quot;正在保存{}张图片&quot;.format(number))
+        with open(r'C:\Users\DELL\Desktop\python_wd\mig\必应壁纸\\'+ str(number)+ '.jpg',mode='wb')as f:
+            f.write(a)
+        number += 1
+
+if __name__ == '__main__':
+    for page in range(1,3):
+        link = 'https://bing.ioliu.cn/?p={}'.format(page)
+        html = get_html(link)
+        img_links = get_img_src(html)
+        save_img(img_links)
+
+
+</code></pre>
+<p>运行代码数据部分截图：<br>
+<img src="https://posierd.github.io/post-images/1583816132679.png" alt="" loading="lazy"></p>
+<p>——————NED</p>
 
             </div>
             
               <div class="tag-container">
                 
-                  <a href="https://posierd.github.io/tag/gjaL6SBD8/" class="tag">
-                    Pycharm
+                  <a href="https://posierd.github.io/tag/oYN426Mph/" class="tag">
+                    Python-Get
                   </a>
                 
               </div>
@@ -130,9 +164,9 @@ pip install   库名        关于这里就不多说了</p>
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://posierd.github.io/post/shi-yong-beautifulsoup-pa-qu-dian-ying-pai-xing-bang-bing-bao-cun-xlsx-gong-zuo-biao-zhi-zi-ding-yi-mu-lu-xia/">
+                <a href="https://posierd.github.io/post/pa-qu-mm-tu-pian-shi-yong-def-han-shu/">
                   <h3 class="post-title">
-                    使用BeautifulSoup爬取电影排行榜，并保存 xlsx 工作表至自定义目录下
+                    爬取MM 图片使用 def函数
                   </h3>
                 </a>
               </div>

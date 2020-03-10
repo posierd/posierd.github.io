@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://posierd.github.io</id>
     <title>posierd</title>
-    <updated>2020-03-09T04:35:03.281Z</updated>
+    <updated>2020-03-10T04:56:03.894Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://posierd.github.io"/>
     <link rel="self" href="https://posierd.github.io/atom.xml"/>
@@ -10,6 +10,13 @@
     <logo>https://posierd.github.io/images/avatar.png</logo>
     <icon>https://posierd.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, posierd</rights>
+    <entry>
+        <title type="html"><![CDATA[必应壁纸爬取  def]]></title>
+        <id>https://posierd.github.io/post/bi-ying-bi-zhi-pa-qu-def/</id>
+        <link href="https://posierd.github.io/post/bi-ying-bi-zhi-pa-qu-def/">
+        </link>
+        <updated>2020-03-10T04:54:32.000Z</updated>
+    </entry>
     <entry>
         <title type="html"><![CDATA[爬取MM 图片使用 def函数]]></title>
         <id>https://posierd.github.io/post/pa-qu-mm-tu-pian-shi-yong-def-han-shu/</id>
@@ -37,12 +44,5 @@
         <link href="https://posierd.github.io/post/selenium-mo-ni-liu-lan-qi-pa-qu-wang-yi-yun-yin-le-ping-lun/">
         </link>
         <updated>2020-03-07T05:22:58.000Z</updated>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[selenium  模拟浏览器点击翻页]]></title>
-        <id>https://posierd.github.io/post/selenium-mo-ni-liu-lan-qi-dian-ji-fan-ye/</id>
-        <link href="https://posierd.github.io/post/selenium-mo-ni-liu-lan-qi-dian-ji-fan-ye/">
-        </link>
-        <updated>2020-03-07T05:18:22.000Z</updated>
     </entry>
 </feed>
