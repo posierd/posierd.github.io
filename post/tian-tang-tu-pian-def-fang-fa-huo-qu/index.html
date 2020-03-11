@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>关于 | posierd</title>
+<title>天堂图片 def 方法获取 | posierd</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -24,15 +24,15 @@
 
 
 
-    <meta name="description" content="
-欢迎来到我的小站呀，很高兴遇见你！🤝
+    <meta name="description" content="目标地址
+😃😃😃
+import requests
+from lxml import etree
+import time
 
-🏠 关于本站
-👨‍💻 博主是谁
-⛹ 兴趣爱好
-📬 联系我呀
-..." />
-    <meta name="keywords" content="" />
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 1..." />
+    <meta name="keywords" content="Python-Get" />
   </head>
   <body>
     <div id="app" class="main">
@@ -103,20 +103,82 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">关于</h2>
-            <div class="post-date">2019-01-25</div>
+            <h2 class="post-title">天堂图片 def 方法获取</h2>
+            <div class="post-date">2020-03-11</div>
             
             <div class="post-content" v-pre>
-              <blockquote>
-<p>欢迎来到我的小站呀，很高兴遇见你！🤝</p>
-</blockquote>
-<h2 id="关于本站">🏠 关于本站</h2>
-<h2 id="博主是谁">👨‍💻 博主是谁</h2>
-<h2 id="兴趣爱好">⛹ 兴趣爱好</h2>
-<h2 id="联系我呀">📬 联系我呀</h2>
+              <p><a href="https://www.ivsky.com/tupian/meinv_t50/">目标地址</a></p>
+<p>😃😃😃</p>
+<pre><code class="language-python">import requests
+from lxml import etree
+import time
+
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'
+}
+name = 1   #  全局变量
+# 下载网页
+def get_html(link):
+    print(&quot;正在获取第{}页数据&quot;.format(page))
+    respon = requests.get(link,headers=headers).content.decode('utf-8')
+    return respon
+
+#  解析网页 提取图片真实地址
+def parse_html(html):
+    html_etree = etree.HTML(html)
+    img_urls = html_etree.xpath('//div[@class=&quot;il_img&quot;]/a/img/@src')
+    return img_urls
+
+#   保存图片到本地
+def save_img(img_urls):
+    global name
+    for img_url in img_urls:
+        new_link = 'https:' +img_url
+        time.sleep(3)  #  每暂停 3 s 请求一次  
+        a = requests.get(new_link,headers=headers).content
+        print(&quot;正在下载{}张图片&quot;.format(name))
+        with open(r'C:\Users\DELL\Desktop\python_wd\mig\天堂\\'+str(name)+'.jpg','wb')as f:
+            f.write(a)
+        name += 1
+
+
+
+def main(page):
+    link = 'https://www.ivsky.com/tupian/meinv_t50/index_{}.html'.format(page)
+    html = get_html(link)
+    img_urls = parse_html(html)
+    save_img(img_urls)
+
+if __name__ == '__main__':
+    for page in  range(1,4):
+        main(page)
+
+
+
+</code></pre>
+<p>运行代码数据部分结果：<br>
+<img src="https://posierd.github.io/post-images/1583909466538.png" alt="" loading="lazy"></p>
+<p>——————————END</p>
 
             </div>
             
+              <div class="tag-container">
+                
+                  <a href="https://posierd.github.io/tag/oYN426Mph/" class="tag">
+                    Python-Get
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://posierd.github.io/post/ip-dai-li-huo-qu-1/">
+                  <h3 class="post-title">
+                    ip  代理获取1
+                  </h3>
+                </a>
+              </div>
             
 
             
