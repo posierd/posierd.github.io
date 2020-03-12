@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>糖堆图片获取 | posierd</title>
+<title>快代理ip爬取 并验证 | posierd</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -27,14 +27,13 @@
     <meta name="description" content="目标地址
 😃😃😃
 import requests
-import json
-import jsonpath
-import urllib
+import parsel
+import time
 
-'''
-糖堆动态加载 无法直接找出翻页规律
-在  XHR 中 向下找（页面下滑） 发现   Req..." />
-    <meta name="keywords" content="Python-Get" />
+def chenk_ip(proxies_list):
+    '''检测代理 IP 的可用性'''
+    headers = ..." />
+    <meta name="keywords" content="IP 代理" />
   </head>
   <body>
     <div id="app" class="main">
@@ -105,60 +104,105 @@ import urllib
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">糖堆图片获取</h2>
+            <h2 class="post-title">快代理ip爬取 并验证</h2>
             <div class="post-date">2020-03-12</div>
             
             <div class="post-content" v-pre>
-              <p><a href="https://www.duitang.com/blogs/tag/?name=%E7%B3%96%E5%A0%86">目标地址</a></p>
+              <p><a href="https://www.kuaidaili.com/free/">目标地址</a></p>
 <p>😃😃😃</p>
 <pre><code class="language-python">import requests
-import json
-import jsonpath
-import urllib
+import parsel
+import time
 
-'''
-糖堆动态加载 无法直接找出翻页规律
-在  XHR 中 向下找（页面下滑） 发现   Request_URL 的 参数  里  start的值会一直递增   js 文件
-经过 js 美化后 发现图片的 url 是    键名为  path  的值  
-'''
+def chenk_ip(proxies_list):
+    '''检测代理 IP 的可用性'''
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'
+    }
+    can_user = []
+    for proxie in proxies_list:
+        try:
+            requests.get('http://www.baidu.com',headers=headers,proxies=proxie,timeout=0.2)
+            can_user.append(proxie)
+        except Exception as e:
+            print(e)
+    return can_user
 
-headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'
-}
 
-url = 'https://www.duitang.com/napi/blog/list/by_search/?kw={}=&amp;start={}'
-lable = &quot;校花&quot;
-lable = urllib.parse.quote(lable)  # 转码字符
+# 进行一个翻页
+# 构建一个空列表 ，用于将  ip （类似字典）存入此列表
+proxies_list = []
+for page in range(1,6):
+    print(&quot;======正在爬取第{}页数据======&quot;.format(page))
+    # 1.分析目标网页，确定 URL  headers 参数
+    link = 'https://www.kuaidaili.com/free/inha/{}/'.format(str(page))
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'
+    }
+    # 2.发送请求，或取响应数据
+    r = requests.get(link,headers=headers)
+    # print(r.status_code)
+    data = r.text
+    #print(data)
+    # 3.解析数据---parser，转换为 Selector对象，Selector对象具有xpath方法，能够对转换的数据进行
+     # 3.1 数据转换
+    html_data = parsel.Selector(data)
+      #  3.2 数据提取
+      # 找出包含数据的最小父级标签
+      #  一层一层的找到数据的具体位置
+    parsel_list = html_data.xpath('//table[@class=&quot;table table-bordered table-striped&quot;]/tbody/tr')
+    #   print(parser_list)   .extract() 取出数据通常两个以上
 
-name = 1
+     #  代理 IP 的格式   {&quot;ip协议&quot;:&quot;ip地址:port&quot;}
+     # 3.3 数据二次提取(保证还是 Selector 的对象--故将 .extract()   剔除 )  循环遍历
+     # 构建一个空列表 ，用于将  ip （类似字典）存入此列表
+    for tr in parsel_list:
+        parsel_dict = {}
+        # 用于将 ip  存入当中 ，方便存入空列表中
+        #print(tr)
+        htpp_type = tr.xpath('./td[4]/text()').extract_first()
+        # 数据只有一个时 可以使用
+        #  此数据的类型是  HTTP 也就是  ip  协议
+        # ./  表示当前节点   在 html 列表索引 从1 开始
+        #此为 第 4 个数据
+        #print(htpp_type)
+        ip_num= tr.xpath('./td[1]/text()').extract_first()
+        #  此数据的类型是   IP  也就是ip地址
+       # print(ip_num)
+        ip_port = tr.xpath('./td[2]/text()').extract_first()
+        # 此数据类型 是   PORT   也就是 port
+        #print(ip_port)
+        #print(htpp_type,ip_num,ip_port)
 
-for index in range(0,2400,24):
-    link = url.format(lable,index)
-    #  选词填空 参数  与 翻页   ，也就是 XHR 中的 json  文件
-    resp = requests.get(link,headers=headers).text   #  网页文本
-    html = json.loads(resp)  #  数据转换 json字符串 转转化为  python 可以交互的对象
-    imgs = jsonpath.jsonpath(html,&quot;$..path&quot;)
-    #   $ 表示根目录下开始找 .. 无论多远找到为名 path的数据并以列表形式返回
-    for img in imgs:
-        con = requests.get(img)
-        print(&quot;正在保存{}张图片&quot;.format(name))
-        with open(r'C:\Users\DELL\Desktop\python_wd\mig\糖堆\{}.jpg'.format(name),'wb')as f:
-            f.write(con.content)
-        name += 1
+        # 构建ip的字典
+        parsel_dict[htpp_type] = ip_num+':'+ip_port
+        #print(parsel_dict)
+    # 将 ip的 字典内容 存入定义好的 空列表中
+        proxies_list.append(parsel_dict)
+        time.sleep(0.5) # 针对于静态网页翻页时需要等待时间
+
+
+print(proxies_list)
+print(&quot;获取到的 IP 数量: &quot;,len(proxies_list),'个')
+
+#  调用检测代理 IP 的函数
+can_user = chenk_ip(proxies_list)
+print(&quot;能用的IP: &quot;,can_user)
+print(&quot;能用的IP数量: &quot;,len(can_user),'个')
 
 
 
 </code></pre>
-<p>运行代码数据部分截图：<br>
-<img src="https://posierd.github.io/post-images/1583990292548.png" alt="" loading="lazy"></p>
+<p>运行代码结果截图：<br>
+<img src="https://posierd.github.io/post-images/1583991147969.png" alt="" loading="lazy"></p>
 <p>————————END</p>
 
             </div>
             
               <div class="tag-container">
                 
-                  <a href="https://posierd.github.io/tag/oYN426Mph/" class="tag">
-                    Python-Get
+                  <a href="https://posierd.github.io/tag/8hBfyvfrQ/" class="tag">
+                    IP 代理
                   </a>
                 
               </div>
@@ -166,9 +210,9 @@ for index in range(0,2400,24):
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://posierd.github.io/post/tian-tang-tu-pian-def-fang-fa-huo-qu/">
+                <a href="https://posierd.github.io/post/shu-biao-kong-zhi-01/">
                   <h3 class="post-title">
-                    天堂图片 def 方法获取
+                    鼠标控制01
                   </h3>
                 </a>
               </div>
