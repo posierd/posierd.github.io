@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://posierd.github.io</id>
     <title>posierd</title>
-    <updated>2020-03-11T06:55:19.600Z</updated>
+    <updated>2020-03-12T05:18:40.835Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://posierd.github.io"/>
     <link rel="self" href="https://posierd.github.io/atom.xml"/>
@@ -10,6 +10,13 @@
     <logo>https://posierd.github.io/images/avatar.png</logo>
     <icon>https://posierd.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, posierd</rights>
+    <entry>
+        <title type="html"><![CDATA[糖堆图片获取]]></title>
+        <id>https://posierd.github.io/post/tang-dui-tu-pian-huo-qu/</id>
+        <link href="https://posierd.github.io/post/tang-dui-tu-pian-huo-qu/">
+        </link>
+        <updated>2020-03-12T05:17:01.000Z</updated>
+    </entry>
     <entry>
         <title type="html"><![CDATA[天堂图片 def 方法获取]]></title>
         <id>https://posierd.github.io/post/tian-tang-tu-pian-def-fang-fa-huo-qu/</id>
@@ -37,12 +44,5 @@
         <link href="https://posierd.github.io/post/pa-qu-mm-tu-pian-shi-yong-def-han-shu/">
         </link>
         <updated>2020-03-09T04:29:41.000Z</updated>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[翻译Bing破解]]></title>
-        <id>https://posierd.github.io/post/fan-yi-bing-po-jie/</id>
-        <link href="https://posierd.github.io/post/fan-yi-bing-po-jie/">
-        </link>
-        <updated>2020-03-08T08:21:21.000Z</updated>
     </entry>
 </feed>
