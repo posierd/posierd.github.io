@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>使用  bs4  爬取豆瓣电子书信息___新的知识点 | posierd</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://posierd.github.io/favicon.ico?v=1584593038652">
+<link rel="stylesheet" href="https://posierd.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="目标地址
+😃😃😃
+知识点梳理：
+''''
+分析豆瓣图书获取数据及保存的方法
+1.  网页分析
+1.1 . url 参数 （例 小说）  将其 str 修改为  ASCII 编码
+1.2   在  import urllib.reque..." />
+    <meta name="keywords" content="Python-Get" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://posierd.github.io">
+        <img src="https://posierd.github.io/images/avatar.png?v=1584593038652" class="site-logo">
+        <h1 class="site-title">posierd</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://posierd.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">使用  bs4  爬取豆瓣电子书信息___新的知识点</h2>
+            <div class="post-date">2020-03-19</div>
+            
+            <div class="post-content" v-pre>
+              <p><a href="https://book.douban.com/tag/%E5%B0%8F%E8%AF%B4?start=00&amp;type=T">目标地址</a></p>
+<p>😃😃😃</p>
+<h1 id="知识点梳理">知识点梳理：</h1>
+<pre><code class="language-python">''''
+分析豆瓣图书获取数据及保存的方法
+1.  网页分析
+1.1 . url 参数 （例 小说）  将其 str 修改为  ASCII 编码
+1.2   在  import urllib.request  或   import urllib.parse  导入：
+        例： key = &quot;小说&quot;
+             key_ASCII = urllib.request.quote(key)
+             在  拼接 url 时 传入
+
+1.3 . 观察 page 变化：
+        首页 ：https://book.douban.com/tag/%E5%B0%8F%E8%AF%B4?start=00&amp;type=T
+        第二页： https://book.douban.com/tag/%E5%B0%8F%E8%AF%B4?start=20&amp;type=T
+        第三页： https://book.douban.com/tag/%E5%B0%8F%E8%AF%B4?start=40&amp;type=T
+        ......
+        观察末页为 50   其中 star 的值为  980
+         由此规律得出  0 开始 50   每次 *20
+         start=&quot;+str(page * 20)+&quot;
+
+2.使用 bs4  解析提取数据
+2.1  将网页 html 代码进行数据转换
+2.2  利用 谷歌浏览其  copy-copy selectot 找出数据变化规律 （返回的结果类型为列表），
+2.3  找出规律变化 ，使用 for 来符合规则  （第一个  ，第二个，最后一个）来观察
+2.4  先 for 变量1 in  变量1（可以重复）：   使用 get_text() 方法提取文本
+2.5  紧随其后 使用 replace（）方法 进行数据清洗
+2.6  当一个标签下有多个数据时，使用 split（）  方法分割 间隔符号
+2.7  提取 2.5  （列表中的第 x 个数据，“索引取值”）
+
+
+——————
+使用列表将内容分别加入列表中
+此时内容 存入 csv  文件中
+
+3.  保存文件 csv 格式
+3.1  一个变量名 来接受 文件保存的路径  将 \ 修改为  /  在加入文件名（例：file_path = &quot;C:/Users/DELL/Desktop/python_wd/文本信息/豆瓣小说.csv&quot;）
+3.2  with open(file_path,&quot;w&quot;,newline=&quot;&quot;,encoding=&quot;utf-8&quot;)as f: 其中的  newline  为解决每隔一行在写入内容
+3.3  file_value_names = [&quot;书名&quot;,&quot;作者&quot;,&quot;出版日期&quot;,&quot;价格(元)&quot;,&quot;评分&quot;,&quot;评价人数&quot;]  #   设置表头  记住格式
+3.4  f_csv =  csv.DictWriter(f,fieldnames=file_value_names)  #   采用字典的形式 存入 csv  文件中
+3.5  f_csv.writeheader()  #   写入表头
+3.6      #  写入行
+    for i in range(0,len(user_name)):
+        f_csv.writerow(
+            {
+                &quot;书名&quot;:book_name_list[i],
+                &quot;作者&quot;: user_name[i],
+                &quot;出版日期&quot;:book_time[i],
+                &quot;价格(元)&quot;:book_pice[i],
+                &quot;评分&quot;:pm_number_list[i],
+                &quot;评价人数&quot;:people_number_list[i],
+            }
+        )
+
+
+</code></pre>
+<h2 id="下面是代码部分">下面是代码部分：</h2>
+<pre><code class="language-python">import requests
+import urllib.request
+from bs4 import BeautifulSoup
+import csv
+'''
+目标数据：
+书名
+作者
+日期
+价格
+评分
+评价人数
+'''
+headers = {
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'
+}
+key = &quot;小说&quot;
+key_ASCII = urllib.request.quote(key)
+
+
+book_name_list = []
+user_name = []
+book_time = []
+book_pice = []
+pm_number_list = []
+people_number_list = []
+
+
+all_book = []
+
+# for page in range(0,60,20):   # 3页数据   由于不可抗拒因数 ，不需要获取太数（注：(0,1000,20)   为全部数据）
+#     link = &quot;https://book.douban.com/tag/&quot;+str(key_ASCII)+&quot;?start={}&amp;type=T&quot;.format(page)
+#     resp = requests.get(url=link,headers=headers)
+#     print(resp.status_code)
+#     html = resp.text
+#     优化
+
+
+# for page in  range(0,51):
+#     link = &quot;https://book.douban.com/tag/&quot; + str(key_ASCII) + &quot;?start=&quot;+str(page * 20)+&quot;&amp;type=T&quot;
+#     resp = requests.get(url=link,headers=headers)
+#     print(&quot;第&quot;+str(page)+&quot;页状态响应码:&quot;,resp.status_code)
+#     由于不可抗拒因数 ，不需要获取太数
+
+
+for page in  range(0,5):  #  这里获取5页数据
+    link = &quot;https://book.douban.com/tag/&quot; + str(key_ASCII) + &quot;?start=&quot;+str(page * 20)+&quot;&amp;type=T&quot;
+    resp = requests.get(url=link,headers=headers)
+    print(&quot;\n第&quot;+str(page)+&quot;页状态响应码:&quot;,resp.status_code)
+#   确定 url  及响应状态码
+
+
+    html = resp.text
+    soup = BeautifulSoup(html,'html.parser')
+#   进行数据转换
+
+
+
+    #  确定元素 变化规律 使用 for 来完成这个规律
+    for  i in range(1,21):
+        #  书名  获取
+        book_name = soup.select(&quot;#subject_list &gt; ul &gt; li:nth-child(&quot;+str(i)+&quot;) &gt; div.info &gt; h2 &gt; a&quot;)
+                               #subject_list &gt; ul &gt; li:nth-child(7) &gt; div.info &gt; h2 &gt; a
+                               #subject_list &gt; ul &gt; li:nth-child(2) &gt; div.info &gt; h2
+        for book_name in book_name:
+        #    print(book_name.get_text().replace(&quot;\n&quot;, &quot;&quot;).replace(&quot; &quot;, &quot;&quot;))
+            book_name_list.append(book_name.get_text().replace(&quot;\n&quot;, &quot;&quot;).replace(&quot; &quot;, &quot;&quot;))
+        #  正常 1 页 20 条数据，但有异常
+        #  此方法解决了 某页数据 不足 20
+
+
+       #  书籍信息（作者，出版时间，价格）
+        book_user = soup.select(&quot;#subject_list &gt; ul &gt; li:nth-child(&quot;+str(i)+&quot;) &gt; div.info &gt; div.pub&quot;)
+        for book_user in  book_user:
+          #  print(book_user.get_text().replace(&quot;\n&quot;,&quot;&quot;).replace(&quot; &quot;,&quot;&quot;))
+            book_user = book_user.get_text().replace(&quot;\n&quot;,&quot;&quot;).replace(&quot; &quot;,&quot;&quot;).replace(&quot;元&quot;,&quot;&quot;)
+            book_user_list = book_user.split(&quot;/&quot;)
+               #  提取全部数据(作者，出版时间，价格)  清洗数据
+
+               #  异常解决
+            if len(book_user_list) &gt;= 4:   #  解决 某些书籍 没有这些东西
+                user_name.append(book_user_list[0])  # 作者
+                book_time.append(book_user_list[-2])   #  出版日期
+                book_pice.append(book_user_list[-1])    # 价格
+            else:
+                user_name.append(book_user_list[0])  # 作者
+                book_time.append(&quot;空&quot;)  # 出版日期
+                book_pice.append(&quot;空&quot;)  # 价格
+
+
+        # book_name = book_name[0].get_text()
+        # print(book_name.replace(&quot;\n&quot;,&quot;&quot;).replace(&quot; &quot;,&quot;&quot;))
+        # 方法 2
+
+        #  评分数  评价人数  数据的获取
+        pm_number = soup.select(&quot;#subject_list &gt; ul &gt; li:nth-child(&quot;+str(i)+&quot;) &gt; div.info &gt; div.star.clearfix &gt; span.rating_nums&quot;)
+        people_number = soup.select(&quot;#subject_list &gt; ul &gt; li:nth-child(&quot;+str(i)+&quot;) &gt; div.info &gt; div.star.clearfix &gt; span.pl&quot;)
+
+        for pm_number in pm_number:
+           # print(pm_number.get_text())
+            pm_number_list.append(pm_number.get_text())
+
+
+        for people_number in people_number:
+           # print(people_number.get_text().replace(&quot; &quot;,&quot;&quot;).replace(&quot;\n&quot;,&quot;&quot;).replace(&quot;(&quot;,&quot;&quot;).replace(&quot;)&quot;,&quot;&quot;))
+            people_number_list.append(people_number.get_text().replace(&quot; &quot;,&quot;&quot;).replace(&quot;\n&quot;,&quot;&quot;).replace(&quot;(&quot;,&quot;&quot;).replace(&quot;人评价)&quot;,&quot;&quot;))
+
+
+# print(book_name_list)
+# print(user_name)
+# print(book_time)
+# print(book_pice)
+# print(pm_number_list)
+# print(people_number_list)
+
+# 存入定义好的空列表 ，以字典的方式存入
+# for i in range(0,len(user_name)):
+#     all_book.append(
+#         {
+#             &quot;书名&quot;:book_name_list[i],
+#             &quot;原作者&quot;: user_name[i],
+#             &quot;出版日期&quot;:book_time[i],
+#             &quot;价格(元)&quot;:book_pice[i],
+#             &quot;评分&quot;:pm_number_list[i],
+#             &quot;评价人数&quot;:people_number_list[i],
+#
+#         }
+#     )
+#  #  此时是 列表包含 len （book_time） 个 字典
+#  #  每一个字典 包含一本书的 爬取的 所有信息
+#
+# print(all_book)
+
+
+
+#  因为存入 csv 格式的文件也需要用到了字典 这上面这一步就 pass
+
+
+file_path = &quot;C:/Users/DELL/Desktop/python_wd/文本信息/豆瓣小说.csv&quot;
+with open(file_path,&quot;w&quot;,newline=&quot;&quot;,encoding=&quot;utf-8&quot;)as f:
+    file_value_names = [&quot;书名&quot;,&quot;作者&quot;,&quot;出版日期&quot;,&quot;价格(元)&quot;,&quot;评分&quot;,&quot;评价人数&quot;]  #   设置表头
+    f_csv =  csv.DictWriter(f,fieldnames=file_value_names)  #   采用字典的形式 存入
+    f_csv.writeheader()  #   写入表头
+
+    #  写入行
+    for i in range(0,len(user_name)):
+        f_csv.writerow(     #   注意这里
+            {
+                &quot;书名&quot;:book_name_list[i],
+                &quot;作者&quot;: user_name[i],
+                &quot;出版日期&quot;:book_time[i],
+                &quot;价格(元)&quot;:book_pice[i],
+                &quot;评分&quot;:pm_number_list[i],
+                &quot;评价人数&quot;:people_number_list[i],
+            }
+        )
+
+
+
+print(&quot;\n数据保存完毕。。。。。。&quot;)
+
+
+
+
+</code></pre>
+<h2 id="运行代码数据部分结果">运行代码数据部分结果：</h2>
+<figure data-type="image" tabindex="1"><img src="https://posierd.github.io/post-images/1584592879635.png" alt="" loading="lazy"></figure>
+<p>——————————END</p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://posierd.github.io/tag/oYN426Mph/" class="tag">
+                    Python-Get
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://posierd.github.io/post/xpath-yu-fa-li-jie/">
+                  <h3 class="post-title">
+                    Xpath 语法理解
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '19e42b5385f75be24f9c',
+        clientSecret: 'bdb52c22f6310d9789a397ab02c80bc37b618bad',
+        repo: 'posierd.guthub.io',
+        owner: 'bverbh',
+        admin: ['bverbh'],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>
