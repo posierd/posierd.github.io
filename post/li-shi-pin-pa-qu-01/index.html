@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>使用BeautifulSoup爬取电影排行榜，并保存 xlsx 工作表至自定义目录下 | posierd</title>
+<title>梨视频爬取01 | posierd</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -24,20 +24,14 @@
 
 
 
-    <meta name="description" content="注释在代码，懒得再写😋😋
-目标地址: https://movie.douban.com/top250
-Nice,愉快的放置图片:😁😁
-
-
-
-
-
-
-----运行代码后，部分结果截图：😗😗😗
-
-
------END
-..." />
+    <meta name="description" content="😃😃😃
+import requests
+import re
+from urllib.request import urlretrieve
+'''
+这是一部分的思路
+获取页面源代码  获取视频id---- video_1661731
+拼..." />
     <meta name="keywords" content="Python-Get" />
   </head>
   <body>
@@ -109,23 +103,63 @@ Nice,愉快的放置图片:😁😁
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">使用BeautifulSoup爬取电影排行榜，并保存 xlsx 工作表至自定义目录下</h2>
-            <div class="post-date">2020-02-21</div>
+            <h2 class="post-title">梨视频爬取01</h2>
+            <div class="post-date">2020-03-23</div>
             
             <div class="post-content" v-pre>
-              <p><strong>注释在代码，懒得再写</strong>😋😋</p>
-<p>目标地址: https://movie.douban.com/top250</p>
-<h2 id="nice愉快的放置图片">Nice,愉快的放置图片:😁😁<br>
-<img src="https://posierd.github.io/post-images/1582271451622.png" alt="" loading="lazy"></h2>
-<h2 id=""><img src="https://posierd.github.io/post-images/1582271462010.png" alt="" loading="lazy"></h2>
-<h2 id="-2"><img src="https://posierd.github.io/post-images/1582271471437.png" alt="" loading="lazy"></h2>
-<h2 id="-3"><img src="https://posierd.github.io/post-images/1582271480805.png" alt="" loading="lazy"></h2>
-<h2 id="-4"><img src="https://posierd.github.io/post-images/1582271496630.png" alt="" loading="lazy"></h2>
-<h2 id="-运行代码后部分结果截图"><img src="https://posierd.github.io/post-images/1582271510491.png" alt="" loading="lazy"><br>
-----运行代码后，部分结果截图：😗😗😗<br>
-<img src="https://posierd.github.io/post-images/1582271556784.png" alt="" loading="lazy"></h2>
-<p><img src="https://posierd.github.io/post-images/1582271568388.png" alt="" loading="lazy"><br>
------END</p>
+              <p>😃😃😃</p>
+<pre><code class="language-python">import requests
+import re
+from urllib.request import urlretrieve
+'''
+这是一部分的思路
+获取页面源代码  获取视频id---- video_1661731
+拼接完整的 url 链接---- https://www.pearvideo.com/video_1661731
+发送请求  在获取其中的源代码  找出视频的真实播放地址
+再次发送 视频真实地址 --https://video.pearvideo.com/mp4/third/20200316/cont-1661859-11107897-203035-hd.mp4
+二进制 保存本地
+
+'''
+
+headers = {
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'
+    }
+def down_mp4():
+    # 获取 id
+    link = 'https://www.pearvideo.com/category_6'
+    resp = requests.get(link,headers=headers)
+    resp.encoding = resp.apparent_encoding
+    html = resp.text
+    red = r'&lt;a href=&quot;(.*?)&quot; class=&quot;vervideo-lilink actplay&quot;&gt;'
+    vidle_id = re.findall(red,html)
+    print(&quot;获取到的视频数量:&quot;,len(vidle_id))
+
+    #  拼接id  存入列表
+    link_list = []  #  存入拼接好的 link
+    start_link = 'https://www.pearvideo.com/'
+    for vidle in  vidle_id:
+        new_link = start_link + vidle
+        link_list.append(new_link)
+
+    # 获取视频的真实播放地址
+    for link_two in link_list:
+        resp_two = requests.get(link_two,headers=headers).text
+        # 播放地址
+        rea = r'sdUrl=&quot;&quot;,ldUrl=&quot;&quot;,srcUrl=&quot;(.*?)&quot;,vdoUrl'
+        play_val = re.findall(rea,resp_two)
+        # 视频标题
+        reb = r'&lt;h1 class=&quot;video-tt&quot;&gt;(.*?)&lt;/h1&gt;'
+        vidle_name = re.findall(reb,resp_two)
+        # 进行视频保存
+        print(&quot;\n正在下载视频:{}&quot;.format(vidle_name[0]))
+        file_path =r'C:\Users\DELL\Desktop\python_wd\shipin\梨视频\\'
+        path = file_path + '%s.mp4'%vidle_name[0]
+        urlretrieve(play_val[0],path)
+        print(&quot;\n视频下载完成。。。。。。&quot;)
+
+
+down_mp4()
+</code></pre>
 
             </div>
             
@@ -140,9 +174,9 @@ Nice,愉快的放置图片:😁😁
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://posierd.github.io/post/shi-yong-beautifulsoup-pa-qu-xia-chu-fang-bing-bao-cun-txt-dao-ben-di-zi-ding-yi-mu-lu-xia/">
+                <a href="https://posierd.github.io/post/shi-yong-bs4-pa-qu-dou-ban-dian-zi-shu-xin-xi-___-xin-de-zhi-shi-dian/">
                   <h3 class="post-title">
-                    使用BeautifulSoup爬取 下厨房，并包存 txt 到本地自定义目录下
+                    使用  bs4  爬取豆瓣电子书信息___新的知识点
                   </h3>
                 </a>
               </div>
