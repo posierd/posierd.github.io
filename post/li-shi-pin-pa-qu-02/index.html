@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>使用BeautifulSoup爬取电影排行榜，并保存 xlsx 工作表至自定义目录下 | posierd</title>
+<title>梨视频爬取02 | posierd</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -24,20 +24,14 @@
 
 
 
-    <meta name="description" content="注释在代码，懒得再写😋😋
-目标地址: https://movie.douban.com/top250
-Nice,愉快的放置图片:😁😁
+    <meta name="description" content="😃😃😃
+import requests
+import re
+from urllib.request import urlretrieve
 
-
-
-
-
-
-----运行代码后，部分结果截图：😗😗😗
-
-
------END
-..." />
+'''
+xhr  中 数据变化
+https://www.pearvideo.com/categ..." />
     <meta name="keywords" content="Python-Get" />
   </head>
   <body>
@@ -109,23 +103,76 @@ Nice,愉快的放置图片:😁😁
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">使用BeautifulSoup爬取电影排行榜，并保存 xlsx 工作表至自定义目录下</h2>
-            <div class="post-date">2020-02-21</div>
+            <h2 class="post-title">梨视频爬取02</h2>
+            <div class="post-date">2020-03-23</div>
             
             <div class="post-content" v-pre>
-              <p><strong>注释在代码，懒得再写</strong>😋😋</p>
-<p>目标地址: https://movie.douban.com/top250</p>
-<h2 id="nice愉快的放置图片">Nice,愉快的放置图片:😁😁<br>
-<img src="https://posierd.github.io/post-images/1582271451622.png" alt="" loading="lazy"></h2>
-<h2 id=""><img src="https://posierd.github.io/post-images/1582271462010.png" alt="" loading="lazy"></h2>
-<h2 id="-2"><img src="https://posierd.github.io/post-images/1582271471437.png" alt="" loading="lazy"></h2>
-<h2 id="-3"><img src="https://posierd.github.io/post-images/1582271480805.png" alt="" loading="lazy"></h2>
-<h2 id="-4"><img src="https://posierd.github.io/post-images/1582271496630.png" alt="" loading="lazy"></h2>
-<h2 id="-运行代码后部分结果截图"><img src="https://posierd.github.io/post-images/1582271510491.png" alt="" loading="lazy"><br>
-----运行代码后，部分结果截图：😗😗😗<br>
-<img src="https://posierd.github.io/post-images/1582271556784.png" alt="" loading="lazy"></h2>
-<p><img src="https://posierd.github.io/post-images/1582271568388.png" alt="" loading="lazy"><br>
------END</p>
+              <p>😃😃😃</p>
+<pre><code class="language-python">import requests
+import re
+from urllib.request import urlretrieve
+
+'''
+xhr  中 数据变化
+https://www.pearvideo.com/category_loading.jsp?reqType=5&amp;categoryId=6&amp;start=12  第二页
+https://www.pearvideo.com/category_loading.jsp?reqType=5&amp;categoryId=6&amp;start=24  第三页
+推出
+第一个
+https://www.pearvideo.com/category_loading.jsp?reqType=5&amp;categoryId=6&amp;start=0
+从 0 开始递增 每次 12
+这里获取两页 视频数据
+（0,2）
+分析一页
+找出 视频 id
+拼接出 视频详情
+再次发送请求 找出视频 播放地址 / 标题
+保存
+
+'''
+
+
+headers = {
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'
+    }
+
+def down_all_mp4():
+    for page in range(0,2):
+        print(&quot;\n正在获取{}页视频数据&quot;.format(page+1))
+        url = 'https://www.pearvideo.com/category_loading.jsp?reqType=5&amp;categoryId=6&amp;start={}'.format(page * 12)
+        resp_one = requests.get(url,headers=headers).text
+        #  找视频 id
+        rea = r'  &lt;a href=&quot;(.*?)&quot; class=&quot;vervideo-lilink actplay&quot;&gt;'
+        mp4_ids = re.findall(rea,resp_one)
+        print(&quot;获取的视频数量:&quot;,len(mp4_ids))
+        # 拼接url  存入列表
+        link_list = []
+        star_url = 'https://www.pearvideo.com/'
+        for mp4_id in mp4_ids:
+            new_link = star_url + mp4_id
+            link_list.append(new_link)
+        # 对拼接好的 link 发送请求 找出 播放地址 / 标题
+        for one_link in link_list:
+            resp_two = requests.get(one_link,headers=headers)
+            html = resp_two.text  #  视频详情页数据
+            # 播放地址
+            reb = r'ldUrl=&quot;&quot;,srcUrl=&quot;(.*?)&quot;,vdoUrl'
+            play_link = re.findall(reb,html)
+            #  视频标题
+            rec = r'&lt;h1 class=&quot;video-tt&quot;&gt;(.*?)&lt;/h1&gt;'
+            mp4_name = re.findall(rec,html)
+            print(&quot;正在下载视频:{}&quot;.format(mp4_name[0]))
+            #  下载 保存视频
+            file_path = r'C:\Users\DELL\Desktop\python_wd\shipin\梨视频02\\'
+            path = file_path + '%s.mp4'%mp4_name[0]
+            urlretrieve(play_link[0],path)
+            print(&quot;\n视频下载完成。。。。。。&quot;)
+
+
+down_all_mp4()
+
+
+
+</code></pre>
 
             </div>
             
@@ -140,9 +187,9 @@ Nice,愉快的放置图片:😁😁
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://posierd.github.io/post/shi-yong-beautifulsoup-pa-qu-xia-chu-fang-bing-bao-cun-txt-dao-ben-di-zi-ding-yi-mu-lu-xia/">
+                <a href="https://posierd.github.io/post/li-shi-pin-pa-qu-01/">
                   <h3 class="post-title">
-                    使用BeautifulSoup爬取 下厨房，并包存 txt 到本地自定义目录下
+                    梨视频爬取01
                   </h3>
                 </a>
               </div>
