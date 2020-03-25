@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>使用BeautifulSoup爬取 下厨房，并包存 txt 到本地自定义目录下 | posierd</title>
+<title>lol英雄皮肤图片爬取 | posierd</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -24,20 +24,16 @@
 
 
 
-    <meta name="description" content="目标地址：http://www.xiachufang.com/
-注释在代码中，懒得重写  😂😂
-下面开始愉快的放图片吧：😁😁
-
-
-
-
-
-
-----运行代码后部分截图：😗😗
-
-
-----END
-..." />
+    <meta name="description" content="😃😃😃
+import requests
+import json
+'''
+lol 英雄及英雄皮肤下载
+动态加载数据
+1.先获取英雄 id
+2.拼接 关于图片 js 的 url
+3. 请求后将返回体进行数据转换
+4.此时的 js 数据（2..." />
     <meta name="keywords" content="Python-Get" />
   </head>
   <body>
@@ -109,23 +105,86 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">使用BeautifulSoup爬取 下厨房，并包存 txt 到本地自定义目录下</h2>
-            <div class="post-date">2020-02-21</div>
+            <h2 class="post-title">lol英雄皮肤图片爬取</h2>
+            <div class="post-date">2020-03-25</div>
             
             <div class="post-content" v-pre>
-              <p>目标地址：http://www.xiachufang.com/</p>
-<p>注释在代码中，懒得重写  😂😂</p>
-<h2 id="下面开始愉快的放图片吧">下面开始愉快的放图片吧：😁😁<br>
-<img src="https://posierd.github.io/post-images/1582271068781.png" alt="" loading="lazy"></h2>
-<h2 id=""><img src="https://posierd.github.io/post-images/1582271080066.png" alt="" loading="lazy"></h2>
-<h2 id="-2"><img src="https://posierd.github.io/post-images/1582271089643.png" alt="" loading="lazy"></h2>
-<h2 id="-3"><img src="https://posierd.github.io/post-images/1582271101398.png" alt="" loading="lazy"></h2>
-<h2 id="-4"><img src="https://posierd.github.io/post-images/1582271118944.png" alt="" loading="lazy"></h2>
-<h2 id="-运行代码后部分截图"><img src="https://posierd.github.io/post-images/1582271131112.png" alt="" loading="lazy"><br>
-----运行代码后部分截图：😗😗<br>
-<img src="https://posierd.github.io/post-images/1582271147756.png" alt="" loading="lazy"></h2>
-<p><img src="https://posierd.github.io/post-images/1582271163827.png" alt="" loading="lazy"><br>
-----END</p>
+              <p>😃😃😃</p>
+<pre><code class="language-python">import requests
+import json
+'''
+lol 英雄及英雄皮肤下载
+动态加载数据
+1.先获取英雄 id
+2.拼接 关于图片 js 的 url
+3. 请求后将返回体进行数据转换
+4.此时的 js 数据（2.js）   skines（键名） mainImg（图片url） name（皮肤名字）
+'''
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'
+}
+
+
+# 获取英雄 id
+def get_id():
+    url = 'https://game.gtimg.cn/images/lol/act/img/js/heroList/hero_list.js'
+    try:
+        resp = requests.get(url,headers=headers)
+        print(&quot;获取id数据页面状态响应码：&quot;,resp.status_code)
+        data = json.loads(resp.text)
+        id_list = []
+        for i in data['hero']:
+            id_list.append(i['heroId'])
+        return id_list
+    except:
+        print(&quot;获取 id 失败&quot;)
+        return None
+
+
+
+# 根据英雄 id
+# 获取皮肤图片的名称 及 url
+def get_mess(id):
+    url2 = 'https://game.gtimg.cn/images/lol/act/img/js/hero/{}.js'.format(id)
+    try:
+        resp2 = requests.get(url2,headers=headers)
+        data2 = json.loads(resp2.text)
+        skiname = []
+        skiurl = []
+        for g in data2['skins'][0:-1]:   #  取出当下所有
+            skiname.append(g['name'])
+            skiurl.append(g['mainImg'])
+        return skiname, skiurl
+    except:
+        print(skiname,&quot;获取失败&quot;)
+        return None
+
+# 保存本地
+def save_file(skiname,skiurl):
+    for skinames,skiurls in zip(skiname,skiurl):
+        try:
+            resp3 = requests.get(skiurls,headers=headers)
+        except:
+            pass
+
+
+        file_path = r'C:\Users\DELL\Desktop\python_wd\mig\lol\{}.png'.format(skinames).replace(&quot;/&quot;,&quot;&quot;)
+        print(&quot;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;正在下载{}.png &gt;&gt;&gt;&gt;&gt;&gt;&quot;.format(skinames))
+        with open(file_path,'wb')as f:
+            f.write(resp3.content)
+    print(&quot;当前数据下载完毕。。。。。&quot;)
+
+
+if __name__ == '__main__':
+    id_list = get_id()
+    for id in id_list:
+        skiname, skiurl = get_mess(id)
+        print(&quot;\n当前下载图片数量：&quot;,len(skiurl))
+        save_file(skiname,skiurl)
+
+
+
+</code></pre>
 
             </div>
             
@@ -140,9 +199,9 @@
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://posierd.github.io/post/hello-gridea/">
+                <a href="https://posierd.github.io/post/li-shi-pin-pa-qu-02/">
                   <h3 class="post-title">
-                    Hello Gridea
+                    梨视频爬取02
                   </h3>
                 </a>
               </div>
