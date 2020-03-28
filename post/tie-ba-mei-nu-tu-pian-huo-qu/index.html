@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>鼠标控制01 | posierd</title>
+<title>贴吧美女图片获取 | posierd</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -25,13 +25,12 @@
 
 
     <meta name="description" content="😃😃😃
-#  信息轰炸
-#  控制信息  xxxxxx    发送  x 条  在   xxx时间内
-#  控制 键盘  鼠标   发送信息
-#  循环
-import time
-from pynput.keyboard import ..." />
-    <meta name="keywords" content="鼠标" />
+import requests
+import parsel
+
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; r..." />
+    <meta name="keywords" content="Python-Get" />
   </head>
   <body>
     <div id="app" class="main">
@@ -102,51 +101,58 @@ from pynput.keyboard import ..." />
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">鼠标控制01</h2>
-            <div class="post-date">2020-03-12</div>
+            <h2 class="post-title">贴吧美女图片获取</h2>
+            <div class="post-date">2020-03-28</div>
             
             <div class="post-content" v-pre>
               <p>😃😃😃</p>
-<pre><code class="language-python">#  信息轰炸
-#  控制信息  xxxxxx    发送  x 条  在   xxx时间内
-#  控制 键盘  鼠标   发送信息
-#  循环
-import time
-from pynput.keyboard import Controller  as key_cl  #  as 后别名方便后面调用    鼠标
-from  pynput.mouse import Button,Controller    #   pynput  
+<pre><code class="language-python">import requests
+import parsel
 
-def key1(string):
-    key1 = key_cl()   # 开始控制键盘
-    key1.type(string)
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko'
+}
+name = 1
 
-def key2():
-    key2 = Controller()    #  控制鼠标
-    key2.press(Button.left)  #  左键
-    key2.release(Button.left)   #  松开
 
-def value(num,string):
-    time.sleep(5)   #   暂停 5 s 后开始执行
-    for i in  range(num):
-        key1(string)
-        key2()
-        time.sleep(0.9)   #  每隔  0.9s  发送一次信息
+for page in range(0,4):
+    print(&quot;\n正在获取第{}页数据&quot;.format(page + 1))
+    url = &quot;https://tieba.baidu.com/f?kw=%E7%BE%8E%E5%A5%B3&amp;ie=utf-8&amp;pn={}&quot;.format(page * 50)
 
-if __name__ == '__main__':
-    num = int(input(&quot;需要发送多少条信息：&quot;))
-    txt = input(&quot;发送什么信息：&quot;)
-    value(num,txt)
+    reapnse = requests.get(url,headers=headers)
+    html = parsel.Selector(reapnse.text)  #  数据转换
+
+    title_url = html.xpath('//div[@class=&quot;threadlist_lz clearfix&quot;]/div/a/@href').extract()
+
+    #  拼接 帖子详情链接
+    start = 'https://tieba.baidu.com'
+    for  title in title_url:
+        new_url = start + title
+        resp2 = requests.get(new_url,headers=headers)
+        html2 = parsel.Selector(resp2.text)
+        # 提取图片 url
+        img_url = html2.xpath('//cc/div/img[@class=&quot;BDE_Image&quot;]/@src').extract()
+        # 获取图片数据
+
+        for img in img_url:
+            resp3 = requests.get(img,headers=headers)
+            print(&quot;\t正在保存第{}张图片&quot;.format(name))
+            path = r'C:\Users\DELL\Desktop\python_wd\mig\百度贴吧\{}.jpg'.format(name)
+            with open(path,'wb')as f:
+                f.write(resp3.content)
+            name += 1
+
+
+
 
 </code></pre>
-<p>运行代码测试结果：<br>
-<img src="https://posierd.github.io/post-images/1583990760836.png" alt="" loading="lazy"></p>
-<p>——————END</p>
 
             </div>
             
               <div class="tag-container">
                 
-                  <a href="https://posierd.github.io/tag/qtb65iCtg/" class="tag">
-                    鼠标
+                  <a href="https://posierd.github.io/tag/oYN426Mph/" class="tag">
+                    Python-Get
                   </a>
                 
               </div>
@@ -154,9 +160,9 @@ if __name__ == '__main__':
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://posierd.github.io/post/tang-dui-tu-pian-huo-qu/">
+                <a href="https://posierd.github.io/post/mei-nu-shou-ji-bi-zhi-huo-qu/">
                   <h3 class="post-title">
-                    糖堆图片获取
+                    美女手机壁纸获取
                   </h3>
                 </a>
               </div>
