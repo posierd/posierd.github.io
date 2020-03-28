@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>关于selenium 控制打开 chrome 浏览器 | posierd</title>
+<title>python知识点梳理 | posierd</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -24,15 +24,15 @@
 
 
 
-    <meta name="description" content="这个其实挺简单的 😀😀
-下面我来说下具体步骤：😄😄😄
-1.下载chrome版本   ----这个不用多说了
-2.下载与   chrome  相对应的 chromedriver 版本号
-3.具体版本号及其对应版本如下：
+    <meta name="description" content="😀😃😄😁
+'''
+1. url headers 参数确定
 
-
-我的ch..." />
-    <meta name="keywords" content="python-selenium" />
+URL:
+    如果目标网址是静态的网页，那就直接确定是他
+    遇到 ajax 异步加载  需要通过 Network 中   xhr  来通过抓包获取数据
+    例..." />
+    <meta name="keywords" content="个人总结" />
   </head>
   <body>
     <div id="app" class="main">
@@ -103,39 +103,113 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">关于selenium 控制打开 chrome 浏览器</h2>
-            <div class="post-date">2020-02-24</div>
+            <h2 class="post-title">python知识点梳理</h2>
+            <div class="post-date">2020-03-28</div>
             
             <div class="post-content" v-pre>
-              <h2 id="这个其实挺简单的">这个其实挺简单的 😀😀</h2>
-<h2 id="下面我来说下具体步骤">下面我来说下具体步骤：😄😄😄</h2>
-<pre><code>1.下载chrome版本   ----这个不用多说了
-2.下载与   chrome  相对应的 chromedriver 版本号
-3.具体版本号及其对应版本如下：
-</code></pre>
-<p><img src="https://posierd.github.io/post-images/1582528634342.png" alt="" loading="lazy"><br>
-我的chrome 版本是 71 的，这里我就下载 2.43 版本的 chromedriver，解压添加至 python 目录下</p>
-<hr>
-<pre><code>也可以 将chromedriver.exe 放在chrome浏览器安装目录下（同时设置用户环境变量path:C:\Program Files (x86)\Google\Chrome\Application
+              <p>😀😃😄😁</p>
+<pre><code class="language-python">'''
+1. url headers 参数确定
+
+URL:
+    如果目标网址是静态的网页，那就直接确定是他
+    遇到 ajax 异步加载  需要通过 Network 中   xhr  来通过抓包获取数据
+    例如关键字： 梨视频 糖堆等案例
+Headers:
+    这个不多说了
 
 
-这里建议使用前者，因为这个更快。这两个方法都是可以的，选其中一个就好了
+2.关于请求方式
+我用的最多的 还是 get  请求 ，还有一个没有怎么学到post（就pass）
+常用的第三方库   requests
+get请求携带的 常见参数：
+    url=目标地址，headers=请求头，proxies=ip代理，tomeout=超时设置
+
+3.解析数据：
+ 注意返回数据的编码格式
+ 万能编码符
+  r = requests.get(link,headers=headers).text
+  r.encoding = r.apparent_encoding
+
+用到的库：re       bs4      xpath      parsel（xpath的老大哥？）  json
+
+3.1
+库名：re
+ 也就是正则 了解的不多 常用规则 (.*?) 匹配所有括号里的内容    （.*?） 匹配所有括号里的数字
+ import   re   为导入方法    不需要进行数据转换，re.findall(规则,目标（返回相应提的html代码），re.S(一种模式，关于换行))
+ 返回的数据结果为 列表 数据类型
+ 关键字： 小说  一类的案例
+
+（3.2）
+库名 bs4   通过 pip  install  bs4
+调用方法   from bs4 import BeautifulSoup
+需要进行数据转换
+   html = resp.text
+   soup = BeautifulSoup(html,'html.parser')
+
+（3.2.1）
+soup.find_all   用过确定目标数据  html标签 class来确定数据
+返回的数据结果为 列表 数据类型
+关键字：房源信息—郑州   房源信息—北京，猫眼等案例
+
+(3.2.2)
+soup.select（当中数据为 copy—copy selector）
+返回的数据结果为 列表 数据类型
+关键字：当当电子书  京东汉服
+
+
+4.
+库名：xpath  通过  pip install  lxml
+调用方法  from  lxml import etree
+数据转换  html = etree.HTML(r.text)
+用法（层层递增的到达目标数据）
+返回的数据结果为 列表 数据类型
+关键字 ：天堂图片 ，妹子图—def方法，必应壁纸—def方法
+
+
+5.
+库名：parsel  通过  pip install   parsel
+调用方法 import  parser
+ 数据转换
+ reapnse = requests.get(url,headers=headers)
+ html = parsel.Selector(reapnse.text)
+ 用法  html.xpath().extract()
+（层层递增的到达目标数据）
+返回的数据结果为 列表 数据类型
+ 关键字：美女手机壁纸，贴吧美女
+
+6.
+库名：json   用来处理 json 数据类型的库 而不是html 代码
+调用  import  json
+数据转换
+    resp_html = requests.get(link,headers=headers).text
+    html = json.loads(resp_html)
+此时可以进行 re 等数据提取的方法来提取需要的数据
+关键字：梨视频，荣耀英雄，六房短视频，果壳问答
+
+4.数据保存
+本地的 txt   png  json   不多解释
+调用全局变量到某个函数里
+
+关于  xlsx 格式  import openpyxl
+关键字  房源信息—郑州，房源信息——北京
+
+关于  .csv  格式   import csv
+关键字   豆瓣电子书排行信息获取
+'''
+
+
+
+
+
 </code></pre>
-<hr>
-<pre><code>下面放代码截图：
-</code></pre>
-<h2 id=""><img src="https://posierd.github.io/post-images/1582528762380.png" alt="" loading="lazy"></h2>
-<pre><code>注释就这么些：下面看运行结果截图：
-</code></pre>
-<p><img src="https://posierd.github.io/post-images/1582528807591.png" alt="" loading="lazy"><br>
--——————————END</p>
 
             </div>
             
               <div class="tag-container">
                 
-                  <a href="https://posierd.github.io/tag/2m42ER2dt/" class="tag">
-                    python-selenium
+                  <a href="https://posierd.github.io/tag/7oTbSAx8F/" class="tag">
+                    个人总结
                   </a>
                 
               </div>
@@ -143,9 +217,9 @@
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://posierd.github.io/post/tong-guo-cmd-de-pip-ming-ling-xia-zai-de-di-san-fang-ku-ru-he-zai-pychaym-zhong-dao/">
+                <a href="https://posierd.github.io/post/jing-dong-han-fu/">
                   <h3 class="post-title">
-                    通过cmd 的 pip命令 下载的第三方库 如何在 pychaym 中导
+                    京东汉服
                   </h3>
                 </a>
               </div>
