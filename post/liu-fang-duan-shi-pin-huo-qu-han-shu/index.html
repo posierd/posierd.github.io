@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>喜马拉雅—音频爬取 | posierd</title>
+<title>六房短视频获取 -函数 | posierd</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -26,12 +26,10 @@
 
     <meta name="description" content="😃😃😃
 import requests
+import json
 import re
-def download_one_m4a(dan_id,name):
-    '''下载一页中的一个数据'''
-
-   #  将其改变为 形参 方便数据改变
-   # dan..." />
+headers = {
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Ap..." />
     <meta name="keywords" content="Python-Get" />
   </head>
   <body>
@@ -103,95 +101,55 @@ def download_one_m4a(dan_id,name):
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">喜马拉雅—音频爬取</h2>
-            <div class="post-date">2020-03-07</div>
+            <h2 class="post-title">六房短视频获取 -函数</h2>
+            <div class="post-date">2020-03-28</div>
             
             <div class="post-content" v-pre>
               <p>😃😃😃</p>
 <pre><code class="language-python">import requests
+import json
 import re
-def download_one_m4a(dan_id,name):
-    '''下载一页中的一个数据'''
+headers = {
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'
+}
+def chenk_title(title):
+    '''替换非法字符窜'''
+    pattern = re.compile(r&quot;[\/\\\:\*\?\&quot;\&lt;\&gt;\|]&quot;)
+    new_title = re.sub(pattern,&quot;_&quot;,title)
+    return new_title
 
-   #  将其改变为 形参 方便数据改变
-   # dan_id = '98791745'
-    #  第一集 url 中的 后缀
-    headers = {
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36'
-    }
-    new_link = ' https://www.ximalaya.com/revision/play/v1/audio?id={}&amp;ptype=1'.format(dan_id)
-    #  获取真实的 ip数据
-    new_r = requests.get(new_link,headers=headers)
+def get_html(link):
+    print(&quot;======正在获取的数据的目标网址：&quot;,link)
+    resp = requests.get(link,headers=headers).text
+    mp4_list = json.loads(resp)  #  数据转换
+    return mp4_list
 
+def save_parser_hrml(mp4_list):
+    scr_list = mp4_list['content']['list']
+    for scr in scr_list:
+        name_list = scr['title']+'.mp4'
+        link_list = scr['playurl']
 
+        new_name = chenk_title(name_list)
+        print(&quot;正在下载&quot;,new_name)
+        mp4 = requests.get(link_list,headers=headers).content
 
-
-
-
-
-    # 把字符串变为字典
-    #print(new_r.json()['data']['src'])  #  这个字典中包含有真实的音频 ip 播放地址   src
-    #  data 为字典  src包含在其中  健名
-    #  将其赋值为变量方便使用
-    m4a_url = new_r.json()['data']['src']
-    #  传递第给下面的 link  中
-    #  因为下面的 link（音频地址） 的下载
-    #  原 link数据 link = 'https://fdfs.xmcdn.com/group47/M0A/34/EA/wKgKm1tHj6GwgeWBAFehkfjyvKI1m81.4a'
-
-
-    # 播放接口    https://www.ximalaya.com/revision/play/v1/audio?id=98791745&amp;ptype=1
-    # 又以第一集新打开一个窗口  https://www.ximalaya.com/youshengshu/16411402/98791745
-    # 又以第二集新开开一个窗口  https://www.ximalaya.com/youshengshu/16411402/98936430
-    #  发现后缀发生了变化  那么就以播放接口 改变 后缀 就可以访问相应的集数
-    #  将接口写入 新的  link（接口） 中  通过与 dan_id  组合发生变化达到访问
+        with open(r'C:\Users\DELL\Desktop\python_wd\shipin\六间房\\'+ new_name ,'wb')as f:
+            f.write(mp4)
+            print(&quot;下载完成。。。。。。\n&quot;)
 
 
-    link = m4a_url
-    headers = {
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36'
-    }
-    r = requests.get(link,headers=headers)
-    print(&quot;页面状态响应码:&quot;,r.status_code)
-    print(name)
-    with open(r'C:\Users\DELL\Desktop\python_wd\shipin\音频\{}.m4a'.format(name),mode='wb')as f:
-        f.write(r.content)
-#download_one_m4a(98791745)
+def main():
+    for page in range(1,5):
+        link = 'https://v.6.cn/minivideo/getlist.php?act=recommend&amp;page={}&amp;pagesize=20'.format(page)
+        mp4_list = get_html(link)
+        save_parser_hrml(mp4_list)
+
+if __name__ == '__main__':
+    main()
 
 
-def one_page(html_link):
-    '''获取html页面信息中的 后缀 及其名字 '''
-    #  在首页 html 获取 后缀 及其 名字
-    # html_link = 'https://www.ximalaya.com/youshengshu/16411402/'   首页
-    headers = {
-            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36'
-        }
-    r_html = requests.get(html_link,headers=headers)
-    html = r_html.text
-    #print(html)
-    # 使用正则表达式 提取数据
-    message = re.findall('&lt;div class=&quot;text _Vc&quot;&gt;&lt;a title=&quot;(.*?)&quot; href=&quot;/youshengshu/16411402/(.*?)&quot;&gt;',html,re.S)
-    # 找出来的数据类型 为 列表
-    for mess in message:
-    #   print(mess)
-        download_one_m4a(mess[1],mess[0])
-#       1 写前面 是为了 与 函数   down_one_m4a 中的  dan_id 的形参 对应
-
-
-#one_page('https://www.ximalaya.com/youshengshu/16411402/')
-
-def down_all():
-    '''做 翻页 函数'''
-    for i in range(1,36):
-        print(&quot;正在获取{}页的数据&quot;.format(i))
-       # print('https://www.ximalaya.com/youshengshu/16411402/p{}/'.format(i))
-        one_page('https://www.ximalaya.com/youshengshu/16411402/p{}/'.format(i))
-
-
-down_all()
 </code></pre>
-<p>代码运行数据部分截图：<br>
-<img src="https://posierd.github.io/post-images/1583553799082.png" alt="" loading="lazy"></p>
-<p>————————END</p>
 
             </div>
             
@@ -206,9 +164,9 @@ down_all()
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://posierd.github.io/post/pa-qu-bo-ke-ping-lun/">
+                <a href="https://posierd.github.io/post/liu-fang-duan-shi-pin-huo-qu/">
                   <h3 class="post-title">
-                    爬取博客评论
+                    六房短视频获取
                   </h3>
                 </a>
               </div>

@@ -3,12 +3,12 @@
   <head>
     <meta charset="utf-8" >
 
-<title>使用BeautifulSoup爬取电影排行榜，并保存 xlsx 工作表至自定义目录下 | posierd</title>
+<title>猫眼Top电影信息获取 | posierd</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://posierd.github.io/favicon.ico?v=1585354890568">
+<link rel="shortcut icon" href="https://posierd.github.io/favicon.ico?v=1585356237587">
 <link rel="stylesheet" href="https://posierd.github.io/styles/main.css">
 
 
@@ -24,20 +24,10 @@
 
 
 
-    <meta name="description" content="注释在代码，懒得再写😋😋
-目标地址: https://movie.douban.com/top250
-Nice,愉快的放置图片:😁😁
-
-
-
-
-
-
-----运行代码后，部分结果截图：😗😗😗
-
-
------END
-..." />
+    <meta name="description" content="😃😃😃
+# https://movie.douban.com/top250
+# https://movie.douban.com/top250?start=25&amp;filter=
+# https://movie.douban.c..." />
     <meta name="keywords" content="Python-Get" />
   </head>
   <body>
@@ -47,7 +37,7 @@ Nice,愉快的放置图片:😁😁
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://posierd.github.io">
-        <img src="https://posierd.github.io/images/avatar.png?v=1585354890568" class="site-logo">
+        <img src="https://posierd.github.io/images/avatar.png?v=1585356237587" class="site-logo">
         <h1 class="site-title">posierd</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -109,23 +99,98 @@ Nice,愉快的放置图片:😁😁
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">使用BeautifulSoup爬取电影排行榜，并保存 xlsx 工作表至自定义目录下</h2>
+            <h2 class="post-title">猫眼Top电影信息获取</h2>
             <div class="post-date">2020-02-21</div>
             
             <div class="post-content" v-pre>
-              <p><strong>注释在代码，懒得再写</strong>😋😋</p>
-<p>目标地址: https://movie.douban.com/top250</p>
-<h2 id="nice愉快的放置图片">Nice,愉快的放置图片:😁😁<br>
-<img src="https://posierd.github.io/post-images/1582271451622.png" alt="" loading="lazy"></h2>
-<h2 id=""><img src="https://posierd.github.io/post-images/1582271462010.png" alt="" loading="lazy"></h2>
-<h2 id="-2"><img src="https://posierd.github.io/post-images/1582271471437.png" alt="" loading="lazy"></h2>
-<h2 id="-3"><img src="https://posierd.github.io/post-images/1582271480805.png" alt="" loading="lazy"></h2>
-<h2 id="-4"><img src="https://posierd.github.io/post-images/1582271496630.png" alt="" loading="lazy"></h2>
-<h2 id="-运行代码后部分结果截图"><img src="https://posierd.github.io/post-images/1582271510491.png" alt="" loading="lazy"><br>
-----运行代码后，部分结果截图：😗😗😗<br>
-<img src="https://posierd.github.io/post-images/1582271556784.png" alt="" loading="lazy"></h2>
-<p><img src="https://posierd.github.io/post-images/1582271568388.png" alt="" loading="lazy"><br>
------END</p>
+              <p>😃😃😃</p>
+<pre><code class="language-python"># https://movie.douban.com/top250
+# https://movie.douban.com/top250?start=25&amp;filter=
+# https://movie.douban.com/top250?start=50&amp;filter=
+#   用过观察找出 页面 url 的变化规律  每次 start的值 增加25
+import requests
+from bs4 import BeautifulSoup
+import openpyxl   #  第三方库 （用于建立 Excel 表） 通过 pip instal openpyxl  下载安装
+list2 = []   # 用于将爬取的信息存入此列表方便存入 Excel 表中
+for i in range(1,11):
+    #  生成 1,2,3,4,5,6,7,8,9,10,11
+    number =  (i-1)*25
+    #print(number)
+    #   数据请求
+    link = 'https://movie.douban.com/top250?start='+str(number)+'&amp;filter='
+    #print(i,link)
+    headers ={
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36',
+    }   #  当中为 User-Agent  字段 ，注意为字典格式
+    r = requests.get(link,headers=headers)
+    #print(r.status_code)   页面状态响应码
+
+
+
+    #  数据转换
+    soup = BeautifulSoup(r.text,'html.parser')
+    #print(soup)
+
+
+
+    #  提取数据
+    #   找出最小级的父标签(一个数据)
+    nu = soup.find_all('div',class_='item')
+    for g in nu:
+        #   电影序号
+        num = g.find('em',class_='').get_text()
+    #   print(num)
+        #   电影名
+        name = g.find('span',class_='title').get_text()
+        name = '《'+name+'》'
+         #print(name)
+        #   电影英文名称
+        name_english = g.find_all('span',class_='title')
+        #print(name_english)
+        #   由于有的没有英文名字（例如大圣娶亲就没有） 会报错 这里加个判断
+        #   由于 使用 fing_all 找出为列表的
+        #   中文 英文 html 标签结构一样 所以列表中包含的信息有两种
+        #   通过列表切片的形式 【1】找出列表中的英文（也就是我们需要的数据）
+        #  下面的结果不打印，当做能力扩展吧
+        # if len(name_english)&gt;1:
+        #    print(g.find_all('span',class_='title')[1].get_text())
+        #   电影评分
+        pingfen  =  g.find('span',class_='rating_num').get_text()
+     #   print(pingfen)
+        #   推荐语
+        #   由于第 10 页 《网络谜踪》中 没有推荐语
+       # tuijianyu = g.find('span',class_='inq').get_text()
+        #print(tuijianyu)
+        try:
+            tuijianyu = g.find('span',class_='inq').get_text()
+        except AttributeError:
+            tuijianyu = &quot;=====很抱歉，这款没有推荐语=====&quot;
+        #print(tuijianyu)
+        #   电影的视频连接
+        #    a 标签中的 href 的属性便是我们需要的
+        urls = g.find('div',class_='info').find('a')['href']
+        list2.append([num,name,pingfen,tuijianyu,urls])   #  将内容添加至定义的空列表中
+       # print(&quot;序号: &quot;,num,&quot;电影名: &quot;,name,&quot;电影评分&quot;,pingfen,&quot;推荐语; &quot;,tuijianyu,&quot;视频链接&quot;,urls)
+
+
+
+#  保存数据
+file = openpyxl.Workbook()   #  新建一个工作薄
+sheet = file.active     #  在建立工作薄后建立工作表
+sheet.title = '豆瓣爬虫'   #  命名
+#  开始写入
+sheet['A1'] = '排名 '
+sheet['B1'] = '电影名 '
+sheet['C1'] = '电影评分 '
+sheet['D1'] = '推荐语 '
+sheet['E1'] = '链接地址 '
+for i in  list2:
+    print(i)
+    sheet.append(i)
+file.save(r&quot;C:\Users\DELL\Desktop\python_wd\文本信息\豆瓣爬虫.xlsx&quot;)  #  保存
+
+
+</code></pre>
 
             </div>
             
