@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://posierd.github.io</id>
     <title>posierd</title>
-    <updated>2020-04-05T05:22:08.423Z</updated>
+    <updated>2020-04-05T05:23:46.026Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://posierd.github.io"/>
     <link rel="self" href="https://posierd.github.io/atom.xml"/>
@@ -10,6 +10,13 @@
     <logo>https://posierd.github.io/images/avatar.png</logo>
     <icon>https://posierd.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, posierd</rights>
+    <entry>
+        <title type="html"><![CDATA[豆瓣电子书]]></title>
+        <id>https://posierd.github.io/post/dou-ban-dian-zi-shu/</id>
+        <link href="https://posierd.github.io/post/dou-ban-dian-zi-shu/">
+        </link>
+        <updated>2020-04-05T05:22:29.000Z</updated>
+    </entry>
     <entry>
         <title type="html"><![CDATA[优美图库图片获取]]></title>
         <id>https://posierd.github.io/post/you-mei-tu-ku-tu-pian-huo-qu/</id>
@@ -37,12 +44,5 @@
         <link href="https://posierd.github.io/post/python-zhi-shi-dian-shu-li/">
         </link>
         <updated>2020-03-28T00:55:34.000Z</updated>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[京东汉服]]></title>
-        <id>https://posierd.github.io/post/jing-dong-han-fu/</id>
-        <link href="https://posierd.github.io/post/jing-dong-han-fu/">
-        </link>
-        <updated>2020-03-28T00:37:52.000Z</updated>
     </entry>
 </feed>
