@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>猫眼Top电影信息获取 | posierd</title>
+<title>解析网电影信息获取 | posierd</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -25,9 +25,13 @@
 
 
     <meta name="description" content="😃😃😃
-# https://movie.douban.com/top250
-# https://movie.douban.com/top250?start=25&amp;filter=
-# https://movie.douban.c..." />
+'''
+通过解析网获取电影
+通过操作发现在 network  控制台中
+文件名 .ts  结尾的文件为 视频文件（也就是电影某个小片段）
+需要将这些全部获取下来
+发现这个后缀的变化规律 .ts 后数字的变化
+先拿当中的一个 t..." />
     <meta name="keywords" content="Python-Get" />
   </head>
   <body>
@@ -99,95 +103,59 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">猫眼Top电影信息获取</h2>
-            <div class="post-date">2020-02-21</div>
+            <h2 class="post-title">解析网电影信息获取</h2>
+            <div class="post-date">2020-04-05</div>
             
             <div class="post-content" v-pre>
               <p>😃😃😃</p>
-<pre><code class="language-python"># https://movie.douban.com/top250
-# https://movie.douban.com/top250?start=25&amp;filter=
-# https://movie.douban.com/top250?start=50&amp;filter=
-#   用过观察找出 页面 url 的变化规律  每次 start的值 增加25
+<pre><code class="language-python">'''
+通过解析网获取电影
+通过操作发现在 network  控制台中
+文件名 .ts  结尾的文件为 视频文件（也就是电影某个小片段）
+需要将这些全部获取下来
+发现这个后缀的变化规律 .ts 后数字的变化
+先拿当中的一个 ts  文件中的 url  来下载测试
+发现命名为 .ts 的格式时也是可以进行播放的
+为节省下载时间  了解一个新的知识点  进程池（内部需要创建多个来达到效果）
+在同一个时间内 有多个任务 同时执行
+=======
+拼接 url 时新的知识点
+
+%03d：001  至千 0100
+
+=======
+总的来说，获取的结果视频长度，与 正常播放的视频长度 有很大区别
+如果以这种方式来观看，可能会遗漏一些重要情节
+这个学习一下方法就好了
+'''
+
 import requests
-from bs4 import BeautifulSoup
-import openpyxl   #  第三方库 （用于建立 Excel 表） 通过 pip instal openpyxl  下载安装
-list2 = []   # 用于将爬取的信息存入此列表方便存入 Excel 表中
-for i in range(1,11):
-    #  生成 1,2,3,4,5,6,7,8,9,10,11
-    number =  (i-1)*25
-    #print(number)
-    #   数据请求
-    link = 'https://movie.douban.com/top250?start='+str(number)+'&amp;filter='
-    #print(i,link)
-    headers ={
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36',
-    }   #  当中为 User-Agent  字段 ，注意为字典格式
-    r = requests.get(link,headers=headers)
-    #print(r.status_code)   页面状态响应码
+from multiprocessing import Pool
 
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'
+}
 
+def main(a):
+    url = 'https://youku.cdn7-okzy.com/20200209/17080_3140a26e/1000k/hls/8a848a6cc4f000%03d.ts'%a
+    print(url)
+    response = requests.get(url,headers=headers)
+    print(response.status_code)
+    path = r'C:\Users\DELL\Desktop\python_wd\电影\{}'.format(url[-10:])
+    with open(path,'wb')as f:
+        f.write(response.content)
 
-    #  数据转换
-    soup = BeautifulSoup(r.text,'html.parser')
-    #print(soup)
+if __name__ == '__main__':   #  程序代码入口
+    pool = Pool(30)  # 创建了一个进程池 ，可以同时执行 30 个任务
+    for a in range(0,1602):
+        pool.apply_async(main,(a,))  #  执行任务入口
+    pool.close()
+    pool.join()  #  守护进程
 
-
-
-    #  提取数据
-    #   找出最小级的父标签(一个数据)
-    nu = soup.find_all('div',class_='item')
-    for g in nu:
-        #   电影序号
-        num = g.find('em',class_='').get_text()
-    #   print(num)
-        #   电影名
-        name = g.find('span',class_='title').get_text()
-        name = '《'+name+'》'
-         #print(name)
-        #   电影英文名称
-        name_english = g.find_all('span',class_='title')
-        #print(name_english)
-        #   由于有的没有英文名字（例如大圣娶亲就没有） 会报错 这里加个判断
-        #   由于 使用 fing_all 找出为列表的
-        #   中文 英文 html 标签结构一样 所以列表中包含的信息有两种
-        #   通过列表切片的形式 【1】找出列表中的英文（也就是我们需要的数据）
-        #  下面的结果不打印，当做能力扩展吧
-        # if len(name_english)&gt;1:
-        #    print(g.find_all('span',class_='title')[1].get_text())
-        #   电影评分
-        pingfen  =  g.find('span',class_='rating_num').get_text()
-     #   print(pingfen)
-        #   推荐语
-        #   由于第 10 页 《网络谜踪》中 没有推荐语
-       # tuijianyu = g.find('span',class_='inq').get_text()
-        #print(tuijianyu)
-        try:
-            tuijianyu = g.find('span',class_='inq').get_text()
-        except AttributeError:
-            tuijianyu = &quot;=====很抱歉，这款没有推荐语=====&quot;
-        #print(tuijianyu)
-        #   电影的视频连接
-        #    a 标签中的 href 的属性便是我们需要的
-        urls = g.find('div',class_='info').find('a')['href']
-        list2.append([num,name,pingfen,tuijianyu,urls])   #  将内容添加至定义的空列表中
-       # print(&quot;序号: &quot;,num,&quot;电影名: &quot;,name,&quot;电影评分&quot;,pingfen,&quot;推荐语; &quot;,tuijianyu,&quot;视频链接&quot;,urls)
-
-
-
-#  保存数据
-file = openpyxl.Workbook()   #  新建一个工作薄
-sheet = file.active     #  在建立工作薄后建立工作表
-sheet.title = '豆瓣爬虫'   #  命名
-#  开始写入
-sheet['A1'] = '排名 '
-sheet['B1'] = '电影名 '
-sheet['C1'] = '电影评分 '
-sheet['D1'] = '推荐语 '
-sheet['E1'] = '链接地址 '
-for i in  list2:
-    print(i)
-    sheet.append(i)
-file.save(r&quot;C:\Users\DELL\Desktop\python_wd\文本信息\豆瓣爬虫.xlsx&quot;)  #  保存
+#  进行拼接短
+# cmd 进入当前文件夹中
+# 输入  dir  显示当前文件里的详情(检查)
+# copy /b *.ts new.mp4（拼接命令）
 
 
 </code></pre>
@@ -205,9 +173,9 @@ file.save(r&quot;C:\Users\DELL\Desktop\python_wd\文本信息\豆瓣爬虫.xlsx&
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://posierd.github.io/post/shi-yong-beautifulsoup-pa-qu-xia-chu-fang-bing-bao-cun-txt-dao-ben-di-zi-ding-yi-mu-lu-xia/">
+                <a href="https://posierd.github.io/post/dou-ban-dian-zi-shu/">
                   <h3 class="post-title">
-                    使用BeautifulSoup爬取 下厨房，并包存 txt 到本地自定义目录下
+                    豆瓣电子书
                   </h3>
                 </a>
               </div>
