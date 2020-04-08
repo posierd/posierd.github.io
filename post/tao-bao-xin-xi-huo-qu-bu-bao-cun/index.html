@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>小说爬取 | posierd</title>
+<title>淘宝信息获取（不保存） | posierd</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -24,15 +24,16 @@
 
 
 
-    <meta name="description" content="目标地址
-😃😃😃
-# 获取小说页面html
-# 找出小说名并以他创建文件
-# 找出每章 url 的变化（拼接）  
-# 由获取的url（完整）再次发送请求
-# 此时获取的 html 中包含有 章节的名字  和 内容
-# 进行 数据清洗..." />
-    <meta name="keywords" content="Python-Get" />
+    <meta name="description" content="😃😃😃
+from selenium import webdriver
+import time
+import re
+
+
+#  输入关键字 收搜 获取总的页码数 用于后边翻页
+def search_product():
+    # 元素定..." />
+    <meta name="keywords" content="python-selenium" />
   </head>
   <body>
     <div id="app" class="main">
@@ -103,91 +104,102 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">小说爬取</h2>
-            <div class="post-date">2020-03-07</div>
+            <h2 class="post-title">淘宝信息获取（不保存）</h2>
+            <div class="post-date">2020-04-08</div>
             
             <div class="post-content" v-pre>
-              <p><a href="http://www.39shubao.com/files/article/html/116/116246/">目标地址</a></p>
-<p>😃😃😃</p>
-<pre><code class="language-python"># 获取小说页面html
-# 找出小说名并以他创建文件
-# 找出每章 url 的变化（拼接）  
-# 由获取的url（完整）再次发送请求
-# 此时获取的 html 中包含有 章节的名字  和 内容
-# 进行 数据清洗 工作（去除不需要的符号）
-#  将章节目录  内容  分别写入，已经创建好的txt中
-import requests
+              <p>😃😃😃</p>
+<pre><code class="language-python">from selenium import webdriver
+import time
 import re
-link = 'http://www.39shubao.com/files/article/html/116/116246/'
-headers= {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'
-}
-r = requests.get(link,headers=headers)
-r.encoding = 'utf-8'
-#print(r.status_code)
+
+
+#  输入关键字 收搜 获取总的页码数 用于后边翻页
+def search_product():
+    # 元素定位  ——输入框  搜索 按钮
+    driver.find_element_by_xpath('//*[@id=&quot;q&quot;]').send_keys(kw)  #  xapth定位输入框 填入关键字
+    driver.find_element_by_xpath('//*[@id=&quot;J_TSearchForm&quot;]/div[1]/button').click()  # 模拟点击
+    #  运行 --解决登录问题
+    time.sleep(10)
+    #  使用手机
+    #  解决数据采集时 元素未加载完   拖动进度条
+    #  需要翻页 重复使用 封装函数
+    #  获取页码总数
+    token = driver.find_element_by_xpath('//div[@class=&quot;total&quot;]').text
+    token = int(re.compile('(\d+)').search(token).group(1))
+    return token
+
+#  下拉滑动条
+def drop_down():
+    '''
+     js = 'window.scrollBy(0,8000)'
+     driver.execute_script(js)
+     time.sleep(3)
+    '''
+    # js = 'window.scrollBy(0,8000)'
+    # driver.execute_script(js)
+    # time.sleep(3)
+    for x in range(1,11,2):   #  13579
+        time.sleep(0.5)
+        j = x/10
+        js = 'document.documentElement.scrollTop= document.documentElement.scrollHeight * %f'% j
+        driver.execute_script(js)
+
+#  获取（提取）数据
+def get_product():
+    divs = driver.find_elements_by_xpath('//div[@class=&quot;items&quot;]/div[@class=&quot;item J_MouserOnverReq  &quot;]')
+    for div in  divs:
+        # 宝贝名字
+        name = div.find_element_by_xpath('.//div[@class=&quot;row row-2 title&quot;]').text
+        # 订单量
+        deal = div.find_element_by_xpath('.//div[@class=&quot;deal-cnt&quot;]').text
+        # 图片链接
+        img = div.find_element_by_xpath('//div[@class=&quot;pic-box-inner&quot;]/div[@class=&quot;pic&quot;]/a/img').get_attribute('src')
+        # 价格
+        pic = div.find_element_by_xpath('//div[@class=&quot;price g_price g_price-highlight&quot;]').text
+        # 店铺名称
+        ip_name = div.find_element_by_xpath('//a[@class=&quot;shopname J_MouseEneterLeave J_ShopInfo&quot;]').text
+        mess = {'名称':name,'价格':pic,'订单量':deal,'店铺名称':ip_name,'图片链接':img}
+        print(mess)
+
+
+# 图片的保存，链接已经获取了
+
+
+#  翻页
+def next_page():
+    #  避免反爬机制过强  使用 url  来达到翻页效果
+    token = search_product()   #  到达第1页
+    drop_down()   #   下拉
+    get_product()   #  获取商品
+    num = 1     #  进入第2页操作
+    while num != token:
+        driver.get('https://s.taobao.com/search?q={}&amp;s={}'.format(kw,44*num))
+        #  智能等待 最后等待时间为 20 s，如果超时 抛出异常
+        driver.implicitly_wait(20)
+        num += 1
+        drop_down()  # 下拉
+        get_product()  # 获取商品
+
+
+#  程序入口
+if __name__ == '__main__':
+    kw = input(&quot;请输入需要查询的商品：&quot;)
+    driver = webdriver.Chrome()  # 选择谷歌浏览器
+    driver.get('https://www.taobao.com/')
+    next_page()  # 这个函数里 已经 调用了 关键字点击，下滑条，数据获取 这3个函数
+                 #  所以只调用这个即可 达到目的
 
 
 
-html = r.text
-# 找出小说名称
-title = re.findall(r'&lt;h1&gt;(.*?)&lt;/h1&gt;',html)
-#print(title)
-# 并以他命名一个txt文本
-path = open('%s.txt'%title,'w',encoding='utf-8')
-#  找出部分的 url 通过遍历列表 来 拼接成完整的 url 地址
-urls = re.findall(r'&lt;li&gt;&lt;a href=&quot;(.*?)&quot;&gt;',html,re.S)
-#print(urls)
-#print(len(urls))
-
-
-for url in urls:
-    new_url = 'http://www.39shubao.com' + url
-    # 拼接出完整的url，并再次发送请求
-    #print(new_url)
-    title_down = requests.get(new_url,headers=headers)
-   # print(title_down.status_code)
-    title_down.encoding= title_down.apparent_encoding   # 万能编码格式
-    title_html = title_down.text
-
-
-    # 找出每章节的题目
-    title_html_title = re.findall(r'&lt;h1&gt;(.*?)&lt;/h1&gt;',title_html,re.S)
-    print(title_html_title)
-    #  列表转化为字符串
-    liiie = &quot;&quot;.join(title_html_title)
-    # 找出每章节内容
-    title_unmber = re.findall(r' &lt;div id=&quot;book_text&quot;&gt;(.*?)&lt;div id=&quot;gt1&quot;&gt;&lt;/div&gt;',title_html,re.S)
-    #print(title_unmber)
-
-
-
-    # 数据清洗
-    unmber = &quot;&quot;.join(title_unmber)
-    unmber = unmber.replace('&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;一秒记住【39小说网 &lt;a href=&quot;http://www.39shubao.com&quot; target=&quot;_blank&quot;&gt;','')
-    unmber = unmber.replace('www.39shubao.com&lt;/a&gt;】，精彩小说无弹窗免费阅读！&lt;br /&gt;\n        一秒记住【39小说网 www.39txt.com】，','')
-    unmber = unmber.replace('精彩小说无弹窗免费阅读！&lt;br/&gt;&lt;br/&gt;','')
-    unmber = unmber.replace('&lt;br/&gt;&lt;br/&gt;','')
-    unmber = unmber.replace('&lt;/div&gt;','')
-    unmber = unmber.replace('    ','')
-    #print(unmber)
-    with open(r&quot;C:\Users\DELL\Desktop\python_wd\文本信息\['我的老千江湖'].txt&quot;,&quot;a+&quot;)as f:
-        f.write(liiie)
-        f.write(unmber)
-        f.write('\n')
-        f.close()
-    exit()
 </code></pre>
-<p>运行代码数据部分截图:<br>
-(有点瑕疵，不影响，整理一下就好了)<br>
-<img src="https://posierd.github.io/post-images/1583555764775.png" alt="" loading="lazy"></p>
-<p>————————————END</p>
 
             </div>
             
               <div class="tag-container">
                 
-                  <a href="https://posierd.github.io/tag/oYN426Mph/" class="tag">
-                    Python-Get
+                  <a href="https://posierd.github.io/tag/2m42ER2dt/" class="tag">
+                    python-selenium
                   </a>
                 
               </div>
@@ -195,9 +207,9 @@ for url in urls:
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://posierd.github.io/post/hao-kan-shi-pin-pa-qu/">
+                <a href="https://posierd.github.io/post/jie-xi-wang-dian-ying-xin-xi-huo-qu/">
                   <h3 class="post-title">
-                    好看视频爬取
+                    解析网电影信息获取
                   </h3>
                 </a>
               </div>
