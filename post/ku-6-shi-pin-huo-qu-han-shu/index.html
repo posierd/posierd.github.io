@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>京东汉服 | posierd</title>
+<title>酷6视频获取 函数 | posierd</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -26,10 +26,10 @@
 
     <meta name="description" content="😃😃😃
 import requests
-from bs4 import BeautifulSoup
+import json
 
 headers = {
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64..." />
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit..." />
     <meta name="keywords" content="Python-Get" />
   </head>
   <body>
@@ -101,47 +101,68 @@ headers = {
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">京东汉服</h2>
-            <div class="post-date">2020-03-28</div>
+            <h2 class="post-title">酷6视频获取 函数</h2>
+            <div class="post-date">2020-04-09</div>
             
             <div class="post-content" v-pre>
               <p>😃😃😃</p>
 <pre><code class="language-python">import requests
-from bs4 import BeautifulSoup
+import json
 
 headers = {
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'
 }
-img_list = []
-for page in range(1,7,2):  #  url 初始为1  每递增2 为下一页   这里获取了 3页数据
-    link = 'https://search.jd.com/Search?keyword=%E6%B1%89%E6%9C%8D%E5%A5%B3&amp;enc=utf-8&amp;qrst=1&amp;rt=1&amp;stop=1&amp;vt=2&amp;suggest=1.def.0.V06--12s0%2C20s0%2C38s0%2C97s0&amp;wq=%E6%B1%89%E6%9C%8D&amp;page={}&amp;s=1&amp;click=0'.format(page)
-    print(link)
-
-    response = requests.get(url=link,headers=headers)
-    response.encoding = response.apparent_encoding
-    html = response.text
 
 
-    soup = BeautifulSoup(html,'html.parser')
+#  网页获取
+def get_html(url):
+    print(&quot;正在获取第{}页数据&quot;.format(page))
+    resp = requests.get(url,headers=headers)
+    if resp.status_code == 200:
+        html = json.loads(resp.text)
+        return html
+    else:
+        print(&quot;异常状态响应码:&quot;,resp.status_code)
 
-    for i in range(1,61,1):
-        img = soup.select(&quot;#J_goodsList &gt; ul &gt; li:nth-child(&quot;+str(i)+&quot;) &gt; div &gt; div.p-img &gt; a &gt; img&quot;)  # 谷歌浏览器  copy - selector
-                       # J_goodsList &gt; ul &gt; li:nth-child(1) &gt; div &gt; div.p-img &gt; a &gt; img
-                       # J_goodsList &gt; ul &gt; li:nth-child(2) &gt; div &gt; div.p-img &gt; a &gt; img
-                       # J_goodsList &gt; ul &gt; li:nth-child(60) &gt; div &gt; div.p-img &gt; a &gt; img  # 由此得出 1页 60 张图片
-        for img in img:
-            img = img.get(&quot;source-data-lazy-img&quot;)
-            img_list.append(&quot;https:&quot;+img)
-print(&quot;需要下载的图片数量：&quot;,len(img_list))
 
-name = 0
-for img_link in img_list:
-    name += 1
-    img_scr = requests.get(url=img_link,headers=headers).content
-    print(&quot;正在下载{}张图片&quot;.format(name))
-    with open(r'C:\Users\DELL\Desktop\python_wd\mig\京东汉服\\'+ str(name)+ '.png','wb' )as f:
-        f.write(img_scr)
-print('\n下载完成。。。。。。。')
+#  数据提取
+def parser_html(html):
+    a = html['data']
+
+    for b in a:
+        mp4_url = b['playUrl']
+        mp4_name = b['title'] + '.mp4'
+        save(mp4_url,mp4_name)   # 调用函数
+
+
+#  数据保存
+def save(mp4_url,mp4_name):
+    resp_2 = requests.get(mp4_url,headers=headers)
+    path = r'C:\Users\DELL\Desktop\python_wd\shipin\酷6视频\{}'.format(mp4_name)
+    print(&quot;\t正在保存     {}     &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&quot;.format(mp4_name))
+    with open(path,'wb')as f:
+        f.write(resp_2.content)
+
+
+#  主函数
+def main(page):
+    url = 'https://www.ku6.com/video/feed?pageNo={}&amp;pageSize=40&amp;subjectId=76'.format(page)
+    html = get_html(url)
+    parser_html(html)
+
+
+if __name__ == '__main__':
+    for page in range(1,6):
+        main(page)
+
+
+
+
+
+
+
+
+
 
 
 </code></pre>
@@ -159,9 +180,9 @@ print('\n下载完成。。。。。。。')
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://posierd.github.io/post/guo-ke-wen-da-han-shu/">
+                <a href="https://posierd.github.io/post/tao-bao-xin-xi-huo-qu-bu-bao-cun/">
                   <h3 class="post-title">
-                    果壳问答——函数
+                    淘宝信息获取（不保存）
                   </h3>
                 </a>
               </div>
