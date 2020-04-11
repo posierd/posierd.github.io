@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>机器猫 | posierd</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://posierd.github.io/favicon.ico?v=1586590753121">
+<link rel="stylesheet" href="https://posierd.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="😃😃😃
+# -*- coding: UTF-8 -*-
+
+# 哆啦A梦
+
+import turtle
+
+
+def flyTo(x, y):
+    turtle.penup()
+    turtle.goto(x, y)
+    tu..." />
+    <meta name="keywords" content="画图" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://posierd.github.io">
+        <img src="https://posierd.github.io/images/avatar.png?v=1586590753121" class="site-logo">
+        <h1 class="site-title">posierd</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://posierd.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">机器猫</h2>
+            <div class="post-date">2020-04-11</div>
+            
+            <div class="post-content" v-pre>
+              <p>😃😃😃</p>
+<pre><code class="language-python"># -*- coding: UTF-8 -*-
+
+# 哆啦A梦
+
+import turtle
+
+
+def flyTo(x, y):
+    turtle.penup()
+    turtle.goto(x, y)
+    turtle.pendown()
+
+
+def drawEye():
+    turtle.tracer(False)
+    a = 2.5
+    for i in range(120):
+        if 0 &lt;= i &lt; 30 or 60 &lt;= i &lt; 90:
+            a -= 0.05
+        else:
+            a += 0.05
+        turtle.left(3)
+        turtle.fd(a)
+    turtle.tracer(True)
+
+
+def beard():
+    &quot;&quot;&quot; 画胡子， 一共六根
+    &quot;&quot;&quot;
+    # 左边第一根胡子
+    flyTo(-37, 135)
+    turtle.seth(165)
+    turtle.fd(60)
+
+    # 左边第二根胡子
+    flyTo(-37, 125)
+    turtle.seth(180)
+    turtle.fd(60)
+
+    # 左边第三根胡子
+    flyTo(-37, 115)
+    turtle.seth(193)
+    turtle.fd(60)
+
+    # 右边第一根胡子
+    flyTo(37, 135)
+    turtle.seth(15)
+    turtle.fd(60)
+
+    # 右边第二根胡子
+    flyTo(37, 125)
+    turtle.seth(0)
+    turtle.fd(60)
+
+    # 右边第三根胡子
+    flyTo(37, 115)
+    turtle.seth(-13)
+    turtle.fd(60)
+
+
+def drawRedScarf():
+    &quot;&quot;&quot; 画围巾
+    &quot;&quot;&quot;
+    turtle.fillcolor(&quot;red&quot;)  # 填充颜色
+    turtle.begin_fill()
+    turtle.seth(0)  # 朝向右
+
+    turtle.fd(200)  # 前进10个单位
+    turtle.circle(-5, 90)
+
+    turtle.fd(10)
+    turtle.circle(-5, 90)
+
+    turtle.fd(207)
+    turtle.circle(-5, 90)
+
+    turtle.fd(10)
+    turtle.circle(-5, 90)
+
+    turtle.end_fill()
+
+
+def drawMouse():
+    flyTo(5, 148)
+    turtle.seth(270)
+    turtle.fd(100)
+    turtle.seth(0)
+    turtle.circle(120, 50)
+    turtle.seth(230)
+    turtle.circle(-120, 100)
+
+
+def drawRedNose():
+    flyTo(-10, 158)
+    turtle.fillcolor(&quot;red&quot;)  # 填充颜色
+    turtle.begin_fill()
+    turtle.circle(20)
+    turtle.end_fill()
+
+
+def drawBlackdrawEye():
+    turtle.seth(0)
+    flyTo(-20, 195)
+    turtle.fillcolor(&quot;#000000&quot;)  # 填充颜色
+    turtle.begin_fill()
+    turtle.circle(13)
+    turtle.end_fill()
+    turtle.pensize(6)
+    flyTo(20, 205)
+    turtle.seth(75)
+    turtle.circle(-10, 150)
+    turtle.pensize(3)
+    flyTo(-17, 200)
+    turtle.seth(0)
+    turtle.fillcolor(&quot;#ffffff&quot;)
+    turtle.begin_fill()
+    turtle.circle(5)
+    turtle.end_fill()
+    flyTo(0, 0)
+
+
+def drawFace():
+    &quot;&quot;&quot;
+    &quot;&quot;&quot;
+    turtle.forward(183)  # 前行183个单位
+    turtle.fillcolor(&quot;white&quot;)  # 填充颜色为白色
+    turtle.begin_fill()  # 开始填充
+    turtle.left(45)  # 左转45度
+    turtle.circle(120, 100)  # 右边那半边脸
+    turtle.seth(90)  # 朝向向上
+    drawEye()  # 画右眼睛
+    turtle.seth(180)  # 朝向左
+    turtle.penup()  # 抬笔
+    turtle.fd(60)  # 前行60
+    turtle.pendown()  # 落笔
+    turtle.seth(90)  # 朝向上
+    drawEye()  # 画左眼睛
+    turtle.penup()  # 抬笔
+    turtle.seth(180)  # 朝向左
+    turtle.fd(64)  # 前进64
+    turtle.pendown()  # 落笔
+    turtle.seth(215)  # 修改朝向
+    turtle.circle(120, 100)  # 左边那半边脸
+    turtle.end_fill()  #
+
+
+def drawHead():
+    &quot;&quot;&quot; 画了一个被切掉下半部分的圆
+    &quot;&quot;&quot;
+    turtle.penup()  # 抬笔
+    turtle.circle(150, 40)  # 画圆, 半径150，圆周角40
+    turtle.pendown()  # 落笔
+    turtle.fillcolor(&quot;#00a0de&quot;)  # 填充色
+    turtle.begin_fill()  # 开始填充
+    turtle.circle(150, 280)  # 画圆，半径150, 圆周角280
+    turtle.end_fill()
+
+
+def drawAll():
+    drawHead()
+    drawRedScarf()
+    drawFace()
+    drawRedNose()
+    drawMouse()
+    beard()
+    flyTo(0, 0)
+    turtle.seth(0)
+    turtle.penup()
+    turtle.circle(150, 50)
+    turtle.pendown()
+    turtle.seth(30)
+    turtle.fd(40)
+    turtle.seth(70)
+    turtle.circle(-30, 270)
+    turtle.fillcolor(&quot;#00a0de&quot;)
+    turtle.begin_fill()
+    turtle.seth(230)
+    turtle.fd(80)
+    turtle.seth(90)
+    turtle.circle(1000, 1)
+    turtle.seth(-89)
+    turtle.circle(-1000, 10)
+    turtle.seth(180)
+    turtle.fd(70)
+    turtle.seth(90)
+    turtle.circle(30, 180)
+    turtle.seth(180)
+    turtle.fd(70)
+    turtle.seth(100)
+    turtle.circle(-1000, 9)
+    turtle.seth(-86)
+    turtle.circle(1000, 2)
+    turtle.seth(230)
+    turtle.fd(40)
+    turtle.circle(-30, 230)
+    turtle.seth(45)
+    turtle.fd(81)
+    turtle.seth(0)
+    turtle.fd(203)
+    turtle.circle(5, 90)
+    turtle.fd(10)
+    turtle.circle(5, 90)
+    turtle.fd(7)
+    turtle.seth(40)
+    turtle.circle(150, 10)
+    turtle.seth(30)
+    turtle.fd(40)
+    turtle.end_fill()
+
+    # 左手
+    turtle.seth(70)
+    turtle.fillcolor(&quot;#FFFFFF&quot;)
+    turtle.begin_fill()
+    turtle.circle(-30)
+    turtle.end_fill()
+
+    # 脚
+    flyTo(103.74, -182.59)
+    turtle.seth(0)
+    turtle.fillcolor(&quot;#FFFFFF&quot;)
+    turtle.begin_fill()
+    turtle.fd(15)
+    turtle.circle(-15, 180)
+    turtle.fd(90)
+    turtle.circle(-15, 180)
+    turtle.fd(10)
+    turtle.end_fill()
+    flyTo(-96.26, -182.59)
+    turtle.seth(180)
+    turtle.fillcolor(&quot;#FFFFFF&quot;)
+    turtle.begin_fill()
+    turtle.fd(15)
+    turtle.circle(15, 180)
+    turtle.fd(90)
+    turtle.circle(15, 180)
+    turtle.fd(10)
+    turtle.end_fill()
+
+    # 右手
+    flyTo(-133.97, -91.81)
+    turtle.seth(50)
+    turtle.fillcolor(&quot;#FFFFFF&quot;)
+    turtle.begin_fill()
+    turtle.circle(30)
+    turtle.end_fill()
+
+    # 口袋
+    flyTo(-103.42, 15.09)
+    turtle.seth(0)
+    turtle.fd(38)
+    turtle.seth(230)
+    turtle.begin_fill()
+    turtle.circle(90, 260)
+    turtle.end_fill()
+    flyTo(5, -40)
+    turtle.seth(0)
+    turtle.fd(70)
+    turtle.seth(-90)
+    turtle.circle(-70, 180)
+    turtle.seth(0)
+    turtle.fd(70)
+
+    # 铃铛
+    flyTo(-103.42, 15.09)
+    turtle.fd(90)
+    turtle.seth(70)
+    turtle.fillcolor(&quot;#ffd200&quot;)
+    turtle.begin_fill()
+    turtle.circle(-20)
+    turtle.end_fill()
+    turtle.seth(170)
+    turtle.fillcolor(&quot;#ffd200&quot;)
+    turtle.begin_fill()
+    turtle.circle(-2, 180)
+    turtle.seth(10)
+    turtle.circle(-100, 22)
+    turtle.circle(-2, 180)
+    turtle.seth(180 - 10)
+    turtle.circle(100, 22)
+    turtle.end_fill()
+    flyTo(-13.42, 15.09)
+    turtle.seth(250)
+    turtle.circle(20, 110)
+    turtle.seth(90)
+    turtle.fd(15)
+    turtle.dot(10)
+    flyTo(0, -150)
+    drawBlackdrawEye()
+
+
+def main():
+    turtle.screensize(800, 6000, &quot;#F0F0F0&quot;)
+    turtle.pensize(3)
+    turtle.speed(9)
+    drawAll()
+
+
+if __name__ == &quot;__main__&quot;:
+    main()
+    turtle.mainloop()
+
+
+
+
+
+
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://posierd.github.io/tag/xOU5VJlzF/" class="tag">
+                    画图
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://posierd.github.io/post/ku-6-shi-pin-huo-qu-han-shu/">
+                  <h3 class="post-title">
+                    酷6视频获取 函数
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '19e42b5385f75be24f9c',
+        clientSecret: 'bdb52c22f6310d9789a397ab02c80bc37b618bad',
+        repo: 'posierd.guthub.io',
+        owner: 'bverbh',
+        admin: ['bverbh'],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>
