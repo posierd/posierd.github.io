@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>酷我音乐获取 | posierd</title>
+<title>瓜子二手车数据 | posierd</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -26,9 +26,10 @@
 
     <meta name="description" content="😃😃😃
 import requests
+from  lxml import etree
 
 headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHT..." />
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)..." />
     <meta name="keywords" content="Python-Get" />
   </head>
   <body>
@@ -100,51 +101,91 @@ headers = {
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">酷我音乐获取</h2>
-            <div class="post-date">2020-04-01</div>
+            <h2 class="post-title">瓜子二手车数据</h2>
+            <div class="post-date">2020-04-16</div>
             
             <div class="post-content" v-pre>
               <p>😃😃😃</p>
 <pre><code class="language-python">import requests
+from  lxml import etree
 
 headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36',
-    'Cookie': '_ga=GA1.2.466145602.1585653284; _gid=GA1.2.839707421.1585653284; Hm_lvt_cdb524f42f0ce19b169a8071123a4797=1585653284,1585698391; Hm_lpvt_cdb524f42f0ce19b169a8071123a4797=1585698391; _gat=1; kw_token=UVJVC5WE3FF',
-    'Referer': 'http://www.kuwo.cn/search/list?key=%E5%91%A8%E6%9D%B0%E4%BC%A6',  #  来源（从哪里来）
-    'csrf': 'UVJVC5WE3FF',  #  密链
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36',
+    'Cookie': 'antipas=62849512706902A84315468891; uuid=b3ead87f-9a0c-483a-85cb-485aaf000a68; clueSourceCode=%2A%2300; user_city_id=1001984; ganji_uuid=3167194067293479665083; sessionid=225bd383-ed9d-41e2-9b60-45f3597af578; lg=1; Hm_lvt_936a6d5df3f3d309bda39e92da3dd52f=1587001683; lng_lat=112.93895_35.09563; gps_type=1; close_finance_popup=2020-04-16; cainfo=%7B%22ca_a%22%3A%22-%22%2C%22ca_b%22%3A%22-%22%2C%22ca_s%22%3A%22seo_baidu%22%2C%22ca_n%22%3A%22default%22%2C%22ca_medium%22%3A%22-%22%2C%22ca_term%22%3A%22-%22%2C%22ca_content%22%3A%22-%22%2C%22ca_campaign%22%3A%22-%22%2C%22ca_kw%22%3A%22-%22%2C%22ca_i%22%3A%22-%22%2C%22scode%22%3A%22-%22%2C%22keyword%22%3A%22-%22%2C%22ca_keywordid%22%3A%22-%22%2C%22display_finance_flag%22%3A%22-%22%2C%22platform%22%3A%221%22%2C%22version%22%3A1%2C%22client_ab%22%3A%22-%22%2C%22guid%22%3A%22b3ead87f-9a0c-483a-85cb-485aaf000a68%22%2C%22ca_city%22%3A%22jiaozuo%22%2C%22sessionid%22%3A%22225bd383-ed9d-41e2-9b60-45f3597af578%22%7D; _gl_tracker=%7B%22ca_source%22%3A%22-%22%2C%22ca_name%22%3A%22-%22%2C%22ca_kw%22%3A%22-%22%2C%22ca_id%22%3A%22-%22%2C%22ca_s%22%3A%22self%22%2C%22ca_n%22%3A%22-%22%2C%22ca_i%22%3A%22-%22%2C%22sid%22%3A35951046155%7D; cityDomain=qinyan; preTime=%7B%22last%22%3A1587002688%2C%22this%22%3A1587001679%2C%22pre%22%3A1587001679%7D; Hm_lpvt_936a6d5df3f3d309bda39e92da3dd52f=1587002690',
+    'Referer': 'https://www.guazi.com/qinyan/buy/o2/'
 }
 
+#   获取车辆完整信息的url
+def get_detail_url(url):
+    print(&quot;正在获取第{}页数据&quot;.format(page))
+    resp_1 = requests.get(url,headers=headers)
+    text = resp_1.content.decode('utf-8')
+    html = etree.HTML(text)
+    ul = html.xpath('//ul[@class=&quot;carlist clearfix js-top&quot;]')[0]
+    lis = ul.xpath('./li')
+    detail_url_list = []
+    for li in lis:
+        detail_url = li.xpath('./a/@href')
+        detail_url = 'https://www.guazi.com' + detail_url[0]
+        detail_url_list.append(detail_url)
+    return detail_url_list
 
-def get_musics(sing_rid,sing_name):
-    url_2 = 'http://www.kuwo.cn/url?format=mp3&amp;rid={}&amp;response=url&amp;type=convert_url3&amp;br=128kmp3&amp;from=web&amp;t=1585698406673&amp;reqId=e2030f20-73a9-11ea-b357-51d7f65d1873'.format(sing_rid)
-    resp_2 = requests.get(url_2,headers=headers).json()
-    musics_url = resp_2[&quot;url&quot;]
-    misics_resp = requests.get(musics_url,headers=headers)
-    path = r'C:\Users\DELL\Desktop\python_wd\shipin\酷我音乐\{}.mp3'.format(sing_name)
-    print(&quot;========正在下载  {}歌曲========&quot;.format(sing_name))
-    with open(path,'wb')as f:
-        f.write(misics_resp.content)
+#  提取数据
+def parse_html(url):
+    resp_2 = requests.get(url,headers=headers)
+    text = resp_2.content.decode('utf-8')
+    html = etree.HTML(text)
+    #  车名
+    title = html.xpath('//div[@class=&quot;product-textbox&quot;]/h2/text()')[0]
+    title = title.strip()    # 默认删除收尾空白
+    # 信息
+    info = html.xpath('//ul[@class=&quot;assort clearfix&quot;]/li/span/text()')
+    #  价格
+    pic = html.xpath('//div[@class=&quot;price-main&quot;]/span/text()')[0]
 
 
+    # 根据索引取值
+    infos = {}
+    cardtime = info[0]
+    km = info[1]
+    displacement = info[2]
+    speedbox = info[3]
 
 
-def main():
-    singer = input(&quot;请输入歌手名字：&quot;)
-    number = int(input(&quot;输入想要获取的页数：&quot;))
-    for i in range(1,number + 1):
-        url = 'http://www.kuwo.cn/api/www/search/searchMusicBykeyWord?key={}&amp;pn={}&amp;rn=30&amp;reqId=2eb713c0-7341-11ea-b404-7dadb3c0afa8'.format(singer,i)
-        resp = requests.get(url,headers=headers).json()
-        data = resp[&quot;data&quot;][&quot;list&quot;]
-        for a in data:
-            sing_rid = a[&quot;rid&quot;]
-            sing_name = a[&quot;name&quot;]
-            get_musics(sing_rid,sing_name)
+    # 存入字典 定义键名  value  为数据
+    infos['title'] = title
+    infos['cardtime'] = cardtime
+    infos['km'] = km
+    infos['displacement'] = displacement
+    infos['speedbox'] = speedbox
+    infos['pic'] = pic
+    print(infos)
+    return infos
+
+#  保存数据
+def save_file(infos,f):
+    f.write('{},{},{},{},{},{}\n'.format(infos['title'],infos['cardtime'],infos['km'],infos['displacement'],infos['speedbox'],infos['pic']))
+
+#   主函数  程序入口
+def main(page):
+    url = 'https://www.guazi.com/qinyan/buy/o{}/#bread'.format(page)
+    path = r'C:\Users\DELL\Desktop\python_wd\瓜子二手车.csv'
+    detail_url_list = get_detail_url(url)
+    with open(path,'a+',encoding='utf-8')as f:
+        for detail_urls in detail_url_list:
+            infos = parse_html(detail_urls)
+            save_file(infos,f)
 
 
 
 if __name__ == '__main__':
-    main()
+    for page in range(1,6): #   翻页
+        main(page)
 
+
+#   在csv文件中 日期可能显示为英文
+#   选中 右键 设置单原格格式  - 自定义
+#   将其修改为  yyy-mm-dd  即可
 
 
 
@@ -163,9 +204,9 @@ if __name__ == '__main__':
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://posierd.github.io/post/wo-zhu-liang-yuan-hun-yin-wang-tu-pian-huo-qu/">
+                <a href="https://posierd.github.io/post/ji-qi-mao/">
                   <h3 class="post-title">
-                    我主良缘婚姻网图片获取
+                    机器猫
                   </h3>
                 </a>
               </div>
