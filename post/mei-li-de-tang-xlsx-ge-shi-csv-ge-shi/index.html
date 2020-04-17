@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>美丽的汤   xlsx格式   csv 格式 | posierd</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://posierd.github.io/favicon.ico?v=1587118334751">
+<link rel="stylesheet" href="https://posierd.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="😃😃😃
+'''
+美丽的汤的2种用法
+
+保存数据文件
+xlsx 格式文件
+csv 文件
+'''
+
+from bs4 import BeautifulSoup
+'''
+
+根据 class 的属性值 来提取数据
+find_all 注意在添加..." />
+    <meta name="keywords" content="个人总结" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://posierd.github.io">
+        <img src="https://posierd.github.io/images/avatar.png?v=1587118334751" class="site-logo">
+        <h1 class="site-title">posierd</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://posierd.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">美丽的汤   xlsx格式   csv 格式</h2>
+            <div class="post-date">2020-04-17</div>
+            
+            <div class="post-content" v-pre>
+              <p>😃😃😃</p>
+<pre><code class="language-python">'''
+美丽的汤的2种用法
+
+保存数据文件
+xlsx 格式文件
+csv 文件
+'''
+
+from bs4 import BeautifulSoup
+'''
+
+根据 class 的属性值 来提取数据
+find_all 注意在添加 class 的值是  class 有下划线  class_=&quot;属性值&quot;
+例：豆瓣top 排行榜的电影信息(目标数据在标签外)    time: 2020-02-21
+数据转换   变量 = BeautifulSoup(请求返回.text,'html.parser')
+
+找出最小的父级信息  其包括  name  导演名  ....等  list 数据
+在通过 for  遍历  分别去查找 需要的数据
+find  提取数据
+在获取其电影名称的英文名时（注意这里  find（中文）/   find_all(英文 for )），有些数据可能就没有这个 加个判断   
+有些 电影中并无推荐语  加个 try  来解决
+查找 url（在html标签内） find（）.find()['urld的健明']
+
+
+
+在  “全局”添加一个空的列表  （用于存储保存信息）
+当在 for 循环下找出了所有数据
+用  全局定义的空列表   来接收全部接收  .append([数据1，数据2，数据3.....])
+
+
+****将 其 信息保存   .xlsx 中****
+
+调用库
+全局
+import openpyxl
+
+file = openpyxl.Workbook()   #  建立一个工作薄
+sheet = file.active   #  建立工作表
+sheet.title = '豆瓣爬虫'   # 命名
+
+sheet['A1'] = '排名',
+sheet['B1'] = '电影名',
+.....  全部信息的表头..
+
+for 变量2 in  全局的那列表：
+    print(’变量2‘)
+    sheet.append(变量2)
+file.save('保存的路径\豆瓣爬虫.xlsx')
+
+
+'''
+
+
+*****************************************************************
+
+
+
+
+'''
+美丽的汤  2用法
+例：豆瓣电子书 （数据在标签外）  time:   2020-04-05
+找到目标数据地址   copy-selector
+数据转换 数据转换   变量 = BeautifulSoup(请求返回.text,'html.parser')
+不需要找到最小的父级标签
+
+全局 添加
+a = []
+4 = []
+5 = []
+......
+
+但。。。
+观察第1个 和 最后一个
+变化当中的内容的某个值（所选内容的 copy-selector）
+for i in range(0,x):
+     #   一个数据  a
+     
+    a = 变量.selector（&quot;所选内容的 copy-selector(+str(i)+)&quot;）  list 数据
+    for a in a:
+        print(a.get_text().replace(&quot;删除不需要的内容&quot;,&quot;&quot;).replace()....) 没有问题后
+        a.append(a.get_text().replace(&quot;删除不需要的内容&quot;,&quot;&quot;).replace()....)
+    
+    #  第二个 数据  b  （多个内容 '/' 分割内容 ，需要当中特定的4 5 6 ----有些则只有一个(4)  就判断列表长度最少为4 ）
+    b = 变量.selector（&quot;所选内容的 copy-selector(+str(i)+)&quot;）  list 数据
+    for b in b:
+        b = b.get_text().replace(&quot;删除不需要的内容&quot;,&quot;&quot;).replace()....
+        特殊变量（只使用一次） = b.split(&quot;/&quot;)   此时  list 数据
+        if  len(特殊变量) &gt;= 4:
+            4.append(特殊变量[对应具体索引])
+            5.append(特殊变量[对应具体索引])
+            6.append(特殊变量[对应具体索引])
+        else:
+            4.append(特殊变量[对应具体索引])
+            5.append(&quot;没有数据&quot;)
+            6.append(&quot;没有数据&quot;) 
+        
+    
+    
+    # 数据  ....
+    ....
+    
+    
+    ****保存数据 .csv 格式****
+    全局
+import csv
+
+file_path = r'路径/豆瓣小说.csv'
+with open(file_path,'w',newline=&quot;&quot;,encoding='uft-8')as f:
+    filednames = ['','','','',.....]   与其对应的表头内容
+    f_csv = csv.DictWriter(f,filednames=filednames)
+    f_csv.writeheader()   写入表头
+    
+    #  写入行
+    for  ? in range(0,len(a)):
+        f_csv.writerow(
+            {
+                &quot;与数据a相关的健明&quot;：a[?],       加了个字典 
+                &quot;与数据b相关的健明&quot;：b[?],
+                &quot;与数据c相关的健明&quot;：c[?],
+                .......
+            }
+        )
+
+    
+
+
+
+
+
+
+'''
+
+
+
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://posierd.github.io/tag/7oTbSAx8F/" class="tag">
+                    个人总结
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://posierd.github.io/post/gua-zi-er-shou-che-shu-ju/">
+                  <h3 class="post-title">
+                    瓜子二手车数据
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '19e42b5385f75be24f9c',
+        clientSecret: 'bdb52c22f6310d9789a397ab02c80bc37b618bad',
+        repo: 'posierd.guthub.io',
+        owner: 'bverbh',
+        admin: ['bverbh'],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>
