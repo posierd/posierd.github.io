@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>贴吧美女图片获取 | posierd</title>
+<title>有道翻译  新（js） | posierd</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -25,12 +25,20 @@
 
 
     <meta name="description" content="😃😃😃
+'''
+js 解密
+有道翻译
+'''
 import requests
-import parsel
+import time
+import random   #  随机数
+import hashlib  #  md5 加密
+
+
 
 headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; r..." />
-    <meta name="keywords" content="Python-Get" />
+  ..." />
+    <meta name="keywords" content="python—POST" />
   </head>
   <body>
     <div id="app" class="main">
@@ -101,46 +109,120 @@ headers = {
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">贴吧美女图片获取</h2>
-            <div class="post-date">2020-03-28</div>
+            <h2 class="post-title">有道翻译  新（js）</h2>
+            <div class="post-date">2020-04-23</div>
             
             <div class="post-content" v-pre>
               <p>😃😃😃</p>
-<pre><code class="language-python">import requests
-import parsel
+<pre><code class="language-python">'''
+js 解密
+有道翻译
+'''
+import requests
+import time
+import random   #  随机数
+import hashlib  #  md5 加密
+
+
 
 headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko'
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36',
+    'Referer': 'http://fanyi.youdao.com/',
+    'Cookie': 'OUTFOX_SEARCH_USER_ID=-148473857@10.169.0.83; JSESSIONID=aaafbpaaZm1Q5-_wxwLgx; OUTFOX_SEARCH_USER_ID_NCOO=982336911.512214; ___rl__test__cookies=1587617780880',
 }
-name = 1
 
 
-for page in range(0,4):
-    print(&quot;\n正在获取第{}页数据&quot;.format(page + 1))
-    url = &quot;https://tieba.baidu.com/f?kw=%E7%BE%8E%E5%A5%B3&amp;ie=utf-8&amp;pn={}&quot;.format(page * 50)
 
-    reapnse = requests.get(url,headers=headers)
-    html = parsel.Selector(reapnse.text)  #  数据转换
+#  输入翻译内容
+word = input(&quot;请输入需要翻译的内容：&quot;)
 
-    title_url = html.xpath('//div[@class=&quot;threadlist_lz clearfix&quot;]/div/a/@href').extract()
 
-    #  拼接 帖子详情链接
-    start = 'https://tieba.baidu.com'
-    for  title in title_url:
-        new_url = start + title
-        resp2 = requests.get(new_url,headers=headers)
-        html2 = parsel.Selector(resp2.text)
-        # 提取图片 url
-        img_url = html2.xpath('//cc/div/img[@class=&quot;BDE_Image&quot;]/@src').extract()
-        # 获取图片数据
+#   请求时携带的参数
+data = {
+    'i':word,
+    'from': 'AUTO',
+    'to': 'AUTO',
+    'smartresult': 'dict',
+    'client': 'fanyideskweb',
+    #  时间戳
+    'salt':None,
+    'sign': None,
+    # 时间戳（毫秒）
+    'ts': None,
+    'bv': None,
+    'doctype': 'json',
+    'version': '2.1',
+    'keyfrom': 'fanyi.web',
+    'action': 'FY_BY_CLICKBUTTION',
+}
 
-        for img in img_url:
-            resp3 = requests.get(img,headers=headers)
-            print(&quot;\t正在保存第{}张图片&quot;.format(name))
-            path = r'C:\Users\DELL\Desktop\python_wd\mig\百度贴吧\{}.jpg'.format(name)
-            with open(path,'wb')as f:
-                f.write(resp3.content)
-            name += 1
+
+'''
+关于时间戳 查找在线工具（删除后4位 s单位）来转换
+后4位为随机数
+参数  sign  bv  是变化的（是本地js加密）
+在网页源代码中找到  &lt;/script&gt;  段落 复制内容进行格式化将内容本地 保存为 xxx.js 文件
+在保存的文件中 用 data  的 参数client 里的值  查找  
+分析 代码
+sign: n.md5(&quot;fanyideskweb&quot; + e + i + &quot;Nw(nmmbP%A-r6U3EUn]Aj&quot;)  
+ e  为翻译的内容
+ i  为 参数 salt 的值 ——   r + 时间戳
+ .....
+ 就用这段以 python 来模拟
+ 
+'''
+
+#   根据查找数据 找到这段
+#   将当中的内容用 python  来实现
+'''
+var t = n.md5(navigator.appVersion),
+r = &quot;&quot; + (new Date).getTime(),
+i = r + parseInt(10 * Math.random(), 10);
+return {   
+    ts: r,
+    bv: t,
+    salt: i,
+    sign: n.md5(&quot;fanyideskweb&quot; + e + i + &quot;Nw(nmmbP%A-r6U3EUn]Aj&quot;)
+}
+'''
+#   开始实现
+
+#  时间戳加密
+ts = str(int(time.time()) * 1000)
+salt = ts + str(int(random.random()*10))
+
+#  拼接
+sign = &quot;fanyideskweb&quot; + word + salt + &quot;Nw(nmmbP%A-r6U3EUn]Aj&quot;
+#  处理（加密）
+sign = hashlib.md5(sign.encode('utf-8')).hexdigest()
+
+
+#  请求头
+bv = &quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36&quot;
+#  处理（加密）
+bv = hashlib.md5(bv.encode('utf-8')).hexdigest()
+
+# 修改携带参数  通过键名来修改值（上面模拟的参数）
+data['i'] = word
+data['ts'] = ts
+data['salt'] = salt
+data['sign'] = sign
+data['bv'] = bv
+
+
+
+#  发送请求  提取数据
+url = 'http://fanyi.youdao.com/translate_o?smartresult=dict&amp;smartresult=rule'
+resp_1 = requests.post(url,data=data,headers=headers)
+html = resp_1.json()['translateResult']
+for a in html:
+    mess = a[0]['tgt']
+    print(&quot;输出结果：&quot;,mess)
+
+    # for b in a:
+    #     mess = b['tgt']
+    #     print(mess)
+
 
 
 
@@ -151,8 +233,8 @@ for page in range(0,4):
             
               <div class="tag-container">
                 
-                  <a href="https://posierd.github.io/tag/oYN426Mph/" class="tag">
-                    Python-Get
+                  <a href="https://posierd.github.io/tag/IeS7BM4IJ/" class="tag">
+                    python—POST
                   </a>
                 
               </div>
@@ -160,9 +242,9 @@ for page in range(0,4):
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://posierd.github.io/post/mei-nu-shou-ji-bi-zhi-huo-qu/">
+                <a href="https://posierd.github.io/post/la-gou-shu-ju-yi-ye-huo-qu/">
                   <h3 class="post-title">
-                    美女手机壁纸获取
+                    拉钩数据一页获取
                   </h3>
                 </a>
               </div>
