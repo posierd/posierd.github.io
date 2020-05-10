@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>必应壁纸爬取  def | posierd</title>
+<title>瓜子二手车   翻页  csv | posierd</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -24,13 +24,13 @@
 
 
 
-    <meta name="description" content="目标地址
-😃😃😃
+    <meta name="description" content="😃😃😃
 import requests
-from lxml import etree
+from bs4 import BeautifulSoup
 
-headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; ..." />
+# import io
+# import sys
+# sys.stdout = io.TextIOWrapper(sys.stdou..." />
     <meta name="keywords" content="Python-Get" />
   </head>
   <body>
@@ -102,54 +102,77 @@ headers = {
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">必应壁纸爬取  def</h2>
-            <div class="post-date">2020-03-10</div>
+            <h2 class="post-title">瓜子二手车   翻页  csv</h2>
+            <div class="post-date">2020-05-10</div>
             
             <div class="post-content" v-pre>
-              <p><a href="https://bing.ioliu.cn/?p=1">目标地址</a></p>
-<p>😃😃😃</p>
+              <p>😃😃😃</p>
 <pre><code class="language-python">import requests
-from lxml import etree
+from bs4 import BeautifulSoup
+
+# import io
+# import sys
+# sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='gb18030')  #  改变标准输出的默认编码
 
 headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36',
+    'Cookie': 'antipas=9e2f7r9Zdt73Aa5Np1551282931; uuid=6ad2765a-20f5-4965-fa16-775aaa16a524; cityDomain=qinyan; clueSourceCode=%2A%2300; user_city_id=1001984; Hm_lvt_936a6d5df3f3d309bda39e92da3dd52f=1589072257; ganji_uuid=3010858154925758839406; sessionid=d16a17f2-bbb1-4796-a60d-78754a64fd89; lg=1; close_finance_popup=2020-05-10; lng_lat=112.897858_35.042336; gps_type=1; cainfo=%7B%22ca_a%22%3A%22-%22%2C%22ca_b%22%3A%22-%22%2C%22ca_s%22%3A%22seo_baidu%22%2C%22ca_n%22%3A%22default%22%2C%22ca_medium%22%3A%22-%22%2C%22ca_term%22%3A%22-%22%2C%22ca_content%22%3A%22-%22%2C%22ca_campaign%22%3A%22-%22%2C%22ca_kw%22%3A%22-%22%2C%22ca_i%22%3A%22-%22%2C%22scode%22%3A%22-%22%2C%22keyword%22%3A%22-%22%2C%22ca_keywordid%22%3A%22-%22%2C%22display_finance_flag%22%3A%22-%22%2C%22platform%22%3A%221%22%2C%22version%22%3A1%2C%22client_ab%22%3A%22-%22%2C%22guid%22%3A%226ad2765a-20f5-4965-fa16-775aaa16a524%22%2C%22ca_city%22%3A%22jiaozuo%22%2C%22sessionid%22%3A%22d16a17f2-bbb1-4796-a60d-78754a64fd89%22%7D; preTime=%7B%22last%22%3A1589072287%2C%22this%22%3A1589072255%2C%22pre%22%3A1589072255%7D; Hm_lpvt_936a6d5df3f3d309bda39e92da3dd52f=1589072289',
 }
-number = 1  # 全局变量
 
-#  下载网页
-def get_html(link):
-    print(&quot;第{}页数据获取&quot;.format(page))
-    html = requests.get(link,headers=headers).text
-    return html
+# 获取网页信息
+def get_html(url):
+    print(&quot;======正在保存{}页数据======&quot;.format(page))
+    try:
+        html = requests.get(url,headers=headers).content
+        html = html.decode('utf-8')
+        return html
+    except:
+        return '产生异常'
 
-# 获取图片的 link 地址
-def get_img_src(html):
-    img_etree = etree_html = etree.HTML(html)  #  转换数据
-    img_links = img_etree.xpath('//img/@data-progressive')  # 获取图片的 link 数据 使用 xpaht 语法
-    return img_links
 
-#  保存图片到本地
-def save_img(img_links):
-    global number
-    for img_link in img_links:
-        a = requests.get(img_link,headers=headers).content
-        print(&quot;正在保存{}张图片&quot;.format(number))
-        with open(r'C:\Users\DELL\Desktop\python_wd\mig\必应壁纸\\'+ str(number)+ '.jpg',mode='wb')as f:
-            f.write(a)
-        number += 1
+#  提取数据
+def parse_html(html):
+    #  解析数据
+    soup = BeautifulSoup(html,'html.parser')
+    list = soup.find('ul',{'class':'carlist clearfix js-top'}).find_all('li')   # 包含所有车辆信息的最小父级
+    path = r'C:\Users\DELL\Desktop\python_wd\瓜子二手车.csv'
+    with open(path,'a',encoding='utf-8')as f:
+        for i in list:
+            name = i.find('h2',class_=&quot;t&quot;).get_text()
+            number = i.find('div',class_=&quot;t-i&quot;).get_text().split('|')
+            year = number[0]
+            km = number[1]
+            pic1 = i.find('p').get_text()  #  售价
+
+            try:
+                pic2 = i.find('em',class_=&quot;line-through&quot;).get_text()
+            except:
+                pic2 = 'null'
+
+            f.write(&quot;{},{},{},{},{}\n&quot;.format(name,year,km,pic1,pic2))
+
+
+            print(&quot;\t保存信息车名:&quot;,name)
+
+
+
+
+#   主函数 入口
+def main(page):
+    start_url = 'https://www.guazi.com/qinyan/buy/o{}/#bread'.format(page)
+    html = get_html(start_url)
+    parse_html(html)
+
 
 if __name__ == '__main__':
-    for page in range(1,3):
-        link = 'https://bing.ioliu.cn/?p={}'.format(page)
-        html = get_html(link)
-        img_links = get_img_src(html)
-        save_img(img_links)
+    for page in range(1,6):
+        main(page)
+
+
+
 
 
 </code></pre>
-<p>运行代码数据部分截图：<br>
-<img src="https://posierd.github.io/post-images/1583816132679.png" alt="" loading="lazy"></p>
-<p>——————NED</p>
 
             </div>
             
@@ -164,9 +187,9 @@ if __name__ == '__main__':
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://posierd.github.io/post/pa-qu-mm-tu-pian-shi-yong-def-han-shu/">
+                <a href="https://posierd.github.io/post/ken-de-ji-men-dian-csv/">
                   <h3 class="post-title">
-                    爬取MM 图片使用 def函数
+                    肯德基门店  csv
                   </h3>
                 </a>
               </div>
