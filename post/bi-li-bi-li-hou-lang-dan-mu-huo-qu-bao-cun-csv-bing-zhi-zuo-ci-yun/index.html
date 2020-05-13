@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>我主良缘婚姻网图片获取 | posierd</title>
+<title>哔哩哔哩 后浪 弹幕 获取  保存 csv 并制作词云 | posierd</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -25,15 +25,17 @@
 
 
     <meta name="description" content="😃😃😃
+''''
+找出真实的弹幕列表的url
+保存 csv  文件
+制作词云图
 '''
-保存图片为例
-分析数据
-startage: 21  最小年龄
-endage: 30   最大年龄
-gender: 2   性别  女
-cityid: 149  城市编号
-startheight: 151  身高
-end..." />
+import re
+import requests
+import csv
+
+
+# headers = {'User-Agent': 'Mozill..." />
     <meta name="keywords" content="Python-Get" />
   </head>
   <body>
@@ -105,140 +107,77 @@ end..." />
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">我主良缘婚姻网图片获取</h2>
-            <div class="post-date">2020-04-01</div>
+            <h2 class="post-title">哔哩哔哩 后浪 弹幕 获取  保存 csv 并制作词云</h2>
+            <div class="post-date">2020-05-13</div>
             
             <div class="post-content" v-pre>
               <p>😃😃😃</p>
-<pre><code class="language-python">'''
-保存图片为例
-分析数据
-startage: 21  最小年龄
-endage: 30   最大年龄
-gender: 2   性别  女
-cityid: 149  城市编号
-startheight: 151  身高
-endheight: 160   身高
-marry: 1  婚姻状况  未婚
-education: 30
-salary: 2    薪资  k
-page: 1  页码
-http://www.lovewzly.com/jiaoyou.html
-
-
+<pre><code class="language-python">''''
+找出真实的弹幕列表的url
+保存 csv  文件
+制作词云图
 '''
+import re
 import requests
-
-headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'
-}
+import csv
 
 
-def set_age():
-    '''设置年龄'''
-    age = int(input(&quot;请输入期望对方的年龄：&quot;))
-    if 21 &lt;= age &lt;= 30:
-        startage = 21
-        endage = 30
-    elif 31 &lt;= age &lt;= 40:
-        startage = 31
-        endage = 40
-    return startage,endage
+# headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36'}
+# url = 'https://api.bilibili.com/x/v1/dm/list.so?oid=187026994'
+# resp = requests.get(url,headers=headers)
+# resp.encoding = resp.apparent_encoding
+# html = resp.text
+#
+# q = re.compile('&lt;d p=.*?&gt;(.*?)&lt;/d&gt;')
+# danmu = re.findall(q,html)
+# print(len(danmu))
+# path = r'C:\Users\DELL\Desktop\python_wd\后浪.csv'
+# for b in danmu:
+#     with open(path,'a',newline='',encoding='utf-8-sig')as f:
+#         f_csv= csv.writer(f)
+#         danmu = []
+#         danmu.append(b)
+#         f_csv.writerow(danmu)
 
-
-def set_sex():
-    '''设置性别'''
-    sex  = input(&quot;请输入期望的对方性别：&quot;)
-    if sex == '男':
-        gender =  1
-    else:
-        gender =  2
-    return gender
-
-
-def set_height():
-    '''设置身高'''
-    height = input(&quot;请输入期望对方的身高(cm):&quot;)
-    if 151 &lt;= int(height) &lt;= 160:
-        startheight = 151
-        endheight = 160
-    elif 161 &lt;= int(height) &lt;= 170:
-        startheight = 161
-        endheight = 170
-    elif 171 &lt;= int(height) &lt;= 180:
-        startheight = 171
-        endheight = 180
-    elif 181 &lt;= int(height) &lt;= 190:
-        startheight = 181
-        endheight = 190
-    else:
-        startheight = 0
-        endheight = 0
-    return startheight,endheight
-
-
-def set_money():
-    '''设置薪水'''
-    money = input(&quot;请输入期望对方的薪资（例 6000）： &quot;)
-    if 2000 &lt;= int(money) &lt;= 5000:
-        salary = 2
-    elif 5000 &lt;= int(money) &lt;= 10000:
-        salary = 3
-    elif 10000 &lt;= int(money) &lt;= 20000:
-        salary = 4
-    elif 20000 &lt; int(money):
-        salary = 5
-    else:
-        salary = 0
-    return salary
-
-def get_data(page,startage,endage,gender,startheight, endheight,salary):
-    # 解析网页
-    url = 'http://www.lovewzly.com/api/user/pc/list/search?startage={}&amp;endage={}&amp;gender={}&amp;cityid=383&amp;startheight={}&amp;endheight={}&amp;marry=1&amp;salary={}&amp;page={}'.format(startage,endage,gender,startheight,endheight,salary,page)
-    resp = requests.get(url,headers=headers)
-    # print(resp.status_code)
-    if resp.status_code == 200 :
-            return resp.json()
-    else:
-        pass
-
-
-def save_img(item):
-    path = r'C:\Users\DELL\Desktop\python_wd\mig\我主良缘\{}.png'.format(item['username'])
-    img_url = item['avatar']
-    resp_2 = requests.get(img_url,headers=headers)
-    if resp_2.status_code == 200:
-        print(&quot;正在保存{}的信息&quot;.format(item['username']))
-        with open(path,'wb')as f:
-            f.write(resp_2.content)
-    else:
-        print(&quot;保存失败。。。。&quot;)
-
-def set_data():
-    '''查询符合条件的数据'''
-    print(&quot;请输入筛选条件，开始本次姻缘&quot;)
-    startage,endage = set_age()  #  年龄
-    gender = set_sex()   #  性别
-    startheight, endheight = set_height() #  身高
-    salary = set_money()   #  薪资
-
-    for page in range(1,6):    #  页码
-        #  根据用户输入的数据，获取服务器返回的数据
-        json = get_data(page,startage,endage,gender,startheight, endheight,salary)
-        # print(json['data'])
-        for item in json['data']['list']:
-           # print(item['monolog'])
-           save_img(item)
+#   注释为不让多次爬取
 
 
 
-set_data()
+#  词云制作
+#  两个都是第三方库
+import jieba
+import  wordcloud
+#  打开文件（保存 弹幕的 csv 文件）
+path = r'C:\Users\DELL\Desktop\python_wd\后浪.csv'
+f = open(path,encoding='utf-8')
+txt = f.read()  #   读取
+txt_list = jieba.lcut(txt)  #  处理  分词数据(返回数据类型列表)
+#print(txt_list)   #  理解为分词处理 后的结果
+# 接下来 理解为  将其这些内容 拼接为  完整的  字符串
+string = ' '.join(txt_list)
+print(string)
 
+#  创建对象 填写参数
+w = wordcloud.WordCloud(width=1000,
+                        height=700,
+                        background_color='white',  #  背景颜色
+                        font_path='msyh.ttc',   #  字体
+                        scale=15, # 间隔
+                        stopwords={' ','?','!',','},  # 停用词  剔除不需要显示的字符
+                        contour_width=5,                #  整个内容显示的宽度
+                        contour_color='red',      #  内容显示的颜色 红色边境
+)
+
+w.generate(string)  #  传入处理好的字符窜
+photo_path = r'C:\Users\DELL\Desktop\python_wd\houlang.png'
+w.to_file(photo_path)
 
 
 
 
 </code></pre>
+<p>====================================================</p>
+<figure data-type="image" tabindex="1"><img src="https://posierd.github.io/post-images/1589369937246.png" alt="效果图" loading="lazy"></figure>
 
             </div>
             
@@ -253,9 +192,9 @@ set_data()
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://posierd.github.io/post/python-zhi-shi-dian-shu-li/">
+                <a href="https://posierd.github.io/post/gua-zi-er-shou-che-fan-ye-csv/">
                   <h3 class="post-title">
-                    python知识点梳理
+                    瓜子二手车   翻页  csv
                   </h3>
                 </a>
               </div>
