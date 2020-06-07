@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://posierd.github.io/favicon.ico?v=1589370004908">
+<link rel="shortcut icon" href="https://posierd.github.io/favicon.ico?v=1591509418898">
 <link rel="stylesheet" href="https://posierd.github.io/styles/main.css">
 
 
@@ -26,12 +26,9 @@
 
     <meta name="description" content="😃😃😃
 import requests
-import re
-def download_one_m4a(dan_id,name):
-    '''下载一页中的一个数据'''
+import parsel
 
-   #  将其改变为 形参 方便数据改变
-   # dan..." />
+headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/53..." />
     <meta name="keywords" content="Python-Get" />
   </head>
   <body>
@@ -41,7 +38,7 @@ def download_one_m4a(dan_id,name):
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://posierd.github.io">
-        <img src="https://posierd.github.io/images/avatar.png?v=1589370004908" class="site-logo">
+        <img src="https://posierd.github.io/images/avatar.png?v=1591509418898" class="site-logo">
         <h1 class="site-title">posierd</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -109,89 +106,77 @@ def download_one_m4a(dan_id,name):
             <div class="post-content" v-pre>
               <p>😃😃😃</p>
 <pre><code class="language-python">import requests
-import re
-def download_one_m4a(dan_id,name):
-    '''下载一页中的一个数据'''
+import parsel
 
-   #  将其改变为 形参 方便数据改变
-   # dan_id = '98791745'
-    #  第一集 url 中的 后缀
-    headers = {
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36'
-    }
-    new_link = ' https://www.ximalaya.com/revision/play/v1/audio?id={}&amp;ptype=1'.format(dan_id)
-    #  获取真实的 ip数据
-    new_r = requests.get(new_link,headers=headers)
+headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'}
 
-
+'''
+一集的真实播放地址 其实是在 一个 接口里的 json 里的 数据
+需要获取到每一集的 真实播放 接口的 url 
+对其发送 请求 对返回的数据结果 进行数据提取就可以得到真实的 播放地址
+接口的  url https://www.ximalaya.com/revision/play/v1/audio?id=238092&amp;ptype=1
+具体一集的 播放地址   https://www.ximalaya.com/xiangsheng/3820/238092
+发现 播放地址的 后缀就是  接口 url 里的 id  的 参数值  其他参数不变
+每一集 都有相对应的 “id” 的参数值
+'''
 
 
+#  对一个音频下载
+#  需要的参数 真实的播放url   与其对应的名字
+def  down_mp4 (player,mp4_name):
+    resp  = requests.get(player,headers=headers)
+    path = r'C:\Users\DELL\Desktop\python_wd\{}.mp4'.format(mp4_name)
+    with open(path,mode='wb')as f:
+        f.write(resp.content)
+
+
+#  获取真实的 url
+#  （url 中 缺少 id 值）
+#  对接口url发送请求 获取 json 数据  以便提取其中的 真实播放地址
+def get_playapi(id_num):
+    api_url = 'https://www.ximalaya.com/revision/play/v1/audio?id={}&amp;ptype=1'.format(id_num)
+    resp_2 = requests.get(api_url,headers=headers)
+    data = resp_2.json()  # json 数据类型转化
+    api = data['data']['src']  #  根据字典健名 进行取值  获取真实的 播放地址
+    print(api)
+    return api
+
+
+#  获取 id  得到 函数 get_playapi() 需要的 id 参数（调用，以便得到真实的播放地址）
+#  名字获取  得到 函数 down_mp4（） 当中需要的 对应的 音频名字
+def get_id(url):  #  此 url 为页面的地址
+    resp_3 = requests.get(url,headers=headers)
+    sel = parsel.Selector(resp_3.text)  #  数据转换
+    lists = sel.css('.sound-list ul li a')   #  新的 数据提取方法
+    for list in lists[0:30]: #  真正需要的数据只有 30条 ，使用列表的切片来解决
+        api_id = list.css('a::attr(href)').extract_first()
+        api_id = api_id.split('/')[-1]  #  字符串分割 取最后一位
+        name = list.css('a::attr(title)').extract_first()
+        # print(api_id,name)
+        yield api_id,name
 
 
 
-    # 把字符串变为字典
-    #print(new_r.json()['data']['src'])  #  这个字典中包含有真实的音频 ip 播放地址   src
-    #  data 为字典  src包含在其中  健名
-    #  将其赋值为变量方便使用
-    m4a_url = new_r.json()['data']['src']
-    #  传递第给下面的 link  中
-    #  因为下面的 link（音频地址） 的下载
-    #  原 link数据 link = 'https://fdfs.xmcdn.com/group47/M0A/34/EA/wKgKm1tHj6GwgeWBAFehkfjyvKI1m81.4a'
+def main(page):
+    url = 'https://www.ximalaya.com/xiangsheng/3820/p{}/'.format(page)
+    midle = get_id(url)  #  选择一变量来接收 get_id() 函数 返回的 两个参数 分别是
+                         # “ 构建（函数名 get_playapi（提取真实的播放地址））*** api的url里的 id  参数 *** 以便拼接出完整的 api 地址”
+                         #  音频的名字
+    for api_id,name in midle:
+        api = get_playapi(api_id)  #  函数 get_playapi()  获取了 真实的 播放地址 结果 是  api（真实的播放地址）
+        down_mp4(api,name)   #  函数 down_mp4()  中需要两个 参数 真实的 播放地址  和 音频的名字
 
 
-    # 播放接口    https://www.ximalaya.com/revision/play/v1/audio?id=98791745&amp;ptype=1
-    # 又以第一集新打开一个窗口  https://www.ximalaya.com/youshengshu/16411402/98791745
-    # 又以第二集新开开一个窗口  https://www.ximalaya.com/youshengshu/16411402/98936430
-    #  发现后缀发生了变化  那么就以播放接口 改变 后缀 就可以访问相应的集数
-    #  将接口写入 新的  link（接口） 中  通过与 dan_id  组合发生变化达到访问
+
+if __name__ == '__main__':
+    for page in range(1,31):   # 翻页处理
+        main(page)
 
 
-    link = m4a_url
-    headers = {
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36'
-    }
-    r = requests.get(link,headers=headers)
-    print(&quot;页面状态响应码:&quot;,r.status_code)
-    print(name)
-    with open(r'C:\Users\DELL\Desktop\python_wd\shipin\音频\{}.m4a'.format(name),mode='wb')as f:
-        f.write(r.content)
-#download_one_m4a(98791745)
 
 
-def one_page(html_link):
-    '''获取html页面信息中的 后缀 及其名字 '''
-    #  在首页 html 获取 后缀 及其 名字
-    # html_link = 'https://www.ximalaya.com/youshengshu/16411402/'   首页
-    headers = {
-            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36'
-        }
-    r_html = requests.get(html_link,headers=headers)
-    html = r_html.text
-    #print(html)
-    # 使用正则表达式 提取数据
-    message = re.findall('&lt;div class=&quot;text _Vc&quot;&gt;&lt;a title=&quot;(.*?)&quot; href=&quot;/youshengshu/16411402/(.*?)&quot;&gt;',html,re.S)
-    # 找出来的数据类型 为 列表
-    for mess in message:
-    #   print(mess)
-        download_one_m4a(mess[1],mess[0])
-#       1 写前面 是为了 与 函数   down_one_m4a 中的  dan_id 的形参 对应
 
-
-#one_page('https://www.ximalaya.com/youshengshu/16411402/')
-
-def down_all():
-    '''做 翻页 函数'''
-    for i in range(1,36):
-        print(&quot;正在获取{}页的数据&quot;.format(i))
-       # print('https://www.ximalaya.com/youshengshu/16411402/p{}/'.format(i))
-        one_page('https://www.ximalaya.com/youshengshu/16411402/p{}/'.format(i))
-
-
-down_all()
 </code></pre>
-<p>代码运行数据部分截图：<br>
-<img src="https://posierd.github.io/post-images/1583553799082.png" alt="" loading="lazy"></p>
-<p>————————END</p>
 
             </div>
             
