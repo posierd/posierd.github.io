@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://posierd.github.io/favicon.ico?v=1591584229059">
+<link rel="shortcut icon" href="https://posierd.github.io/favicon.ico?v=1591602137566">
 <link rel="stylesheet" href="https://posierd.github.io/styles/main.css">
 
 
@@ -24,13 +24,14 @@
 
 
 
-    <meta name="description" content="目标地址
-😃😃😃
-#  目标地址： https://wx.tianyabooks.com/book/hywx5/
-import re
-import requests
-def get_url(url):
-   r = requests...." />
+    <meta name="description" content="😃😃😃
+
+
+'''
+找的页面的 小说名字的 html 建议 提取 h1 的标签（提取每章节的名字时也这样做）
+关于章节 的 url
+ul 标签下 4个 li 标签 里  a 标签 的 href 的属性值 注意拼接
+得到每章节的url ..." />
     <meta name="keywords" content="Python-Get" />
   </head>
   <body>
@@ -40,7 +41,7 @@ def get_url(url):
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://posierd.github.io">
-        <img src="https://posierd.github.io/images/avatar.png?v=1591584229059" class="site-logo">
+        <img src="https://posierd.github.io/images/avatar.png?v=1591602137566" class="site-logo">
         <h1 class="site-title">posierd</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -106,66 +107,89 @@ def get_url(url):
             <div class="post-date">2020-03-07</div>
             
             <div class="post-content" v-pre>
-              <p><a href="https://wx.tianyabooks.com/book/hywx5/">目标地址</a></p>
-<p>😃😃😃</p>
-<pre><code class="language-python">#  目标地址： https://wx.tianyabooks.com/book/hywx5/
-import re
+              <p>😃😃😃</p>
+<pre><code class="language-python">
+
+'''
+找的页面的 小说名字的 html 建议 提取 h1 的标签（提取每章节的名字时也这样做）
+关于章节 的 url
+ul 标签下 4个 li 标签 里  a 标签 的 href 的属性值 注意拼接
+得到每章节的url  再次发送请求  将此时返回的数据进行数据提取
+在内容提取 需要进行数据清洗 可用方法 .replace(&quot;需要替换的内容&quot;，“”)  理解为将内容替换为 空
+保存时  注意写入模式为 追加  可用  a/a+  来实现
+
+'''
+
+
 import requests
-def get_url(url):
-   r = requests.get(url)
-   r.encoding = r.apparent_encoding
-   return r.text
-def get_messages(html):
-   all_message = re.findall(r'&lt;dd&gt;&lt;a href=&quot;(.*?)&quot;&gt;(.*?)&lt;/a&gt;&lt;/dd&gt;',html)
-   return all_message
+import re
+
+headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'}
+
+#  获取 html 代码
+def get_html(url):
+    resp = requests.get(url,headers=headers)
+    resp.encoding = resp.apparent_encoding  #  万能编码
+    html = resp.text
+    return html
+
+# 获取 章节的短链接（需要拼接）   书名
+def get_url(html):
+    # 书名
+    name = re.findall('&lt;h1&gt;(.*?)&lt;/h1&gt;',html)[0]  #  re 找到的结果的数据类型为 list  ，可以根据索引来提取
+    # 所有的 章节短链接 这个用 for  遍历提取 以便拼接出完整的 url
+    urllist = re.findall('&lt;li&gt;&lt;a href=&quot;(.*?)&quot;&gt;.*?&lt;span&gt;&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;',html,re.S)
+    return name ,urllist
 
 
 
+# 请求 新链接  提取 章节名  内容
+def get_content(urllist):
+    #  循环 拼接 再次发送请求  提取 章节名字 和 内容（需要清洗）
+    for url in urllist:
+        new_url = 'http://www.39shubao.com' + url
+        resp = requests.get(new_url,headers=headers)
+        resp.encoding = resp.apparent_encoding
+        html = resp.text
+        #  数据提取
+        title = re.findall('&lt;h1&gt;(.*?)&lt;/h1&gt;',html,re.S)[0]
+        content = re.findall('&lt;div id=&quot;book_text&quot;&gt;.*?&lt;br/&gt;&lt;br/&gt;(.*?)&lt;div id=&quot;gt1&quot;&gt;',html,re.S)[0]
+        #  数据清洗
+        content = content.replace(&quot; &quot;,&quot;&quot;)
+        content = content.replace(&quot;&lt;br/&gt;&lt;br/&gt;&quot;,&quot;&quot;)
+        content = content.replace(&quot;&lt;/div&gt;&quot;,&quot;&quot;)
+        yield title,content
 
-def get_content(url):
-   r = get_url(url)
-   con = re.findall(r'&lt;td width=&quot;760&quot; align=&quot;left&quot;&gt;(.*?)&lt;td width=&quot;20&quot;&gt;&lt;/td&gt;',r, re.S)[0]
-   con = con.replace('&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;', '')
-   con = con.replace('&lt;br /&gt;', '')
-   con = con.replace('&lt;/p&gt;', '')
-   con = con.replace('&lt;/td&gt;', '')
-   con = con.replace('&lt;p&gt;','')
-   return con
+#  保存
+def save(title,content,name):
+    print(&quot;正在保存章节；&quot;,title)
+    path = r'C:\Users\DELL\Desktop\python_wd\{}.txt'.format(name)
+    with open(path,'a',encoding='utf-8',)as f:
+        f.write(&quot;\n\t\t\t\t&quot;)  # \n = 相当于换行   \t = 相当于一个 Tab  这样做可以使内容更加好看
+        f.write(title)
+        f.write(&quot;\n\n\t&quot;)
+        f.write(content)
 
-
-
+#  主函数
 def main():
-   url = 'https://wx.tianyabooks.com/book/hywx5/'
-   html = get_url(url)  #  获取主页面的章节信息（这是一个函数）
-   # print(html)
-   # exit()
-   content = get_messages(html)  # 获取所有章节的短 url  和 章节名字
-   # print(content)
-   # exit()
-   title = re.findall(r'&lt;h1&gt;《(.*?)》&lt;/h1&gt;',html)[0].strip()
-#    print(title)  找出小说的名字
+    url = 'http://www.39shubao.com/files/article/html/109/109012/'
+    html = get_html(url)
+    name,urllist = get_url(html)
+    mess = get_content(urllist)
+    for title , content in mess:
+        save(title , content,name)
 
 
 
-
-
-   with open(r'C:\Users\DELL\Desktop\python_wd\文本信息\{}.txt'.format(title),'a+',encoding='utf_8')as f:
-       for mulu in content:
-           f.write(&quot;\n\t\t&quot;)
-           f.write(mulu[1])  #  写入章节目录
-           f.write(&quot;\n&quot;)
-           contents = get_content(url+mulu[0])  # 在建立一个函数 用于小说内容的获取与清洗
-           f.write(&quot;\n\t&quot;)
-           f.write(contents)    #  写入章节内容
-           f.write(&quot;\n&quot;)
 
 if __name__ == '__main__':
-   main()
+    main()
+
+
+
+
 
 </code></pre>
-<p>运行代码数据部分截图：<br>
-<img src="https://posierd.github.io/post-images/1583556274245.png" alt="" loading="lazy"></p>
-<p>——————END</p>
 
             </div>
             
@@ -180,9 +204,9 @@ if __name__ == '__main__':
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://posierd.github.io/post/xiao-shuo-pa-qu/">
+                <a href="https://posierd.github.io/post/hao-kan-shi-pin-pa-qu/">
                   <h3 class="post-title">
-                    小说爬取
+                    好看视频爬取
                   </h3>
                 </a>
               </div>
