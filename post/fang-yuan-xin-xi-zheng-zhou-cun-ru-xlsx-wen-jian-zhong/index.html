@@ -3,12 +3,12 @@
   <head>
     <meta charset="utf-8" >
 
-<title>房源信息—郑州 存入 .xlsx文件中 | posierd</title>
+<title>郑州房源  函数  xlsx文件格式 | posierd</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://posierd.github.io/favicon.ico?v=1591602536849">
+<link rel="shortcut icon" href="https://posierd.github.io/favicon.ico?v=1591668850981">
 <link rel="stylesheet" href="https://posierd.github.io/styles/main.css">
 
 
@@ -24,14 +24,14 @@
 
 
 
-    <meta name="description" content="目标地址
-😄😄😃
+    <meta name="description" content="😃😃😃
+
 import requests
 from bs4 import BeautifulSoup
 import openpyxl
 
-# https://zz.lianjia.com/ershoufang/
-# https:..." />
+
+headers = {'User-Agent': 'Mozilla/5.0 (Windows N..." />
     <meta name="keywords" content="Python-Get" />
   </head>
   <body>
@@ -41,7 +41,7 @@ import openpyxl
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://posierd.github.io">
-        <img src="https://posierd.github.io/images/avatar.png?v=1591602536849" class="site-logo">
+        <img src="https://posierd.github.io/images/avatar.png?v=1591668850981" class="site-logo">
         <h1 class="site-title">posierd</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -103,71 +103,93 @@ import openpyxl
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">房源信息—郑州 存入 .xlsx文件中</h2>
+            <h2 class="post-title">郑州房源  函数  xlsx文件格式</h2>
             <div class="post-date">2020-03-07</div>
             
             <div class="post-content" v-pre>
-              <p><a href="https://zz.lianjia.com/ershoufang/">目标地址</a></p>
-<p>😄😄😃</p>
-<pre><code class="language-python">import requests
+              <p>😃😃😃</p>
+<pre><code class="language-python">
+import requests
 from bs4 import BeautifulSoup
 import openpyxl
 
-# https://zz.lianjia.com/ershoufang/
-# https://zz.lianjia.com/ershoufang/pg2/
-# https://zz.lianjia.com/ershoufang/pg3/
 
-list = []
-for page in range(1,3):
-    print(&quot;正在爬取{}页数据&quot;.format(page))
-    link = 'https://zz.lianjia.com/ershoufang/pg+str(page)/'
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36'
-    }
-    r = requests.get(link,headers=headers)
-    print(&quot;页面状态响应码: &quot;,r.status_code)
+headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'}
+
+mess_list = []  #  用于存储获取的所有信息
+# 获取 html 代码
+def get_html(url):
+    print(&quot;======正在获取{}页信息======&quot;.format(page))
+    resp = requests.get(url,headers=headers)
+    print(&quot;\t其状态响应码:&quot;,resp.status_code)
+    html = resp.text
+    return html
+
+#  提取数据
+def get_content(html):
+    global mess_list   #  调用这个变量
+    suop = BeautifulSoup(html,'html.parser')
+    list = suop.find_all('div',class_=&quot;info clear&quot;)  #  一个包含所有信息的最小父级盒子（不包扩图片的那种）
+    for a in list:
+        name = a.find('a',class_=&quot;&quot;).get_text()    #  名字
+        price = a.find('div',class_=&quot;totalPrice&quot;).get_text()
+        price = price.replace(&quot;万&quot;,&quot;&quot;)  # 总价  万
+
+        pic = a.find('div',class_=&quot;unitPrice&quot;).get_text()
+        pic = pic.replace(&quot;单价&quot;,&quot;&quot;)
+        pic = pic.replace(&quot;元/平米&quot;,&quot;&quot;)  #  均价  元/平米
+
+        ip = a.find(&quot;div&quot;,class_=&quot;positionInfo&quot;).get_text()
+        ip = ip.replace(&quot; &quot;,&quot;&quot;)  # 地址
+
+        format = a.find(&quot;div&quot;,class_=&quot;houseInfo&quot;).get_text()
+        format = format.replace(&quot;|&quot;,&quot;&quot;)  # 规格
+
+        describe = a.find(&quot;div&quot;,class_=&quot;tag&quot;).get_text() # 描述
 
 
-    soup = BeautifulSoup(r.text,'html.parser')
-    #一个房子的总数据 最小
-    host_list = soup.find_all('div',class_='info clear')
-    for host in host_list:
-        name = host.find('a',class_='').get_text()
-        jinjia = host.find('div',class_='unitPrice').get_text()
-        zongjia = host.find('div',class_='totalPrice').get_text()
-        ip = host.find('div',class_='positionInfo').get_text()
-        guige = host.find('div',class_='houseInfo').get_text()
-        guige = guige.replace('|','')
-        miaoshu = host.find('div',class_='tag').get_text()
-        #print(miaoshu)
-        list.append([name,jinjia,zongjia,ip,guige,miaoshu])
+        mess_list.append([name,price,pic,ip,format,describe])
+
+    return mess_list
+
+
+#  保存文件
+def save(mess_list):
+    file = openpyxl.Workbook()  #  新建一个工作薄
+    sheet = file.active  #  在新建一个工作薄的基础上，建立工作表
+    sheet.title = '房价信息'  #  对工作表进行命名 他与文件的命名 互不影响
+    #  写入内容 格式  表头信息
+    sheet['A1'] = '名字'
+    sheet['B1'] = '总价(单位:万)'
+    sheet['C1'] = '均价(单位:元/平米)'
+    sheet['D1'] = '地址'
+    sheet['E1'] = '规格'
+    sheet['F1'] = '优点'
+    for  b in mess_list:
+        # print(b)
+        sheet.append(b)    # 添加内容
+    file.save(r&quot;C:\Users\DELL\Desktop\python_wd\郑州房源信息.xlsx&quot;)  #  保存至自定义目录下
 
 
 
 
-# 保存数据
-file = openpyxl.Workbook()   #  新建一个工作薄
-sheet = file.active     #  在建立工作薄后建立工作表
-sheet.title = '房源信息'   #  命名
-# 写入内容 格式
-sheet['A1'] = '名字'
-sheet['B1'] = '均价'
-sheet['C1'] = '总价'
-sheet['D1'] = '地址'
-sheet['E1'] = '规格'
-sheet['F1'] = '描述'
+#  主函数
+def main(page):
+    url = 'https://zz.lianjia.com/ershoufang/pg{}/'.format(page)
+    html = get_html(url)
+    mess_list = get_content(html)
+    save(mess_list)
 
-for i in list:
-    print(i)
-    sheet.append(i)
-file.save(r&quot;C:\Users\DELL\Desktop\python_wd\文本信息\房源信息-郑州.xlsx&quot;)  #  保存自定义目录
+
+
+
+if __name__ == '__main__':
+    for page in range(1,3):  #  翻页处理
+        main(page)
 
 
 
 </code></pre>
-<p>运行代码数据部分结果：<br>
-<img src="https://posierd.github.io/post-images/1583557146044.png" alt="" loading="lazy"></p>
-<p>————————END</p>
 
             </div>
             
@@ -182,9 +204,9 @@ file.save(r&quot;C:\Users\DELL\Desktop\python_wd\文本信息\房源信息-郑�
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://posierd.github.io/post/pa-qu-fang-yuan-xin-xi-bei-jing-bing-cun-ru-xlsx-zhong/">
+                <a href="https://posierd.github.io/post/xiao-shuo-pa-qu-shi-yong-main/">
                   <h3 class="post-title">
-                    爬取房源信息——北京—并存入 .xlsx 中
+                    小说爬取  函数
                   </h3>
                 </a>
               </div>
